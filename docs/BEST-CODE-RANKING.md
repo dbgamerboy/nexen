@@ -24,3 +24,16 @@ Method: static scan of every code root on H: that was reachable. Score = functio
 - Rank the F: NEXEN version folders after they land on H:.
 - Run the test suites of ranks 1, 2, 4 to 9 and promote what passes.
 - Pull code out of the chat archives once the export folders are named.
+
+## F: versions graded so far (2026-10-06)
+Only 3 of the 11 F: version folders in `f-size-report.txt` have reached H: so far.
+
+| Version | Files | Functions | Tests | Score | Files not in current core | Files that differ |
+|---|---|---|---|---|---|---|
+| H: V1 app (current core) | 160 | 2558 | 606 | 4338 | n/a | n/a |
+| F NEXEN_Autonomy_v0.1 (snapshot copy) | 101 | 1616 | 389 | 2749 | 0 | 12 |
+| F NEXEN_Autonomy_v0.1 (F mirror, 2026-09-26) | 107 | 1594 | 389 | 2727 | 0 | 11 |
+| F NEXEN_THIS_PC_ONLY_v4 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+Verdict: the current H: core already contains every Python file from both Autonomy copies and has 217 more tests. `NEXEN_THIS_PC_ONLY_v4` holds no Python. Nothing from these three is added to the build.
+Not yet landed on H: `NEXEN_CORE_20260907`, `NEXEN_REINSTALL`, `NEXEN_MASTER`, `NEXEN_AUTONOMY`, `NEXEN_REV2`, `NEXEN_GAME`, `NEXEN_REALITY_COMPILER_V1`, `NEXEN master plan`, `NEXEN 1.1.2`.

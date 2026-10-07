@@ -1,0 +1,413 @@
+{
+ "_about": "NEXEN action catalog. Every button, CLI call and API call runs one of these through engine/nexen/actions.py. Copied from the earlier desktop app so this app owns it. risk safe runs at once; confirm needs the owner's click. Nothing here moves money, posts, sends outreach or logs into accounts. Variables: ${python} ${nexen} ${vault} ${bus} ${whop}.",
+ "actions": [
+  {
+   "id": "money.plan",
+   "lane": "money",
+   "label": "Write today's money plan",
+   "risk": "safe",
+   "kind": "process",
+   "exe": "powershell.exe",
+   "args": [
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "${nexen}\\marvin\\launch\\nightly.ps1"
+   ],
+   "timeoutMin": 15,
+   "help": "MARVIN (local model) reads results, clips and notes, writes TODAY.md and DMs it to you."
+  },
+  {
+   "id": "money.today",
+   "lane": "money",
+   "label": "Show today's plan",
+   "risk": "safe",
+   "kind": "view",
+   "target": "${vault}\\10-Segments\\01-money-n8n\\TODAY.md"
+  },
+  {
+   "id": "money.log-result",
+   "lane": "money",
+   "label": "Log a result ($, views, hours)",
+   "risk": "safe",
+   "kind": "internal",
+   "handler": "logResult",
+   "inputs": [
+    {
+     "name": "lane",
+     "label": "Lane (e.g. whop, service, lumipaw)",
+     "required": true
+    },
+    {
+     "name": "item",
+     "label": "What (clip name, client, post)",
+     "required": true
+    },
+    {
+     "name": "dollars",
+     "label": "Dollars earned",
+     "type": "number",
+     "required": true
+    },
+    {
+     "name": "hours",
+     "label": "Hours spent",
+     "type": "number",
+     "required": true
+    },
+    {
+     "name": "views",
+     "label": "Views (0 if none)",
+     "type": "number"
+    }
+   ],
+   "help": "Feeds the learning loop: lanes re-rank by $/hour."
+  },
+  {
+   "id": "money.results",
+   "lane": "money",
+   "label": "Results log (table)",
+   "risk": "safe",
+   "kind": "view",
+   "target": "${nexen}\\marvin\\results.csv"
+  },
+  {
+   "id": "service.package",
+   "lane": "money",
+   "label": "Service offer package",
+   "risk": "safe",
+   "kind": "view",
+   "target": "${vault}\\00-Control\\Handoffs\\2026-09-25-Codex-n8n-context\\Workflow-Build\\service-offer-completion\\READ-ME-FIRST.md"
+  },
+  {
+   "id": "service.folder",
+   "lane": "money",
+   "label": "Service offer folder",
+   "risk": "safe",
+   "kind": "view",
+   "target": "${vault}\\00-Control\\Handoffs\\2026-09-25-Codex-n8n-context\\Workflow-Build\\service-offer-completion"
+  },
+  {
+   "id": "n8n.editor",
+   "lane": "money",
+   "label": "n8n editor",
+   "risk": "safe",
+   "kind": "view",
+   "target": "http://127.0.0.1:5678"
+  },
+  {
+   "id": "postiz.open",
+   "lane": "money",
+   "label": "Postiz (scheduler)",
+   "risk": "safe",
+   "kind": "view",
+   "target": "http://localhost:4007"
+  },
+  {
+   "id": "lumipaw.site",
+   "lane": "money",
+   "label": "LumiPaw site (local)",
+   "risk": "safe",
+   "kind": "view",
+   "target": "http://127.0.0.1:8765"
+  },
+  {
+   "id": "whop.research",
+   "lane": "money",
+   "label": "Clip a video (research, never posted)",
+   "risk": "safe",
+   "kind": "process",
+   "exe": "${python}",
+   "args": [
+    "-u",
+    "${whop}\\whop_clipper.py",
+    "--url",
+    "{source}",
+    "--research",
+    "--name",
+    "{name}"
+   ],
+   "cwd": "${whop}",
+   "timeoutMin": 90,
+   "inputs": [
+    {
+     "name": "source",
+     "label": "Video file path or link",
+     "required": true
+    },
+    {
+     "name": "name",
+     "label": "Short name",
+     "required": true,
+     "pattern": "^[A-Za-z0-9_-]{1,40}$"
+    }
+   ],
+   "help": "Transcribes, ranks the whole video, renders 3 captioned 9:16 clips into whop\\research for review."
+  },
+  {
+   "id": "whop.campaigns",
+   "lane": "money",
+   "label": "Clip all paid campaigns",
+   "risk": "safe",
+   "kind": "process",
+   "exe": "${python}",
+   "args": [
+    "-u",
+    "${whop}\\whop_clipper.py",
+    "--campaign",
+    "${whop}\\campaigns.json"
+   ],
+   "cwd": "${whop}",
+   "timeoutMin": 240,
+   "help": "Refuses unless campaigns.json has an active, paid campaign with a link."
+  },
+  {
+   "id": "whop.edit",
+   "lane": "money",
+   "label": "Campaigns (edit)",
+   "risk": "safe",
+   "kind": "edit",
+   "target": "${whop}\\campaigns.json"
+  },
+  {
+   "id": "whop.review",
+   "lane": "money",
+   "label": "Clips for review",
+   "risk": "safe",
+   "kind": "gallery",
+   "target": "${whop}",
+   "help": "Every rendered clip with its score and hook; play it right here."
+  },
+  {
+   "id": "clipper.folder",
+   "lane": "money",
+   "label": "Gameplay clipper folder",
+   "risk": "safe",
+   "kind": "view",
+   "target": "${nexen}\\clipper"
+  },
+  {
+   "id": "marvin.start",
+   "lane": "marvin",
+   "label": "Start Discord MARVIN",
+   "risk": "safe",
+   "kind": "internal",
+   "handler": "marvinStart"
+  },
+  {
+   "id": "marvin.restart",
+   "lane": "marvin",
+   "label": "Restart Discord MARVIN",
+   "risk": "confirm",
+   "kind": "internal",
+   "handler": "marvinRestart",
+   "help": "Stops his python process; the autostart loop brings him back in 15 s with the newest code."
+  },
+  {
+   "id": "marvin.talklog",
+   "lane": "marvin",
+   "label": "MARVIN talk log",
+   "risk": "safe",
+   "kind": "view",
+   "target": "${nexen}\\marvin\\talk.log"
+  },
+  {
+   "id": "marvin.token",
+   "lane": "marvin",
+   "label": "Discord setup (token + owner ID)",
+   "risk": "safe",
+   "kind": "internal",
+   "handler": "discordSetup",
+   "secretForm": true,
+   "inputs": [
+    {
+     "name": "owner",
+     "label": "Your Discord user ID",
+     "pattern": "^[0-9]{15,21}$"
+    },
+    {
+     "name": "token",
+     "label": "Bot token (leave empty to keep the saved one)",
+     "secret": true
+    }
+   ],
+   "help": "Saved only in your Windows user environment, never in a file. MARVIN restarts with it."
+  },
+  {
+   "id": "loop.prove",
+   "lane": "coding",
+   "label": "Coding loop supervised proof",
+   "risk": "confirm",
+   "kind": "process",
+   "exe": "powershell.exe",
+   "args": [
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "${vault}\\00-Control\\tools\\loop-v2\\prove-loop.ps1",
+    "-Model",
+    "qwen2.5-coder:7b"
+   ],
+   "timeoutMin": 45,
+   "help": "Gated packet, local coding packet, STOP file: three bounded runs with receipts."
+  },
+  {
+   "id": "loop.log",
+   "lane": "coding",
+   "label": "Loop log",
+   "risk": "safe",
+   "kind": "view",
+   "target": "${vault}\\05-Verification\\LOOP-LOG.md"
+  },
+  {
+   "id": "loop.pause",
+   "lane": "coding",
+   "label": "Pause the 24/7 loop",
+   "risk": "safe",
+   "kind": "internal",
+   "handler": "loopPause"
+  },
+  {
+   "id": "loop.resume",
+   "lane": "coding",
+   "label": "Resume the 24/7 loop",
+   "risk": "safe",
+   "kind": "internal",
+   "handler": "loopResume"
+  },
+  {
+   "id": "pc.gaming",
+   "lane": "pc",
+   "label": "Gaming mode (free the GPU)",
+   "risk": "safe",
+   "kind": "internal",
+   "handler": "gamingMode",
+   "help": "Unloads every Ollama model from VRAM and pauses the loop."
+  },
+  {
+   "id": "pc.ollama",
+   "lane": "pc",
+   "label": "Start Ollama",
+   "risk": "safe",
+   "kind": "internal",
+   "handler": "ollamaStart"
+  },
+  {
+   "id": "pc.nexen",
+   "lane": "pc",
+   "label": "NEXEN folder",
+   "risk": "safe",
+   "kind": "view",
+   "target": "${nexen}"
+  },
+  {
+   "id": "pc.vault",
+   "lane": "pc",
+   "label": "Vault (F:\\NEXEN_MEMORY)",
+   "risk": "safe",
+   "kind": "view",
+   "target": "${vault}"
+  },
+  {
+   "id": "pc.05ai",
+   "lane": "pc",
+   "label": "Fix F:\\05_AI access (admin)",
+   "risk": "confirm",
+   "kind": "system",
+   "target": "${nexen}\\tools\\FIX-05_AI-ACCESS.cmd",
+   "help": "Windows asks for admin (UAC). Takes ownership of F:\\05_AI, backs up permissions, deletes nothing."
+  },
+  {
+   "id": "v3.autostart",
+   "lane": "pc",
+   "label": "Start NEXEN with Windows",
+   "risk": "safe",
+   "kind": "internal",
+   "handler": "autostartOn"
+  },
+  {
+   "id": "v3.autostart-off",
+   "lane": "pc",
+   "label": "Don't start with Windows",
+   "risk": "safe",
+   "kind": "internal",
+   "handler": "autostartOff"
+  },
+  {
+   "id": "arsenal.refresh",
+   "lane": "arsenal",
+   "label": "Rescan repos, skills, tools and hubs",
+   "risk": "safe",
+   "kind": "internal",
+   "handler": "catalogRefresh"
+  },
+  {
+   "id": "arsenal.skills",
+   "lane": "arsenal",
+   "label": "Skill index",
+   "risk": "safe",
+   "kind": "view",
+   "target": "${vault}\\20-Arsenal\\SKILLS-INDEX.md"
+  },
+  {
+   "id": "arsenal.folder",
+   "lane": "arsenal",
+   "label": "Arsenal folder",
+   "risk": "safe",
+   "kind": "view",
+   "target": "${nexen}\\arsenal"
+  },
+  {
+   "id": "benefits.applier",
+   "lane": "money",
+   "label": "Benefit Applier",
+   "risk": "safe",
+   "kind": "launch",
+   "exe": "cmd.exe",
+   "args": [
+    "/c",
+    "${nexen}\\apps\\BenefitApplier\\START-BENEFIT-APPLIER.cmd"
+   ],
+   "cwd": "${nexen}\\apps\\BenefitApplier",
+   "help": "Live 225+ assistance/opportunity corpus with hot-reload, Pomodoro, Kanban, verified contacts and outreach tracking."
+  },
+  {
+   "id": "benefits.feed",
+   "lane": "money",
+   "label": "Benefit resource live feed",
+   "risk": "safe",
+   "kind": "edit",
+   "target": "${nexen}\\apps\\BenefitApplier\\RESOURCE_FEED.txt",
+   "help": "Canonical hot-reload source. Historical IDs 1-225 are preserved; current research overlays verified contact and eligibility fields."
+  },
+  {
+   "id": "benefits.receipts",
+   "lane": "money",
+   "label": "Benefit research receipts",
+   "risk": "safe",
+   "kind": "view",
+   "target": "${nexen}\\apps\\BenefitApplier\\research_receipts.jsonl",
+   "help": "Evidence of hourly resource verification and feed updates."
+  },
+  {
+   "id": "away.research",
+   "lane": "money",
+   "label": "Wake background research",
+   "risk": "safe",
+   "kind": "internal",
+   "handler": "awayResearch",
+   "help": "Wake the already running bounded money research worker. No posting, spending or report push."
+  },
+  {
+   "id": "content.daily",
+   "lane": "money",
+   "label": "Prepare daily content",
+   "risk": "safe",
+   "kind": "internal",
+   "handler": "contentDaily",
+   "help": "Run one bounded daily research and text plan event; paid and media generation stay gated."
+  }
+ ]
+}

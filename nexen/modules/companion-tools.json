@@ -1,0 +1,108 @@
+[
+  {
+    "id": "marvin-training",
+    "name": "MARVIN heavy training (120 questions)",
+    "line": "V4",
+    "kind": "app",
+    "notes": "Built in a parallel session. Grades MARVIN on STOP, approval, receipt and honesty rules; exports fine-tune sets.",
+    "probe": {
+      "path": "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\marvin-training\\marvin_train.py"
+    },
+    "buttons": [
+      {
+        "id": "run",
+        "label": "Run MARVIN training",
+        "kind": "script",
+        "target": "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\marvin-training\\RUN-MARVIN-TRAINING.cmd",
+        "group": "MARVIN training"
+      },
+      {
+        "id": "results",
+        "label": "Open training results folder",
+        "kind": "folder",
+        "target": "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\marvin-training\\results",
+        "group": "MARVIN training"
+      },
+      {
+        "id": "export",
+        "label": "Open fine-tune export folder",
+        "kind": "folder",
+        "target": "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\marvin-training\\export",
+        "group": "MARVIN training"
+      },
+      {
+        "id": "questions",
+        "label": "Open question bank folder",
+        "kind": "folder",
+        "target": "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\marvin-training\\questions",
+        "group": "MARVIN training"
+      }
+    ]
+  },
+  {
+    "id": "desktop-organizer",
+    "name": "Desktop organizer + CLEAN.pdf",
+    "line": "V4",
+    "kind": "app",
+    "notes": "Built in a parallel session. Moves only, never deletes, has an undo. V4 only opens the guide and sorts new files.",
+    "probe": {
+      "path": "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\desktop-organizer\\organize_desktop.py"
+    },
+    "buttons": [
+      {
+        "id": "clean",
+        "label": "Open CLEAN.pdf (what you need to do)",
+        "kind": "file",
+        "target": "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\desktop-organizer\\CLEAN.pdf",
+        "group": "Desktop"
+      },
+      {
+        "id": "sort",
+        "label": "Sort new Desktop files",
+        "kind": "script",
+        "target": "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\desktop-organizer\\SORT-NEW-DESKTOP-FILES.cmd",
+        "group": "Desktop"
+      },
+      {
+        "id": "manifests",
+        "label": "Open move manifests (for undo)",
+        "kind": "folder",
+        "target": "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\desktop-organizer\\manifests",
+        "group": "Desktop"
+      }
+    ]
+  },
+  {
+    "id": "nexen-next",
+    "name": "NEXEN MISSION CONTROL (blocker, agents, ports, everything coded)",
+    "line": "V4",
+    "kind": "app",
+    "notes": "Shows the owner next blocker on every tab, per-step Open and Copy-agent-prompt buttons, Q1-Q6 answers, Claude/Codex/Antigravity tracker from SESSION-LOG, live evidence and Road to Success merged from Antigravity. Reads SESSION-LOG only; never stores passwords.",
+    "probe": {
+      "path": "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\nexen-next\\nexen_next.py"
+    },
+    "buttons": [
+      {
+        "id": "open",
+        "label": "Open NEXEN MISSION CONTROL",
+        "kind": "script",
+        "target": "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\nexen-next\\RUN-NEXEN-NEXT.cmd",
+        "group": "NEXEN NEXT"
+      },
+      {
+        "id": "answers",
+        "label": "Open Q1-Q6 answers file",
+        "kind": "file",
+        "target": "H:\\NEXEN\\handoffs\\packet-20261005\\OWNER-ANSWERS-Q1-Q6.txt",
+        "group": "NEXEN NEXT"
+      },
+      {
+        "id": "state",
+        "label": "Open app state folder",
+        "kind": "folder",
+        "target": "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\nexen-next",
+        "group": "NEXEN NEXT"
+      }
+    ]
+  }
+]

@@ -1,0 +1,95 @@
+{
+  "name": "NEXEN - MARVIN Gateway",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "marvin",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "n1-webhook",
+      "name": "Ask MARVIN (webhook)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "nexen-marvin"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8794/api/n8n/marvin",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "X-Nexen-Action", "value": "v4" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": { "timeout": 300000 }
+      },
+      "id": "n2-v4",
+      "name": "NEXEN spine",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "n3-if",
+      "name": "Answered?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [740, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "n4-respond",
+      "name": "Reply",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [980, 220]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false, error: $json.error || 'V4 did not answer', hint: 'start NEXEN.exe' }) }}",
+        "options": { "responseCode": 502 }
+      },
+      "id": "n5-fail",
+      "name": "Reply (V4 unavailable)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [980, 400]
+    }
+  ],
+  "connections": {
+    "Ask MARVIN (webhook)": { "main": [[{ "node": "NEXEN spine", "type": "main", "index": 0 }]] },
+    "NEXEN spine": { "main": [[{ "node": "Answered?", "type": "main", "index": 0 }]] },
+    "Answered?": { "main": [[{ "node": "Reply", "type": "main", "index": 0 }], [{ "node": "Reply (V4 unavailable)", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": { "note": "POST {\"op\":\"ask\",\"agent\":\"marvin\",\"task\":\"...\"} or ops: decide, rules_check, resolve, premortem, due, run_block, learn, recall, draft_workflow, outcome, status. Inactive until the owner turns it on." }
+}

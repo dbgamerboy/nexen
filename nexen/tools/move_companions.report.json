@@ -1,0 +1,25 @@
+{
+ "moved": [
+  [
+   "H:\\NEXEN\\marvin-training",
+   "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\marvin-training"
+  ],
+  [
+   "H:\\NEXEN\\desktop-organizer",
+   "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\desktop-organizer"
+  ],
+  [
+   "H:\\NEXEN\\nexen-next",
+   "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\nexen-next"
+  ]
+ ],
+ "rewritten": [
+  "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\marvin-training\\RUN-MARVIN-TRAINING.cmd",
+  "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\desktop-organizer\\CLEAN.html",
+  "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\desktop-organizer\\organize_desktop.py",
+  "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\desktop-organizer\\SORT-NEW-DESKTOP-FILES.cmd",
+  "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\companion\\nexen-next\\nexen_next.py",
+  "H:\\NEXEN-ENTERPRISE\\Apps\\NEXEN\\modules\\companion-tools.json"
+ ],
+ "skipped": []
+}

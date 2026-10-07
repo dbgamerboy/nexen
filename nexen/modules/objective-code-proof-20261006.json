@@ -1,0 +1,30 @@
+{
+  "id": "objective-code-proof-20261006",
+  "name": "Code review and tested repairs",
+  "line": "V4",
+  "kind": "evidence",
+  "notes": "49 focused checks and actual source/artifact readbacks; component proof, not revenue or full runtime qualification.",
+  "probe": {
+    "path": "H:\\NEXEN-ENTERPRISE\\Evidence\\ObjectiveCoding\\20261006\\ADOPTION-RECEIPT.json"
+  },
+  "buttons": [
+    {
+      "id": "results",
+      "label": "Read verified changes",
+      "kind": "file",
+      "target": "H:\\NEXEN-ENTERPRISE\\Evidence\\ObjectiveCoding\\20261006\\00-RESULTS.txt"
+    },
+    {
+      "id": "evidence",
+      "label": "Open tests, patches and receipts",
+      "kind": "folder",
+      "target": "H:\\NEXEN-ENTERPRISE\\Evidence\\ObjectiveCoding\\20261006"
+    },
+    {
+      "id": "drafts",
+      "label": "Inspect real Curviana draft proof",
+      "kind": "file",
+      "target": "H:\\NEXEN-ENTERPRISE\\Evidence\\ObjectiveCoding\\20261006\\revenue\\actual-curviana\\REAL-READBACK.json"
+    }
+  ]
+}

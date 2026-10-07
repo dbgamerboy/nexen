@@ -1,0 +1,89 @@
+{
+  "name": "NEXEN - MARVIN Routine Tick",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "field": "minutes", "minutesInterval": 15 }] } },
+      "id": "t1",
+      "name": "Every 15 minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8794/api/n8n/marvin",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "X-Nexen-Action", "value": "v4" }, { "name": "Content-Type", "value": "application/json" }] },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"op\":\"due\"}",
+        "options": { "timeout": 60000 }
+      },
+      "id": "t2",
+      "name": "What is due now",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const due = ($input.first().json.result || []);\nconst internal = due.filter(b => b.internal && (!b.blocked_by || b.blocked_by.length === 0));\nconst external = due.filter(b => !b.internal);\nreturn [...internal.map(b => ({ json: { kind: 'internal', block: b.id, title: b.title } })), ...external.map(b => ({ json: { kind: 'owner', block: b.id, title: b.title } }))];"
+      },
+      "id": "t3",
+      "name": "Split internal vs owner blocks",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [{ "id": "k1", "leftValue": "={{ $json.kind }}", "rightValue": "internal", "operator": { "type": "string", "operation": "equals" } }],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "t4",
+      "name": "Internal?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [940, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8794/api/n8n/marvin",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "X-Nexen-Action", "value": "v4" }, { "name": "Content-Type", "value": "application/json" }] },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ op: 'run_block', block: $json.block }) }}",
+        "options": { "timeout": 900000 }
+      },
+      "id": "t5",
+      "name": "Run internal block (STOP-aware)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1180, 220]
+    },
+    {
+      "parameters": {},
+      "id": "t6",
+      "name": "Owner-facing block: wait for the owner (nothing is sent or posted)",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1180, 400]
+    }
+  ],
+  "connections": {
+    "Every 15 minutes": { "main": [[{ "node": "What is due now", "type": "main", "index": 0 }]] },
+    "What is due now": { "main": [[{ "node": "Split internal vs owner blocks", "type": "main", "index": 0 }]] },
+    "Split internal vs owner blocks": { "main": [[{ "node": "Internal?", "type": "main", "index": 0 }]] },
+    "Internal?": { "main": [[{ "node": "Run internal block (STOP-aware)", "type": "main", "index": 0 }], [{ "node": "Owner-facing block: wait for the owner (nothing is sent or posted)", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": { "note": "One schedule owner for the routine. Internal blocks run through V4 (global STOP pauses them). Owner-facing blocks never run from here. Inactive until the owner turns it on." }
+}

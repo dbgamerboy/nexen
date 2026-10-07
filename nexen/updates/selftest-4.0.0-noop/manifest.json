@@ -1,0 +1,14 @@
+{
+  "version": "4.0.0",
+  "notes": "no-op package to prove the pipeline",
+  "files": [
+    {
+      "path": "ui/index.html",
+      "sha256": "843e7c5e58a478e65e56b9f46655deaac5760460a9e978477deb75a8766f0481"
+    },
+    {
+      "path": "modules/companion-tools.json",
+      "sha256": "e2c717b14cb2ee40857f5bf85cc48e3c196b1e0264ff59c46b1030c659e87b68"
+    }
+  ]
+}

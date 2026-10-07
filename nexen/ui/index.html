@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEXEN</title>
+<style>
+:root{--bg:#0b0f17;--panel:#121927;--panel2:#18213a;--line:#25304a;--text:#e6edf7;--mut:#93a1bd;--acc:#6ee7ff;--ok:#6ee7a8;--warn:#ffd166;--bad:#ff7a90;--v4:#b79cff}
+@media (prefers-color-scheme:light){:root{--bg:#f4f6fb;--panel:#fff;--panel2:#eef2fb;--line:#d5dcec;--text:#121a2b;--mut:#56627d;--acc:#0a6fb0;--ok:#127a4a;--warn:#9a6a00;--bad:#b3243f;--v4:#6a42d6}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,Segoe UI,sans-serif}
+header{display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5}
+h1{font-size:17px;margin:0;letter-spacing:.5px}h1 b{color:var(--v4)}
+nav{display:flex;gap:4px;flex-wrap:wrap}nav button{background:none;border:1px solid transparent;color:var(--mut);padding:6px 11px;border-radius:8px;cursor:pointer;font:inherit}
+nav button.on{color:var(--text);background:var(--panel2);border-color:var(--line)}
+.pill{font-size:12px;padding:3px 9px;border-radius:99px;border:1px solid var(--line);color:var(--mut)}
+.pill.ok{color:var(--ok);border-color:var(--ok)}.pill.bad{color:var(--bad);border-color:var(--bad)}.pill.warn{color:var(--warn);border-color:var(--warn)}
+main{padding:16px;max-width:1280px;margin:auto}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+.card h3{margin:0 0 6px;font-size:14px}.mut{color:var(--mut)}.small{font-size:12px}
+button.b,.btn{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;font:inherit;margin:2px 4px 2px 0}
+button.b:hover{border-color:var(--acc)}button.p{background:var(--acc);color:#04121c;border-color:var(--acc);font-weight:600}
+button.risk{border-color:var(--warn)}
+input,textarea,select{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font:inherit;width:100%}
+textarea{min-height:70px;resize:vertical}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:0 0 auto}.row>.grow{flex:1 1 220px}
+pre{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;overflow:auto;max-height:420px;white-space:pre-wrap;word-break:break-word;font:12px/1.4 ui-monospace,Consolas,monospace}
+table{width:100%;border-collapse:collapse}td,th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--mut);font-weight:600;font-size:12px}
+.banner{padding:9px 14px;border-radius:10px;margin-bottom:12px;border:1px solid var(--warn);color:var(--warn);background:var(--panel)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;background:var(--mut)}.dot.up,.dot.present{background:var(--ok)}.dot.down,.dot.missing{background:var(--bad)}.dot.manual,.dot.degraded,.dot.unknown{background:var(--warn)}
+h2{font-size:15px;margin:18px 0 8px}section{display:none}section.on{display:block}
+</style>
+</head>
+<body>
+<header>
+  <h1>NEXEN</h1>
+  <nav id="nav"></nav>
+  <span style="flex:1"></span>
+  <span id="stop" class="pill">STOP ?</span><span id="loop" class="pill">loop ?</span><span id="ver" class="pill">v?</span>
+</header>
+<main>
+<div id="banner"></div>
+
+<section id="home">
+  <div class="grid" id="homecards"></div>
+  <h2>Owner approvals (external effects only)</h2><div id="approvals" class="card mut small">none</div>
+  <h2>Quick context pack</h2>
+  <div class="card"><div class="row"><input class="grow" id="ctxq" placeholder="topic, e.g. novel learning, Curviana, n8n queue"><button class="b p" onclick="ctx()">Search all sources</button></div><pre id="ctxout" class="small" style="margin-top:8px;display:none"></pre></div>
+</section>
+
+<section id="learning">
+  <div class="banner" style="border-color:var(--v4);color:var(--v4)">Novel Learning gates what NEXEN keeps. Recursive Learning asks follow-up questions, with depth capped at 3 and every result landing only in the V4 ledger. Nothing here publishes or edits V3.</div>
+  <div class="grid">
+    <div class="card"><h3>Teach it one fact</h3>
+      <textarea id="ntext" placeholder="A specific, checkable statement."></textarea>
+      <input id="nsrc" placeholder="source ids, comma separated: file:path, receipt:id, test:name, url:..." style="margin-top:6px">
+      <div class="row" style="margin-top:6px"><button class="b p" onclick="learnFact()">Run through the novelty gate</button></div><pre id="nout" class="small" style="display:none;margin-top:6px"></pre></div>
+    <div class="card"><h3>Recall</h3><input id="rq" placeholder="ask what NEXEN has learned"><input id="rasof" placeholder="as of (optional) 2026-09-26T00:00:00" style="margin-top:6px">
+      <div class="row" style="margin-top:6px"><button class="b p" onclick="recall()">Recall</button></div><pre id="rout" class="small" style="display:none;margin-top:6px"></pre></div>
+    <div class="card"><h3>Recursive Learning</h3><input id="recq" placeholder="question (empty = curiosity picks from gaps)">
+      <div class="row" style="margin-top:6px"><select id="recs" style="width:auto"><option value="">auto (bandit)</option><option>wide</option><option>balanced</option><option>deep</option></select>
+      <button class="b p" onclick="recursive()">Run pass</button><button class="b" onclick="post('/api/learning/cycle',{}).then(show('lout'))">Full cycle now</button></div><pre id="lout" class="small" style="display:none;margin-top:6px"></pre></div>
+    <div class="card"><h3>Harvest</h3><div class="row">
+      <button class="b" onclick="harvest('vault')">Vault notes</button><button class="b" onclick="harvest('brain-index')">Old watcher queue</button>
+      <button class="b" onclick="harvest('codex')">Codex</button><button class="b" onclick="harvest('claude')">Claude Code</button><button class="b" onclick="harvest('hermes')">Hermes</button><button class="b" onclick="harvest('antigravity')">Antigravity</button></div><pre id="hout" class="small" style="display:none;margin-top:6px"></pre></div>
+  </div>
+  <h2>Stats and self-tuning</h2>
+  <div class="card"><div class="row"><button class="b" onclick="learnView('stats')">Stats</button><button class="b" onclick="learnView('gaps')">Curiosity gaps</button><button class="b" onclick="learnView('archive')">Archive</button><button class="b" onclick="learnView('recent')">Recent items</button><button class="b" onclick="learnView('held')">Held for review</button><button class="b" onclick="learnView('frontier')">Frontier questions</button><button class="b" onclick="learnView('lessons')">Lessons</button><button class="b" onclick="learnView('skills')">Skill recipes</button><button class="b" onclick="learnView('events')">Audit events</button>
+    <button class="b risk" onclick="post('/api/learning/tune',{}).then(show('lview'))">Self-tune gate</button><button class="b" onclick="post('/api/learning/rollback',{}).then(show('lview'))">Roll back tuning</button></div>
+    <pre id="lview" class="small" style="margin-top:8px">pick a view</pre></div>
+</section>
+
+<section id="biz"><div id="bizbody"></div><pre id="bizview" class="small" style="display:none;margin-top:10px"></pre></section>
+
+<section id="conn">
+  <div class="card"><div class="row"><select id="cname" style="width:auto"></select><select id="cverb" style="width:auto"><option>recent</option><option>search</option><option>read</option><option>status</option></select><input class="grow" id="carg" placeholder="search text or id"><button class="b p" onclick="connRun()">Run</button></div>
+  <div class="row" style="margin-top:8px"><input class="grow" id="cprompt" placeholder="prompt to send (MARVIN, Hermes, Antigravity, Claude; ChatGPT writes an outbox packet)"><button class="b risk" onclick="connSend()">Send</button></div>
+  <pre id="cout" class="small" style="margin-top:8px">ready</pre></div>
+</section>
+
+<section id="mods"><div class="card"><table id="modtable"></table></div><h2>Older NEXEN lines on F: (metadata only)</h2><div class="card"><table id="census"></table></div></section>
+<section id="track"><div class="row"><div class="card grow"><h3>Task board (canonical DB)</h3><pre id="board" class="small"></pre></div></div><h2>Timeline</h2><div class="card"><table id="timeline"></table></div></section>
+<section id="spine">
+  <div class="banner" style="border-color:var(--v4);color:var(--v4)">Intellect spine: predetermined problems and solutions, live risk, and decisions that name every source they used.</div>
+  <div class="grid">
+    <div class="card"><h3>Diagnose a problem</h3><textarea id="dx" placeholder="paste an error or describe what went wrong"></textarea>
+      <div class="row" style="margin-top:6px"><button class="b p" onclick="spDiag()">Diagnose</button><button class="b" onclick="spPre()">Premortem a plan</button></div><pre id="dxo" class="small" style="display:none;margin-top:6px"></pre></div>
+    <div class="card"><h3>Decide</h3><textarea id="dq" placeholder="a decision MARVIN has to make"></textarea>
+      <div class="row" style="margin-top:6px"><label class="small"><input type="checkbox" id="dc" style="width:auto"> consult the active model</label><button class="b p" onclick="spDecide()">Decide</button></div><pre id="dqo" class="small" style="display:none;margin-top:6px"></pre></div>
+    <div class="card"><h3>Assemble a prompt (what every agent gets)</h3><div class="row"><select id="pa" style="width:auto"></select><input class="grow" id="pt" placeholder="task"><button class="b p" onclick="spPrompt()">Show prompt + receipt</button></div><pre id="pto" class="small" style="display:none;margin-top:6px"></pre></div>
+  </div>
+  <h2>Live indicators and tools</h2>
+  <div class="card"><div class="row"><button class="b" onclick="spView('/api/spine/indicators')">Live indicators</button><button class="b" onclick="spView('/api/spine/stats')">Stats</button><button class="b" onclick="spView('/api/spine/eval')">Held-out accuracy</button><button class="b" onclick="spView('/api/packs/receipts')">Prompt receipts</button><button class="b" onclick="spView('/api/stores/health')">Store health</button><button class="b" onclick="spView('/api/traces')">Agent traces</button><button class="b risk" onclick="post('/api/orchestrate',{}).then(show('spv'))">Run learning cycle</button></div><pre id="spv" class="small" style="margin-top:8px">pick a view</pre></div>
+  <h2>Problem catalog</h2><div class="card"><input id="cf" placeholder="filter" oninput="spCat()"><div id="cat" class="small" style="margin-top:8px"></div></div>
+</section>
+
+<section id="research">
+  <div class="card"><div class="row"><input class="grow" id="rsq" placeholder="search learned research"><select id="rsd" style="width:auto"><option value="">all domains</option><option>money</option><option>coding</option><option>clipping</option><option>dropshipping</option><option>marvin</option><option>infra</option><option>learning</option><option>world</option><option>music</option><option>general</option></select>
+    <select id="rso" style="width:auto"><option value="">all origins</option><option>youtube</option><option>recursive</option><option>vault</option><option>harvest</option><option>novel</option></select><button class="b p" onclick="rsLoad()">Show</button></div>
+    <div class="row" style="margin-top:8px"><input class="grow" id="yq" placeholder="research a topic on YouTube (subtitles only, no video downloads)"><button class="b risk" onclick="rsYT()">Research on YouTube</button><button class="b" onclick="rsWorld()">Collect world signals</button></div><pre id="rsm" class="small" style="display:none;margin-top:8px"></pre></div>
+  <h2>World model</h2><div class="card"><pre id="rsw" class="small">loading</pre></div>
+  <h2>Workflow drafts built from research (inactive, rule-checked)</h2><div class="card"><table id="drafts"></table></div>
+  <h2>Research</h2><div id="rsl"></div>
+</section>
+
+<section id="routine">
+  <div class="banner" style="border-color:var(--v4);color:var(--v4)">The routine: money and stability first. Adjust any block, lane or number at any time. Rules and STOP always win.</div>
+  <div class="grid">
+    <div class="card"><h3>Move a block</h3><div class="row"><select id="mb" style="width:auto"></select><input id="ms" placeholder="HH:MM" style="width:90px"><input id="mm" placeholder="min" style="width:70px"><button class="b p" onclick="rtMove()">Save</button></div>
+      <div class="row" style="margin-top:8px"><select id="ml" style="width:auto"></select><button class="b" onclick="rtPause(true)">Pause lane</button><button class="b" onclick="rtPause(false)">Resume lane</button><button class="b" onclick="rtGaming()">Toggle gaming mode</button></div><pre id="rto" class="small" style="display:none;margin-top:6px"></pre></div>
+    <div class="card"><h3>Can this action run? (rules engine)</h3><div class="row"><select id="rt" style="width:auto"><option>post</option><option>experiment</option><option>account_create</option><option>spend</option><option>clip</option><option>message</option></select><input id="ra" placeholder="account (B)" style="width:110px"><input id="rw" placeholder="workflow id" style="width:130px"><label class="small"><input id="rm" type="checkbox" style="width:auto"> mirrors another account</label><button class="b p" onclick="rtCheck()">Check</button></div><pre id="rco" class="small" style="display:none;margin-top:6px"></pre></div>
+    <div class="card"><h3>Rules and accounts</h3><div class="row"><button class="b" onclick="spView2('/api/rules/status','rtv')">Status</button><button class="b" onclick="spView2('/api/rules/matrix?limit=40','rtv')">Scenario matrix</button></div><pre id="rtv" class="small" style="margin-top:6px">pick a view</pre></div>
+  </div>
+  <h2>Today's plan</h2><div class="card"><table id="plan"></table></div>
+</section>
+
+<section id="swap">
+  <div class="banner" style="border-color:var(--v4);color:var(--v4)">Everything substitutable is a slot with a safe default: models, LoRA adapters, methods, hustles, stores, sources, accounts. Poor performance recommends a swap; internal slots swap themselves, outside-world slots wait for you.</div>
+  <div class="row" style="margin-bottom:8px"><button class="b p" onclick="swSweep()">Sweep all slots now</button></div>
+  <div class="card"><table id="swt"></table></div><h2>Recent swaps</h2><pre id="swh" class="small"></pre>
+</section>
+
+<section id="upd"><div class="card"><h3>Live update</h3><pre id="updbody" class="small"></pre><div id="updbtn"></div>
+<p class="small mut">Add a button or module instantly: drop a .json into <code>modules/</code>. Ship code: put a package in <code>updates/&lt;name&gt;/</code> with manifest.json, then Apply. This page reloads itself when files change.</p></div></section>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const H={'Content-Type':'application/json','X-Nexen-Action':'v4'};
+const get=u=>fetch(u).then(r=>r.json());
+const post=(u,b)=>fetch(u,{method:'POST',headers:H,body:JSON.stringify(b||{})}).then(r=>r.json());
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const J=o=>JSON.stringify(o,null,2);
+const show=id=>o=>{const e=$('#'+id);e.style.display='block';e.textContent=typeof o==='string'?o:J(o)};
+const tabs=[['home','Home'],['learning','Learning'],['spine','Spine'],['research','Research'],['routine','Routine'],['swap','Swap'],['biz','Business Operations'],['conn','Connectors'],['mods','Modules'],['track','Tracker'],['upd','Update']];
+$('#nav').innerHTML=tabs.map(([id,l])=>`<button data-t="${id}">${l}</button>`).join('');
+function tab(id){document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===id));try{localStorage.nexenTab=id}catch(e){};({home:loadHome,learning:()=>learnView('stats'),spine:loadSpine,research:loadResearch,routine:loadRoutine,swap:loadSwap,biz:loadBiz,conn:loadConn,mods:loadMods,track:loadTrack,upd:loadUpd})[id]()}
+$('#nav').onclick=e=>{if(e.target.dataset.t)tab(e.target.dataset.t)};
+
+let stamp=null;
+async function beat(){try{const h=await get('/api/health');$('#ver').textContent='v'+h.version;
+ const s=$('#stop');s.textContent=h.stop?'STOP active':'running';s.className='pill '+(h.stop?'warn':'ok');
+ $('#banner').innerHTML=h.stop?'<div class="banner">Global STOP is set. The background learning loop is paused. Buttons you press still work. Remove the STOP file only if you decide to.</div>':'';
+ if(stamp&&h.stamp!==stamp){location.reload();return}stamp=h.stamp;
+ const l=await get('/api/learning/loop');$('#loop').textContent='loop '+(l.running?(l.paused_by_stop?'paused':'on')+' · '+l.cycles+' cycles':'off');$('#loop').className='pill '+(l.running&&!l.paused_by_stop?'ok':'warn')}
+ catch(e){$('#ver').textContent='offline';$('#ver').className='pill bad'}}
+setInterval(beat,4000);beat();
+
+async function loadHome(){const st=await get('/api/status');const L=st.learning,b=await get('/api/board');
+ const cards=[['Tasks',`${b.open} open of ${b.total}<br><span class="mut small">${Object.entries(b.tasks).map(([k,v])=>k+' '+v).join(' · ')}</span>`],
+ ['Learned items',`${L.items.admitted||0} admitted · ${L.items.held||0} held · ${L.items.superseded||0} superseded<br><span class="mut small">${L.lessons} lessons · ${L.skills} skill recipes · ${L.frontier_open} open questions</span>`],
+ ['Approvals waiting',`${st.approvals_pending}`]];
+ for(const [n,c] of Object.entries(st.connectors)){cards.push([n,`<span class="dot ${c.ok?'up':'down'}"></span>${c.ok?'connected':esc(c.error||'down')}<br><span class="mut small">${esc(c.send||'')}</span>`])}
+ $('#homecards').innerHTML=cards.map(([n,c])=>`<div class="card"><h3>${n}</h3>${c}</div>`).join('');
+ const ap=await get('/api/approvals');$('#approvals').innerHTML=ap.length?ap.map(a=>`<div class="row"><b>${esc(a.kind)}</b> <span class="grow">${esc(a.title)}</span><button class="b p" onclick="decide('${a.id}','approve')">Approve</button><button class="b" onclick="decide('${a.id}','deny')">Deny</button></div>`).join(''):'none waiting'}
+async function decide(id,w){await post(`/api/approvals/${id}/${w}`,{});loadHome()}
+async function ctx(){const t=$('#ctxq').value;if(!t)return;show('ctxout')('searching…');const r=await post('/api/context',{topic:t});show('ctxout')(r.text+'\n\nsaved: '+r.path)}
+
+async function learnFact(){const src=$('#nsrc').value.split(',').map(s=>s.trim()).filter(Boolean);show('nout')(await post('/api/learning/novel',{text:$('#ntext').value,source_ids:src}))}
+async function recall(){show('rout')(await post('/api/learning/recall',{query:$('#rq').value,as_of:$('#rasof').value||null}))}
+async function recursive(){show('lout')('running…');show('lout')(await post('/api/learning/recursive',{question:$('#recq').value||null,strategy:$('#recs').value||null}))}
+async function harvest(w){show('hout')('harvesting '+w+'…');show('hout')(await post('/api/learning/harvest',{from:w}))}
+async function learnView(w){$('#lview').textContent=J(await get('/api/learning/'+w))}
+
+async function loadBiz(){$('#bizbody').innerHTML='<p class="mut">loading buttons…</p>';const bs=await get('/api/buttons');const groups={};bs.forEach(b=>{(groups[b.group]=groups[b.group]||[]).push(b)});
+ $('#bizbody').innerHTML='<div class="banner" style="border-color:var(--v4);color:var(--v4)">NEXEN Business Operations. Every button runs inside this app. Anything that would publish, send or spend goes to the approval queue first.</div>'+
+ Object.entries(groups).map(([g,list])=>`<h2>${esc(g)}</h2><div class="card">${list.map(b=>`<button class="b ${b.risk&&b.risk!=='safe'?'risk':''}" title="${esc(b.help||'')}" data-b='${esc(JSON.stringify(b))}'>${esc(b.label)}</button>`).join('')}</div>`).join('')}
+$('#bizbody').onclick=async e=>{const el=e.target.closest('button[data-b]');if(!el)return;const b=JSON.parse(el.dataset.b);
+ if(b.kind==='view')show('bizview')(await get('/api/view?target='+encodeURIComponent(b.target)));
+ else if(b.kind==='marvin-action')await runAction(b);
+ else show('bizview')(await post('/api/launch',{kind:b.kind,target:b.target}))}
+
+async function runAction(b){const inputs={};for(const i of (b.inputs||[])){if(i.secret){show('bizview')('This field is a secret. Set it in Windows user environment settings; this app never handles it.');return}
+ const v=prompt(i.label||i.name);if(v===null)return;inputs[i.name]=v}
+ let r=await post('/api/marvin-action',{id:b.target,inputs});
+ if(r.status==='needs_confirm'){if(!confirm((r.label||b.label)+'\n\n'+(r.help||'Run this?')))return;r=await post('/api/marvin-action',{id:b.target,inputs,confirmed:true})}
+ show('bizview')(r.content?((r.record&&r.record.summary)||'')+'\n\n'+r.content:r)}
+async function loadConn(){const st=await get('/api/status');$('#cname').innerHTML=Object.keys(st.connectors).map(n=>`<option>${n}</option>`).join('')}
+async function connRun(){const n=$('#cname').value,v=$('#cverb').value,a=encodeURIComponent($('#carg').value);show('cout')(await get(`/api/connector/${n}/${v}?q=${a}&n=12`))}
+async function connSend(){const n=$('#cname').value,p=$('#cprompt').value;if(!p)return;show('cout')('sending to '+n+'…');show('cout')(await post(`/api/connector/${n}/send`,{prompt:p}))}
+
+async function loadMods(){const m=await get('/api/modules');$('#modtable').innerHTML='<tr><th>Module</th><th>Line</th><th>Kind</th><th>Health</th></tr>'+m.map(x=>`<tr><td>${esc(x.name)}<div class="mut small">${esc(x.notes||'')}</div></td><td>${esc(x.line)}</td><td>${esc(x.kind)}</td><td><span class="dot ${x.health.state}"></span>${x.health.state} <span class="mut small">${esc(x.health.detail)}</span></td></tr>`).join('');
+ const c=await get('/api/census');$('#census').innerHTML=c.map(r=>`<tr><td>${esc(r.path)}</td><td>${r.exists===null?'unreadable':r.exists?'present':'missing'}</td><td class="mut">${esc(r.modified||'')}</td></tr>`).join('')}
+async function loadTrack(){$('#board').textContent=J(await get('/api/board'));const t=await get('/api/timeline?n=40');$('#timeline').innerHTML='<tr><th>When</th><th>Kind</th><th>What</th></tr>'+t.map(r=>`<tr><td class="small mut">${esc(r.when)}</td><td>${esc(r.kind)}</td><td>${esc(r.title)}</td></tr>`).join('')}
+async function loadUpd(){const u=await get('/api/update');$('#updbody').textContent=J(u);$('#updbtn').innerHTML=u.pending.filter(p=>!p.error).map(p=>`<button class="b p" onclick="applyUpd('${p.name}')">Apply ${esc(p.name)} (${esc(p.version)})</button>`).join('')}
+async function applyUpd(n){show('updbody')(await post('/api/update/apply',{name:n}))}
+/* ---- spine ---- */
+const spView2=async(u,id)=>{$('#'+id).textContent=J(await get(u))};
+const spView=u=>spView2(u,'spv');
+async function loadSpine(){const a=await get('/api/packs');$('#pa').innerHTML=Object.keys(a).map(k=>`<option>${k}</option>`).join('');window._cat=await get('/api/spine/catalog');spCat()}
+function spCat(){const f=($('#cf')?.value||'').toLowerCase();$('#cat').innerHTML='<table><tr><th>ID</th><th>Area</th><th>Sev</th><th>Problem</th><th>Chance</th><th>Playbook</th></tr>'+(window._cat||[]).filter(p=>(p.id+p.title+p.area).toLowerCase().includes(f)).map(p=>`<tr><td>${p.id}</td><td>${p.area}</td><td>${p.severity}</td><td>${esc(p.title)}</td><td>${p.rate}</td><td class="small mut">${esc(p.steps.slice(0,2).join(' → '))}${p.external?' <b>(owner gate)</b>':''}</td></tr>`).join('')+'</table>'}
+async function spDiag(){show('dxo')(await post('/api/spine/resolve',{text:$('#dx').value}))}
+async function spPre(){show('dxo')(await post('/api/spine/premortem',{plan:$('#dx').value}))}
+async function spDecide(){show('dqo')('thinking…');show('dqo')(await post('/api/decide',{question:$('#dq').value,consult:$('#dc').checked}))}
+async function spPrompt(){show('pto')('assembling from every store…');const r=await post('/api/prompt',{agent:$('#pa').value,task:$('#pt').value});show('pto')(r.receipt?J(r.receipt)+'\n\n'+r.prompt:r)}
+/* ---- research ---- */
+async function loadResearch(){rsLoad();rsDrafts();const w=await get('/api/world/summary');$('#rsw').textContent=J(w)}
+async function rsLoad(){const q=new URLSearchParams({q:$('#rsq').value,domain:$('#rsd').value,origin:$('#rso').value,n:60});const items=await get('/api/research?'+q);
+ $('#rsl').innerHTML=items.map(i=>`<div class="card" style="margin-bottom:8px"><div class="small mut">${esc(i.domain)} · ${esc(i.origin)} · trust ${i.trust} · ${esc(i.created)} · ${esc(i.id)}</div><div>${esc(i.title?i.title+': ':'')}${esc(i.text.slice(0,600))}</div><div class="small" style="margin-top:4px">${i.sources.map(s=>s.link?`<a href="${esc(s.link)}" target="_blank" rel="noopener" style="color:var(--acc)">${esc(s.id)}</a>`:esc(s.id)).join(' · ')}</div><div class="row" style="margin-top:6px"><button class="b" data-d='${esc(JSON.stringify({text:i.text,source_ids:i.sources.map(s=>s.id)}))}' onclick="rsDraft(this)">Draft a workflow from this</button></div></div>`).join('')||'<p class="mut">nothing yet</p>'}
+async function rsDraft(el){const d=JSON.parse(el.dataset.d);const r=await post('/api/research/draft',d);show('rsm')(r);rsDrafts()}
+async function rsDrafts(){const d=await get('/api/workflows/drafts');$('#drafts').innerHTML='<tr><th>Draft</th><th>Lane</th><th>Status</th><th>Rules verdict</th><th>If blocked, rewritten as</th></tr>'+d.map(x=>`<tr><td>${esc(x.name)}<div class="small mut">${esc(x.id)}</div></td><td>${esc(x.lane)}</td><td>${esc(x.status)}</td><td>${esc(x.verdict)}</td><td>${esc(x.rewritten_as||'')}</td></tr>`).join('')}
+async function rsYT(){const q=$('#yq').value;if(!q)return;show('rsm')('searching YouTube and reading subtitles…');show('rsm')(await post('/api/research/youtube',{query:q}));rsLoad()}
+async function rsWorld(){show('rsm')('collecting (GDELT is rate limited and may be missing)…');show('rsm')(await post('/api/world/collect',{topics:['artificial intelligence','tiktok','youtube','unemployment','freelance']}));$('#rsw').textContent=J(await get('/api/world/summary'))}
+/* ---- routine and rules ---- */
+async function loadRoutine(){const p=await get('/api/schedule/plan');$('#mb').innerHTML=p.blocks.map(b=>`<option value="${b.id}">${b.id}</option>`).join('');$('#ml').innerHTML=p.priority_order.map(l=>`<option>${l}</option>`).join('');
+ $('#plan').innerHTML='<tr><th>Time</th><th>Lane (priority)</th><th>Block</th><th>Top open tasks</th><th></th></tr>'+p.blocks.map(b=>`<tr><td>${b.start}-${b.end}</td><td>${b.lane} (${b.priority})${b.paused?' <b>paused</b>':''}</td><td>${esc(b.title)}<div class="small mut">${b.internal?'internal':'owner-facing'}${b.blocked_by.length?' · '+esc(b.blocked_by.join('; ')):''}</div></td><td class="small">${b.tasks.map(t=>'#'+t.id+' '+esc(t.text.slice(0,60))).join('<br>')}</td><td>${b.internal?`<button class="b" onclick="rtRun('${b.id}')">Run now</button>`:''}</td></tr>`).join('')+(p.conflicts.length?`<tr><td colspan="5" class="mut">Conflicts: ${esc(p.conflicts.join('; '))}</td></tr>`:'')}
+async function rtMove(){const b={id:$('#mb').value};if($('#ms').value)b.start=$('#ms').value;if($('#mm').value)b.minutes=+$('#mm').value;show('rto')(await post('/api/schedule/move',b));loadRoutine()}
+async function rtPause(on){show('rto')(await post('/api/schedule/pause',{lane:$('#ml').value,on}));loadRoutine()}
+async function rtGaming(){show('rto')({gaming:await post('/api/schedule/gaming',{on:true})})}
+async function rtRun(id){show('rto')('running…');show('rto')(await post('/api/schedule/run',{id}));loadRoutine()}
+async function rtCheck(){const a={type:$('#rt').value,platform:'tiktok',mirrors:$('#rm').checked};if($('#ra').value)a.account=$('#ra').value;if($('#rw').value)a.workflow=$('#rw').value;if(a.type==='account_create'){a.purpose='experiment';a.experiment_id=a.workflow||'exp'}if(a.type==='spend')a.spend=5;if(a.type==='experiment'&&!a.account)a.account='E';show('rco')(await post('/api/rules/check',{action:a}))}
+/* ---- swap ---- */
+async function loadSwap(){const s=await get('/api/swap');$('#swt').innerHTML='<tr><th>Slot</th><th>Active</th><th>Health</th><th>Swap to</th></tr>'+s.slots.map(x=>`<tr><td>${x.id}</td><td>${esc(x.active)}</td><td>${x.health.state}${x.health.mean!=null?' ('+x.health.mean+')':''}</td><td><select onchange="swApply('${x.id}',this.value)" style="width:auto"><option value="">…</option>${x.candidates.filter(c=>c!==x.active).map(c=>`<option>${esc(c)}</option>`).join('')}</select></td></tr>`).join('');$('#swh').textContent=s.history.map(h=>`${new Date(h.ts*1000).toLocaleString()}  ${h.slot}: ${h.old} -> ${h.new}  (${h.reason})`).join('\n')||'no swaps yet'}
+async function swApply(slot,c){if(!c)return;await post('/api/swap/apply',{slot,candidate:c});loadSwap()}
+async function swSweep(){show('swh')(await post('/api/swap/sweep',{}));setTimeout(loadSwap,800)}
+let start='home';try{start=localStorage.nexenTab||'home'}catch(e){}tab(start);
+</script>
+</body>
+</html>

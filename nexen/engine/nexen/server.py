@@ -150,7 +150,8 @@ class Handler(BaseHTTPRequestHandler):
 
     # static
     def static(self, path):
-        rel = "index.html" if path in {"", "/"} else path.lstrip("/")
+        front = "nexen.html" if (paths.UI / "nexen.html").is_file() else "index.html"
+        rel = front if path in {"", "/"} else path.lstrip("/")
         p = (paths.UI / rel).resolve()
         if paths.UI.resolve() not in p.parents or not p.is_file():
             return self._json({"error": "not found"}, 404)
@@ -176,6 +177,9 @@ class Handler(BaseHTTPRequestHandler):
             return {**app.status_all(), "loop": autonomy.status()}
         if path == "/api/modules":
             return registry.all_modules()
+        if path == "/api/bridge/modules":
+            from . import modbridge
+            return modbridge.catalog()
         if path == "/api/action-runs":
             from . import actions
             return actions.recent()
@@ -285,6 +289,9 @@ class Handler(BaseHTTPRequestHandler):
             return updater.apply(b["name"])
         if path == "/api/task":
             return CONNECTORS["nexen"].add_task(b.get("text", ""))
+        if path == "/api/bridge/run":
+            from . import modbridge
+            return modbridge.run(b.get("name"), b.get("args"), timeout=int(b.get("timeout", 20)))
         raise KeyError("unknown endpoint")
 
 

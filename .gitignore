@@ -1,7 +1,0 @@
-data/
-logs/
-*.pyc
-__pycache__/
-.env
-*.db
-*.exe

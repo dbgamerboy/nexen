@@ -1,0 +1,26 @@
+HOW TO USE NEXEN  (2026-10-06)
+==============================
+
+THE FIVE ROOT FOLDERS ON H:\
+  H:\NEXEN           the application. src\nexen is the code, hub\ is the original MARVIN server, run_nexen.py starts it.
+  H:\NEXEN_MEMORY    notes and memory: conversations\ (chat archives), handoffs-and-reports\, docs\ (PRD, TRD, source of truth, ranking).
+                     The Obsidian vault itself is H:\NEXEN\obsidian\NEXEN-Recovered-20261005 (collected notes are in its 95-, 96- and 99- folders).
+  H:\NEXEN_DATA      state and data: nexen\ (app state), databases\, n8n-workflows\, photos\, logs\, business-outputs\, vector-db-link\.
+                     The vector DB is on Google Drive: G:\My Drive\NEXEN_VECTOR_DB (Qdrant and GraphRAG folders).
+  H:\NEXEN_MODULES   standalone modules by function: runtime, money, agents, reliability, reporting, learning-memory, network-and-routing, core-system, general.
+                     _curated\ holds the 15 vetted modules the app is allowed to run.
+  H:\NEXEN_SCRIPTS   start\ (start files), tools\ (helper tools), plus ranked helper scripts by function.
+  H:\NEXEN\UNUSED    everything that ranked low: older versions, duplicates, caches, runtimes you can reinstall. Nothing was deleted.
+
+START IT
+  1. Double-click H:\NEXEN_SCRIPTS\start\START-NEXEN.cmd     -> open http://127.0.0.1:8794/  (the red 1080p HUD)
+  2. Optional: H:\NEXEN_SCRIPTS\start\START-HUB.cmd           -> http://127.0.0.1:8788/  (needs your password; fills the HUD panels)
+  Stop either one by closing its window. Nothing is running right now.
+
+WHAT YOU CAN DO IN THE HUD
+  Chat with MARVIN in the middle box. Approvals (Approve / Deny) wait on you for anything that posts, sends or spends.
+  Modules: Run a vetted module. Ones with outbound code only create an approval request.
+
+IF SOMETHING GOES WRONG
+  Every move made today has an undo list in H:\NEXEN_ALL (files named MOVE-...-UNDO.json). H:\NEXEN_ALL\RANKING-AND-PLACEMENT.txt explains why each code folder was kept or put in UNUSED.
+  The public code is at https://github.com/dbgamerboy/nexen

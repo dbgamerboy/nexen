@@ -1,0 +1,123 @@
+{
+  "name": "USER_STACK | Talking-avatar short-form video pipeline | DY3KmLzt88t",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER_STACK VERSION\nSource: https://www.instagram.com/sina.growthtech/reel/DY3KmLzt88t/\nEvidence: [0.08s - 39.42s] [Speaker 0] This is how to build an AI agent pipeline that automates TikToks, Reels, and Shorts for you so you can continue to eat ultra processed food, doom scroll, and watch politics all day. Now the formula is simple. You build social media pages. I sold this entire page. So you build social pages that sell products and you do this with these types of AI videos or these. It doesn't have to be one format. First up, go to AI for savages, go to the agent skill section and download the short form create agent skill. Invented by the genius of the modern era Sina Leo, this agent skills folder gives your AI agent the ability to turn any video into an automated Python script.\n[40.44s - 70.83s] [Speaker 0] We don't manually edit one video anymore. We build pipelines, bish. So the skill is activated and it asked us what type of videos do we wanna build. Let's just do a simple talking avatar clip with captions. So we tell the AI and it's gonna go. And Codex added this to the pipeline and this video came out, but it's just a blank video. So right now, the way our pipeline works is we get a script and that script turns it into a full frame talking head video, but we're not done. We can add captions, we can add animations,\n[71.21s - 72.35s] [Speaker 0] we can do research.\n[\nKeeps source order: agent skill -> avatar video -> animations -> captions -> export. User-stack adds resumable stage state, FFmpeg/ffprobe handoff and QA gates; avatar model contract remains pending.\nThis describes added USER-STACK controls, not source instructions.\nExternal media generation/publishing is not marked complete.",
+        "height": 360,
+        "width": 440
+      },
+      "id": "4c38d171-f5b1-46b0-8cfc-fb6cda677c94",
+      "name": "Evidence and boundaries",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "d78f92bb-252c-48a4-9d19-8a6324e86945",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$input.first().json;\nif(!j.script||!j.job_id) throw new Error('script and stable job_id required');\nconst stages=['avatar_generation','animation_composition','caption_timing','encode','ffprobe_qa'];\nconst s=Number(j.resume_stage||0); if(!Number.isInteger(s)||s<0||s>stages.length) throw new Error('resume_stage out of range');\nreturn [{json:{job_id:j.job_id,idempotency_key:'avatar:'+j.job_id,script:j.script,stages:stages.map((name,i)=>({name,status:i<s?'complete':i===s?'ready_for_worker':'blocked',worker_contract:'PENDING; use a versioned local adapter'})),render_status:'pending_worker',output_validation:['video_stream_present','audio_or_intentional_silence','captions_readable','duration_within_limit'],external_publish:false}}];"
+      },
+      "id": "10b2bc06-0987-4921-841a-6918907e75e1",
+      "name": "Apply user-stack method",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Expected input fixture is paired in fixtures/source-method-fixtures.json. This export prepares records/handoffs only when a required vendor API/worker is unresolved. Import inactive; run manually after reviewing its inputs.",
+        "height": 170,
+        "width": 420
+      },
+      "id": "1737f2a9-0793-40b8-b4fc-2bf3689645cb",
+      "name": "Run status",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Apply user-stack method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "nexen": {
+      "catalog_id": "instagram:DY3KmLzt88t:user_stack:DY3KmLzt88t-avatar-pipeline",
+      "source_id": "DY3KmLzt88t",
+      "source_shortcode": "DY3KmLzt88t",
+      "source_numbers": [
+        6
+      ],
+      "source_url": "https://www.instagram.com/sina.growthtech/reel/DY3KmLzt88t/",
+      "method": "Talking-avatar short-form video pipeline: animation, captions, export",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "Video & clips",
+      "required_software": [
+        {
+          "name": "AI for Savages create-agent skill",
+          "category": "Video & clips",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Skill folder/source URL not supplied."
+        },
+        {
+          "name": "Talking-avatar renderer",
+          "category": "Video & clips",
+          "state": "not_implemented",
+          "reason": "Avatar video render is a required production stage, currently manual/pending."
+        },
+        {
+          "name": "FFmpeg + ffprobe",
+          "category": "Video & clips",
+          "state": "installed_not_connected",
+          "reason": "Required to compose/export/inspect rendered output; no worker adapter configured."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  },
+  "pinData": {}
+}

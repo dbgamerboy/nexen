@@ -1,0 +1,57 @@
+{
+  "name": "NEXEN - bounded local model draft",
+  "nodes": [
+    {
+      "id": "9ef70e56-3a82-4e4e-8640-27051cb641ad",
+      "name": "Run manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "7056ce5e-2eda-4f6d-a1f2-8bb1864d464a",
+      "name": "Bounded Ollama draft",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"model\": \"dolphin3:latest\", \"prompt\": \"Draft a three-step checklist for reviewing a music release. Return plain text. Do not claim to have executed any step.\", \"stream\": false, \"keep_alive\": \"5m\", \"options\": {\"num_ctx\": 4096, \"num_predict\": 512, \"temperature\": 0.3}}",
+        "options": {
+          "timeout": 120000
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Run manually": {
+      "main": [
+        [
+          {
+            "node": "Bounded Ollama draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "executionTimeout": 180,
+    "saveManualExecutions": true,
+    "timezone": "America/Los_Angeles"
+  },
+  "pinData": {}
+}

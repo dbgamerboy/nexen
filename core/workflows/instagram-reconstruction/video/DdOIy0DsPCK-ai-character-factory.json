@@ -1,0 +1,124 @@
+{
+  "name": "VIDEO | High-volume fictional AI-character advertising production | DdOIy0DsPCK",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "VIDEO VERSION\nSource: https://www.instagram.com/alexhustleshard/reel/DdOIy0DsPCK/\nEvidence: [0.96s - 35.60s] [Speaker 0] Sorry. I was taking a nap. How's AI content farm? How are the girls? We've generated 500 AI baddies, posting 20 videos a day each. Better than yesterday. If you don't wanna show your face, but you still wanna blow up on social media, and you want an AI content farm to do the work for you, you've probably already used it. It'll take like two minutes to set up. Go to cloud, go to settings, go to connectors, and press add connector. Then go to this website, and press copy link. Then paste the link here and call it content slave. Cause that's exactly what it is. You just go to cloud and say, make me 500 ads with pretty girls. Just sit back while it generates and the girls will get you views without you having to show your face.\nFaithful sequence; unavailable prompts/contracts stay unresolved.\nExternal media generation/publishing is not marked complete.",
+        "height": 360,
+        "width": 440
+      },
+      "id": "a7e16793-e31d-4bfc-bd40-1373deb29271",
+      "name": "Evidence and boundaries",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "3cedea54-6a44-41c0-a854-19fbd8f5ff03",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$input.first().json;\nif(!Array.isArray(j.characters)||!j.characters.length) throw new Error('characters must be a non-empty array');\nconst per=Number(j.ads_per_character); if(!Number.isInteger(per)||per<1||per>20) throw new Error('ads_per_character must be 1..20 for this run');\nconst out=[]; for(const c of j.characters){ if(!c.character_id||!c.ad_concept) throw new Error('each character requires character_id and ad_concept'); for(let i=0;i<per;i++) out.push({json:{character_id:String(c.character_id),concept:String(c.ad_concept),variation:i+1,source_tool:'unnamed custom connector (not supplied)',generation:'MANUAL_HANDOFF',review_status:'needs_human_review',publish_status:'disabled',source_claims_unverified:true}}); }\nreturn out;"
+      },
+      "id": "01d72826-f8e8-49e3-9bc4-39dc786fbcde",
+      "name": "Reconstruct source method",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Expected input fixture is paired in fixtures/source-method-fixtures.json. This export prepares records/handoffs only when a required vendor API/worker is unresolved. Import inactive; run manually after reviewing its inputs.",
+        "height": 170,
+        "width": 420
+      },
+      "id": "66f44237-58a9-4406-b146-b12f96878fe1",
+      "name": "Run status",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Reconstruct source method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "nexen": {
+      "catalog_id": "instagram:DdOIy0DsPCK:video:DdOIy0DsPCK-ai-character-factory",
+      "source_id": "DdOIy0DsPCK",
+      "source_shortcode": "DdOIy0DsPCK",
+      "source_numbers": [
+        2,
+        57
+      ],
+      "source_url": "https://www.instagram.com/alexhustleshard/reel/DdOIy0DsPCK/",
+      "method": "High-volume fictional AI-character ad production (duplicate of source 57)",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "AI characters",
+      "required_software": [
+        {
+          "name": "Unnamed custom connector",
+          "category": "AI characters",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source connector URL/server was never supplied."
+        },
+        {
+          "name": "Configured media generation worker",
+          "category": "AI characters",
+          "state": "not_implemented",
+          "reason": "No render is claimed; stable character references, original prompts and asset QA needed."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [
+        {
+          "type": "Custom media connector",
+          "name": "Unresolved connector",
+          "reason": "The source never supplies its URL/server identity."
+        }
+      ],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  },
+  "pinData": {}
+}

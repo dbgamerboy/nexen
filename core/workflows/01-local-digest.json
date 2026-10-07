@@ -1,0 +1,90 @@
+{
+  "name": "NEXEN - local digest and activity",
+  "nodes": [
+    {
+      "id": "040a214f-e0df-4ff9-9365-a729ce2e794d",
+      "name": "Run manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "0331e199-f36b-4d34-b6ab-b8a0c813d1d8",
+      "name": "Refresh local Discord digest",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        250,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8788/api/hub/digest",
+        "options": {
+          "timeout": 20000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Origin",
+              "value": "http://127.0.0.1:8788"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "276d48d0-9441-47cd-9742-eeb744fcb31b",
+      "name": "Read NEXEN activity",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        0
+      ],
+      "parameters": {
+        "url": "http://127.0.0.1:8788/api/hub",
+        "options": {
+          "timeout": 10000
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Run manually": {
+      "main": [
+        [
+          {
+            "node": "Refresh local Discord digest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refresh local Discord digest": {
+      "main": [
+        [
+          {
+            "node": "Read NEXEN activity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "executionTimeout": 180,
+    "saveManualExecutions": true,
+    "timezone": "America/Los_Angeles"
+  },
+  "pinData": {}
+}

@@ -1,0 +1,318 @@
+{
+  "name": "VIDEO | Dictated note -> classified Obsidian note -> Telegram read/write | Da0EUZAu0ve",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "VIDEO VERSION — faithful reconstruction from the source evidence.\nSource: https://www.instagram.com/_no_hype_ai/reel/Da0EUZAu0ve/\nEvidence: [0.16s - 23.72s] [Speaker 0] So this is how I add ideas and reminders to my Obsidian second brain no matter where I am. So first thing I'll do, I'll pop open the Obsidian widget that I have on my phone, and I'll just dictate whatever the thought is straight into it. Something like add tomatoes to my grocery list. That'll kick off an automation, which will try to classify the note that I just dropped in the inbox. It'll determine if it's an idea, a to do list item, a resource to remember, or a project idea.\n[24.18s - 33.43s] [Speaker 0] Once it classifies it, it will then clean up the text within the document and restructure so that it fits neatly into my second brain. Links, tags, etcetera.\n[33.89s - 62.35s] [Speaker 0] Once it's in the second brain, what happens when I wanna access it? Well, that's where I have a Telegram agent that has full read write access to the entire Obsidian vault. So if I ask that agent something like, hey, what's on my to do list for today? It'll say, call dentist, buy tomatoes, etcetera. And if I say something like, I already bought tomatoes, please remove that. It can then update that file, and then resync it to the vault, so that the second brain is always up to date. I like this because I always have my best ideas when I'm not in front of my computer.\n[62.97s - 73.14s] [Speaker 0] And if you're interested, the workflow is nearly released. So comment workflow, and I will send it to you. And let me know if you want deeper dives into this particular workflow.\nSource-vs-engineering boundary: NEXEN/MARVIN searchable memory conventions, deterministic note IDs, duplicate suppression and append-only review audit. Telegram write credentials remain to bind.\nNo external side effects are enabled on import.",
+        "height": 420,
+        "width": 560
+      },
+      "id": "03000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        -460
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "obsidian-inbox",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "03000000-0000-4000-8000-000000000002",
+      "name": "Inbox Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -580,
+        0
+      ],
+      "webhookId": "obsidian-inbox-hook"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst body = (item.json && item.json.body) || {};\nconst text = (body.text || '').toString().trim();\nif (!text) throw new Error('Missing body.text: nothing to classify');\nif (text.length > 4000) throw new Error('text too long (>4000 chars)');\nconst vault_path = (body.vault_path || './obsidian-vault').toString();\nconst id = require('crypto').createHash('sha1').update(text).digest('hex').slice(0, 12);\nreturn [{ json: { note_id: id, text, vault_path, received_at: new Date().toISOString() } }];"
+      },
+      "id": "03000000-0000-4000-8000-000000000003",
+      "name": "Validate Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -360,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-sonnet-5', max_tokens: 900, system: 'You classify a captured note into exactly one of: idea, todo, resource, project. Then rewrite it as clean Obsidian markdown with YAML front-matter (title, type, tags array, created). Reply with ONLY a JSON object: {\"type\":\"...\",\"title\":\"...\",\"tags\":[...],\"markdown\":\"...\"}. No prose.', messages: [ { role: 'user', content: $json.text } ] }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": false
+            }
+          }
+        }
+      },
+      "id": "03000000-0000-4000-8000-000000000004",
+      "name": "Classify + Restructure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -140,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const resp = $json;\nconst raw = resp && resp.content && resp.content[0] && resp.content[0].text;\nif (!raw) throw new Error('Anthropic response missing content[0].text');\nlet parsed;\ntry { parsed = JSON.parse(raw); } catch (e) { throw new Error('Model did not return valid JSON: ' + raw.slice(0, 200)); }\nconst valid = ['idea', 'todo', 'resource', 'project'];\nif (!valid.includes(parsed.type)) throw new Error('Invalid classification type: ' + parsed.type);\nif (typeof parsed.markdown !== 'string' || !parsed.markdown.trim()) throw new Error('Model returned empty markdown');\nconst prev = $('Validate Payload').first().json;\nconst safeType = parsed.type;\nconst fileName = prev.vault_path.replace(/\\/+$/, '') + '/' + safeType + '/' + prev.note_id + '.md';\nreturn [{ json: { note_id: prev.note_id, type: safeType, title: parsed.title || 'Untitled', tags: parsed.tags || [], fileName, markdown: parsed.markdown } }];"
+      },
+      "id": "03000000-0000-4000-8000-000000000005",
+      "name": "Parse + Route",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "markdown",
+        "options": {
+          "fileName": "={{ $json.note_id }}.md"
+        }
+      },
+      "id": "03000000-0000-4000-8000-000000000006",
+      "name": "Markdown To Binary",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        300,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $('Parse + Route').item.json.fileName }}",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "03000000-0000-4000-8000-000000000007",
+      "name": "Write To Vault",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        520,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{ $env.OBSIDIAN_TELEGRAM_CHAT_ID }}",
+        "text": "=Filed note {{ $('Parse + Route').item.json.note_id }} as *{{ $('Parse + Route').item.json.type }}*: {{ $('Parse + Route').item.json.title }}",
+        "additionalFields": {
+          "parse_mode": "Markdown",
+          "appendAttribution": false
+        }
+      },
+      "id": "03000000-0000-4000-8000-000000000008",
+      "name": "Telegram Confirm",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        740,
+        0
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": null,
+          "name": "Telegram Second Brain Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: true, note_id: $('Parse + Route').item.json.note_id, type: $('Parse + Route').item.json.type }) }}",
+        "options": {}
+      },
+      "id": "03000000-0000-4000-8000-000000000009",
+      "name": "Respond OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        960,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Inbox Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validate Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Payload": {
+      "main": [
+        [
+          {
+            "node": "Classify + Restructure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify + Restructure": {
+      "main": [
+        [
+          {
+            "node": "Parse + Route",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse + Route": {
+      "main": [
+        [
+          {
+            "node": "Markdown To Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown To Binary": {
+      "main": [
+        [
+          {
+            "node": "Write To Vault",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write To Vault": {
+      "main": [
+        [
+          {
+            "node": "Telegram Confirm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Confirm": {
+      "main": [
+        [
+          {
+            "node": "Respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:Da0EUZAu0ve:video:Da0EUZAu0ve-obsidian-brain",
+      "source_id": "Da0EUZAu0ve",
+      "source_shortcode": "Da0EUZAu0ve",
+      "source_numbers": [
+        14
+      ],
+      "source_url": "https://www.instagram.com/_no_hype_ai/reel/Da0EUZAu0ve/",
+      "method": "Dictated note -> classified Obsidian note -> Telegram read/write",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "Memory & handoffs",
+      "required_software": [
+        {
+          "name": "Obsidian vault",
+          "category": "Memory & handoffs",
+          "state": "local_path_unconfigured",
+          "reason": "Local note vault path must be selected."
+        },
+        {
+          "name": "Telegram bot",
+          "category": "Memory & handoffs",
+          "state": "credential_missing",
+          "reason": "Source describes Telegram read/write agent. Never expose vault without owner-scoped bot."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        },
+        {
+          "type": "telegramApi",
+          "name": "Telegram Second Brain Bot",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

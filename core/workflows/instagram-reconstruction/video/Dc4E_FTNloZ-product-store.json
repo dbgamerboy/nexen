@@ -1,0 +1,123 @@
+{
+  "name": "VIDEO | Single-product ecommerce store and product-page draft | Dc4E_FTNloZ",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "VIDEO VERSION\nSource: https://www.instagram.com/ty.buildssites/reel/Dc4E_FTNloZ/\nEvidence: [0.08s - 19.00s] [Speaker 0] So I'm really quite scared to show any of you this because some people are gonna copy me and get really, really rich. So I'm taking this video down when it gets too much attention, But for now, I really need to tell someone about what I just figured out. This past month, Claude has made me over $40,000.\n[19.00s - 20.95s] [Speaker 0] All I do is go on AliExpress\n[21.40s - 66.28s] [Speaker 0] and find cheap products like this massage gun, create a nice and aesthetic store for it, and charge a good amount for it. But who has the time to build an entire store? So I just let Claude do the entire thing for me. I just have to drop in a photo of my product with a prompt, hit send, and it'll build the entire thing for me. So now my entire store is built just like that. And then if I wanna add something like a reviews page from my store, it can build that as well. Then I can have it generate hundreds of versions of my store, find the most optimal one, which in turn increases my conversion rate daily. The best way to describe it is that it's Shopify, but on steroids. I promise you everyone in e commerce is gatekeeping this right now. So if you want the link to try this out, comment store, and I'll send it to you.\nFaithful sequence; unavailable prompts/contracts stay unresolved.\nExternal media generation/publishing is not marked complete.",
+        "height": 360,
+        "width": 440
+      },
+      "id": "acd2e49f-e2ef-4289-9716-c9509107d719",
+      "name": "Evidence and boundaries",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "e9c31a60-a0ed-4d3a-b75c-f5c5493344f1",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$input.first().json;\nfor(const k of ['product_name','product_image','supplier_url']) if(!j[k]) throw new Error(k+' required');\nreturn [{json:{product_name:j.product_name,product_image:j.product_image,supplier_url:j.supplier_url,store_builder:'Claude-assisted; source product/platform/API not specified',requested_pages:['product landing page','FAQ'],reviews_page:'NOT_GENERATED: never fabricate customer reviews',variant_count:Math.min(3,Math.max(1,Number(j.variant_count)||1)),build_status:'manual_builder_handoff',store_publish:false}}];"
+      },
+      "id": "ff841e73-7ca1-4660-8195-79525850fa60",
+      "name": "Reconstruct source method",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Expected input fixture is paired in fixtures/source-method-fixtures.json. This export prepares records/handoffs only when a required vendor API/worker is unresolved. Import inactive; run manually after reviewing its inputs.",
+        "height": 170,
+        "width": 420
+      },
+      "id": "c7567e05-3554-42ca-9610-1cc67fa7e6e4",
+      "name": "Run status",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Reconstruct source method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "nexen": {
+      "catalog_id": "instagram:Dc4E_FTNloZ:video:Dc4E_FTNloZ-product-store",
+      "source_id": "Dc4E_FTNloZ",
+      "source_shortcode": "Dc4E_FTNloZ",
+      "source_numbers": [
+        55
+      ],
+      "source_url": "https://www.instagram.com/ty.buildssites/reel/Dc4E_FTNloZ/",
+      "method": "Single-product ecommerce store/page draft generation",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "Commerce & offers",
+      "required_software": [
+        {
+          "name": "Claude-assisted store builder",
+          "category": "Commerce & offers",
+          "state": "product_identity_unresolved",
+          "reason": "No store builder name or API contract supplied."
+        },
+        {
+          "name": "AliExpress product data",
+          "category": "Commerce & offers",
+          "state": "manual_review_required",
+          "reason": "Verify supplier, product claims, shipping and image rights."
+        },
+        {
+          "name": "Ecommerce platform",
+          "category": "Commerce & offers",
+          "state": "not_selected",
+          "reason": "No store write or publish action is implemented."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  },
+  "pinData": {}
+}

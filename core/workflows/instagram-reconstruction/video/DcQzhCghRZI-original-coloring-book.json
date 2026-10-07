@@ -1,0 +1,192 @@
+{
+  "name": "VIDEO | Original coloring-page concept -> KDP-ready book preparation | DcQzhCghRZI",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "VIDEO VERSION — faithful reconstruction from the source evidence.\nSource: https://www.instagram.com/xanderdoesai/reel/DcQzhCghRZI/\nEvidence: [2.40s - 7.04s] [Speaker 0] I just quit my nine to five job in less than sixty days because I now make over $10,000\n[7.04s - 26.77s] [Speaker 0] a month from my phone and I'm gonna show you exactly how I did it. First head over to Amazon and find any kids popular coloring book. For example, this one right here is selling for $9.99 each and they've sold at least 12,000 copies. And if you do the math on that, that's a whole lot of money they're making. So here's how you're gonna capitalize on that. Take a screenshot or save an image of the coloring book like this, then head over to viewmax.io/mcp.\n[26.77s - 40.17s] [Speaker 0] Copy this full link right here, then head over to connectors and paste it into Claude, and head over to Claude and type type in this exact prompt with the image of the coloring book. And in just a few moments, you have perfectly crafted coloring book pages just like these right here, which you then can upload to kdp.amazon,\n[40.17s - 52.02s] [Speaker 0] which is a site that will print and ship all the books for you. And then you just sit back and collect 60% royalties on these. But if you want a more in-depth guide on how I do this for completely free, just comment Claude down below and I'll send it over to you for free.\nSource-vs-engineering boundary: ComfyUI API graph supplied by the operator; originality and page-count checks; deterministic layout manifest. ComfyUI server/model and PDF assembly runtime are pending.\nNo external side effects are enabled on import.",
+        "height": 420,
+        "width": 580
+      },
+      "id": "07000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        -480
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "07000000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: {\n  theme: 'friendly ocean animals',\n  audience: 'ages 4-8',\n  page_count: 20,\n  trim_size: '8.5x11',\n  original_confirmation: true,\n  output_path: './kdp-brief.md'\n} }];"
+      },
+      "id": "07000000-0000-4000-8000-000000000003",
+      "name": "Sample Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst e = [];\nif (!j.theme || !j.theme.trim()) e.push('theme required (original theme, not a competitor book)');\nif (j.original_confirmation !== true) e.push('original_confirmation must be true: only original artwork, no cloning of an existing book');\nif (!Number.isInteger(j.page_count) || j.page_count < 1 || j.page_count > 120) e.push('page_count must be 1-120');\nif (e.length) throw new Error('Blocked: ' + e.join('; '));\nconst subjects = ['scene', 'close-up', 'pattern', 'action pose', 'habitat'];\nconst pages = [];\nfor (let i = 1; i <= j.page_count; i++) {\n  pages.push('Page ' + i + ' [' + subjects[(i-1) % subjects.length] + ']: bold clean outlines, no shading, thick lines, white background, ' + j.theme + ', suitable for ' + (j.audience||'kids'));\n}\nconst md = ['# Original coloring book brief', '', '- Theme: ' + j.theme, '- Audience: ' + (j.audience||''), '- Trim size: ' + (j.trim_size||'8.5x11'), '- Pages: ' + j.page_count, '', '## Page prompt list (for your image tool - MANUAL)', ...pages.map(p => '- ' + p), '', '## KDP manuscript checklist (MANUAL upload)', '- [ ] Interior PDF at correct trim size + bleed', '- [ ] One coloring image per page, single-sided', '- [ ] Original cover (front/back/spine)', '- [ ] Title, subtitle, 7 keywords, 2 categories', '- [ ] Confirm all art is original / owned', '- [ ] Set price + territories in KDP', '', '> Image generation and KDP publishing are manual handoffs. No API is called by this workflow.'].join('\\n');\nreturn [{ json: { output_path: j.output_path || './kdp-brief.md', markdown: md } }];"
+      },
+      "id": "07000000-0000-4000-8000-000000000004",
+      "name": "Build Brief",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "markdown",
+        "options": {
+          "fileName": "kdp-brief.md"
+        }
+      },
+      "id": "07000000-0000-4000-8000-000000000005",
+      "name": "To Binary",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        180,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $('Build Brief').item.json.output_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "07000000-0000-4000-8000-000000000006",
+      "name": "Write Brief",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sample Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sample Input": {
+      "main": [
+        [
+          {
+            "node": "Build Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Brief": {
+      "main": [
+        [
+          {
+            "node": "To Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "To Binary": {
+      "main": [
+        [
+          {
+            "node": "Write Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:DcQzhCghRZI:video:DcQzhCghRZI-original-coloring-book",
+      "source_id": "DcQzhCghRZI",
+      "source_shortcode": "DcQzhCghRZI",
+      "source_numbers": [
+        24,
+        33
+      ],
+      "source_url": "https://www.instagram.com/xanderdoesai/reel/DcQzhCghRZI/",
+      "method": "Original coloring-page concept -> KDP-ready book preparation",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "Children’s education",
+      "required_software": [
+        {
+          "name": "Viewmax MCP",
+          "category": "Children’s education",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source says viewmax.io/mcp; contract and connector authentication are unavailable."
+        },
+        {
+          "name": "Claude image workflow",
+          "category": "Children’s education",
+          "state": "interactive_manual_only",
+          "reason": "Source copies unseen prompt plus reference image into Claude; prompt is unavailable."
+        },
+        {
+          "name": "Amazon KDP",
+          "category": "Children’s education",
+          "state": "manual_upload_only",
+          "reason": "Source ends with upload; account and publishing are not connected."
+        },
+        {
+          "name": "ComfyUI + supplied graph",
+          "category": "Children’s education",
+          "state": "service_and_model_unverified",
+          "reason": "USER-STACK needs a user-provided API-format graph, model weights and QA."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

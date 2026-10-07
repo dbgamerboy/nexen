@@ -1,0 +1,231 @@
+{
+  "name": "VIDEO | Faceless YouTube niche criteria -> source-style script system | DYWFQKAPgmF",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "VIDEO VERSION — faithful reconstruction from the source evidence.\nSource: https://www.instagram.com/raycfu/reel/DYWFQKAPgmF/\nEvidence: [0.08s - 28.83s] [Speaker 0] Most people don't realize that you can build a faceless YouTube channel that makes 8 ks a month with Claude and Eleven Labs. One person ran this content system for only four months and just hit 8 ks a month and he only spends three hours a week on it. A lot of people make this mistake when starting out. Don't pick a niche that you like, pick one that pays. A faceless finance channel with 500,000 views a month at $20 RPM nets you about 10 ks a month from just AdSense alone, whereas an entertainment channel only gets 3 to $8 per thousand views. This is the exact prompt that you should put into Cloud in order to get a data driven recommendation for which niche to choose instead of choosing random ones. It's based on content repeatability,\n[29.13s - 80.73s] [Speaker 0] audience size, and monetization options beyond AdSense. Set up the content script system. You can automate script writing with Cloud, but the script system has to be built correctly because Cloud can give a lot of bad scripts. This is the prompt that I use in order to generate the script system for every single video, and you can find it in my guide. It tells Cloud to write a hook that creates a pattern to interrupt in the first thirty seconds, use open loops to tease the payoff early, write in spoken English and not essay English, include pause markers and visual text for every scene, and ends with a soft CTA. This replaces a $200 scriptwriter and also gives you thumbnail options and title options to use which you can put in Nano Banana Pro. This is the exact pipeline that I use. Claude writes the scripts, 11 Labs for the sound and voiceover, CapCut and CameraX some of the video with stock footage from pixels. Claude then writes the title, description, tags, and chapter markers with this prompt. Use TubeBuddy or VidQue for keyword check. Post one to two videos for the first week and then three to four videos after warping up the count. By month four, you should be adding in affiliates and sponsorships. One faceless channel has 600,000 views a month at $18 RPM. Post $10,800\n[80.73s - 88.45s] [Speaker 0] a month from just AdSense alone. I made a step by step guide with the exact prompts in order to build this out. Just comment video and I'll send it to you. Follow for more news and advice on how to make money with tech and AI.\nSource-vs-engineering boundary: NEXEN local content queue, source/claim ledger, scene-level validation, original-media rights checklist and FFmpeg/Whisper stage handoff. Whisper package was absent in the checked Python environment; no render is claimed.\nNo external side effects are enabled on import.",
+        "height": 440,
+        "width": 580
+      },
+      "id": "06000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -520
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "06000000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: {\n  niche: 'personal finance for new grads',\n  topic: 'What to do with your first paycheck',\n  target_length_min: 6,\n  audience: 'US early-career, 22-28'\n} }];"
+      },
+      "id": "06000000-0000-4000-8000-000000000003",
+      "name": "Sample Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -300,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst e = [];\nif (!j.niche || !j.topic) e.push('niche and topic are required');\nif (!Number.isFinite(j.target_length_min) || j.target_length_min < 1 || j.target_length_min > 30) e.push('target_length_min must be 1-30');\nif (e.length) throw new Error('Invalid input: ' + e.join('; '));\nreturn [{ json: j }];"
+      },
+      "id": "06000000-0000-4000-8000-000000000004",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-sonnet-5', max_tokens: 2500, system: 'You write faceless YouTube scripts. Reply ONLY with JSON: {\"hook\":\"pattern-interrupt hook, deliverable in the first 30 seconds\",\"open_loops\":[\"...\"],\"scenes\":[{\"spoken\":\"spoken-English narration, not essay English\",\"visual_text\":\"on-screen text\",\"pause_markers\":\"[pause] positions\"}],\"soft_cta\":\"...\",\"titles\":[\"3 options\"],\"description\":\"...\",\"tags\":[\"...\"],\"chapters\":[{\"time\":\"00:00\",\"label\":\"...\"}]}. Requirements: hook is a pattern interrupt; use open loops; spoken English; include pause markers and visual_text for every scene; end with a soft CTA.', messages: [ { role: 'user', content: 'Niche: ' + $json.niche + '\\nTopic: ' + $json.topic + '\\nAudience: ' + ($json.audience||'') + '\\nTarget length (min): ' + $json.target_length_min } ] }) }}",
+        "options": {}
+      },
+      "id": "06000000-0000-4000-8000-000000000005",
+      "name": "Generate Script",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        140,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json && $json.content && $json.content[0] && $json.content[0].text;\nif (!raw) throw new Error('Anthropic response missing content[0].text');\nlet s;\ntry { s = JSON.parse(raw); } catch (e) { throw new Error('Model did not return valid JSON: ' + raw.slice(0,200)); }\nconst missing = [];\nif (!s.hook || !s.hook.trim()) missing.push('hook');\nif (!Array.isArray(s.open_loops) || !s.open_loops.length) missing.push('open_loops');\nif (!Array.isArray(s.scenes) || !s.scenes.length) missing.push('scenes');\nelse s.scenes.forEach((sc, i) => { if (!sc.spoken) missing.push('scenes['+i+'].spoken'); if (!sc.visual_text) missing.push('scenes['+i+'].visual_text'); if (!sc.pause_markers) missing.push('scenes['+i+'].pause_markers'); });\nif (!s.soft_cta) missing.push('soft_cta');\nif (!Array.isArray(s.titles) || !s.titles.length) missing.push('titles');\nif (missing.length) throw new Error('Script missing required taught elements: ' + missing.join(', '));\nreturn [{ json: { script: s, next: 'MANUAL_HANDOFF: 11 Labs voiceover -> CapCut edit + Pexels stock -> upload to YouTube (all require human/tools; not automated here)' } }];"
+      },
+      "id": "06000000-0000-4000-8000-000000000006",
+      "name": "Validate Script",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sample Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sample Input": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Generate Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Script": {
+      "main": [
+        [
+          {
+            "node": "Validate Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:DYWFQKAPgmF:video:DYWFQKAPgmF-youtube-script",
+      "source_id": "DYWFQKAPgmF",
+      "source_shortcode": "DYWFQKAPgmF",
+      "source_numbers": [
+        49
+      ],
+      "source_url": "https://www.instagram.com/raycfu/reel/DYWFQKAPgmF/",
+      "method": "Faceless YouTube niche criteria -> source-style script system",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "YouTube production",
+      "required_software": [
+        {
+          "name": "Claude subscription",
+          "category": "YouTube production",
+          "state": "interactive_manual_only",
+          "reason": "Source prompt uses Claude; no API billing or provider entitlement assumed."
+        },
+        {
+          "name": "ElevenLabs",
+          "category": "YouTube production",
+          "state": "credential_missing",
+          "reason": "Source uses voice-over; bind a named credential only after setup."
+        },
+        {
+          "name": "CapCut",
+          "category": "YouTube production",
+          "state": "manual_handoff",
+          "reason": "Editing app remains a human production stage."
+        },
+        {
+          "name": "Pexels media",
+          "category": "YouTube production",
+          "state": "license_and_access_unverified",
+          "reason": "Stock asset use requires license/provenance per asset."
+        },
+        {
+          "name": "Nano Banana Pro",
+          "category": "YouTube production",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Exact model access/contract is not configured."
+        },
+        {
+          "name": "TubeBuddy or VidIQ",
+          "category": "YouTube production",
+          "state": "optional_manual_research",
+          "reason": "Keyword check is an optional source stage; no API integrated."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

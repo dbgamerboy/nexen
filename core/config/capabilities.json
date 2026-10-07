@@ -1,0 +1,230 @@
+{
+ "schema": 2,
+ "built_at": "2026-10-01T03:52:06-07:00",
+ "counts": {
+  "capabilities": 26,
+  "registry": {
+   "repos": 246,
+   "skills_installed": 351,
+   "skills_indexed": 3805,
+   "skill_docs": 3900,
+   "cards": 273,
+   "cards_matched": 185,
+   "digests": 240,
+   "diagrams": 240,
+   "docs": 4419
+  },
+  "tools_probed": 0
+ },
+ "notes": [],
+ "capabilities": [
+  {
+   "kind": "money",
+   "name": "youtube-to-viral-clips",
+   "lane": "?",
+   "status": "CONNECTED",
+   "entry": "",
+   "evidence": "money score ?"
+  },
+  {
+   "kind": "money",
+   "name": "ViriaRevive",
+   "lane": "?",
+   "status": "CONNECTED",
+   "entry": "",
+   "evidence": "money score ?"
+  },
+  {
+   "kind": "money",
+   "name": "PhantomReach",
+   "lane": "?",
+   "status": "CONNECTED",
+   "entry": "",
+   "evidence": "money score ?"
+  },
+  {
+   "kind": "money",
+   "name": "FFmpeg",
+   "lane": "?",
+   "status": "CONNECTED",
+   "entry": "",
+   "evidence": "money score ?"
+  },
+  {
+   "kind": "money",
+   "name": "whisper",
+   "lane": "?",
+   "status": "CONNECTED",
+   "entry": "",
+   "evidence": "money score ?"
+  },
+  {
+   "kind": "money",
+   "name": "MoneyPrinterTurbo",
+   "lane": "?",
+   "status": "CONNECTED",
+   "entry": "",
+   "evidence": "money score ?"
+  },
+  {
+   "kind": "money",
+   "name": "demucs",
+   "lane": "?",
+   "status": "CONNECTED",
+   "entry": "",
+   "evidence": "money score ?"
+  },
+  {
+   "kind": "money",
+   "name": "matchering",
+   "lane": "?",
+   "status": "CONNECTED",
+   "entry": "",
+   "evidence": "money score ?"
+  },
+  {
+   "kind": "money",
+   "name": "hyperframes",
+   "lane": "?",
+   "status": "CONNECTED",
+   "entry": "",
+   "evidence": "money score ?"
+  },
+  {
+   "kind": "money",
+   "name": "openai-edge-tts",
+   "lane": "?",
+   "status": "CONNECTED",
+   "entry": "",
+   "evidence": "money score ?"
+  },
+  {
+   "kind": "capability",
+   "name": "advisory/RUN-MONEY-FIRST.cmd",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\advisory\\RUN-MONEY-FIRST.cmd",
+   "evidence": "118b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "boot/n8n-5680-start.cmd",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\boot\\n8n-5680-start.cmd",
+   "evidence": "511b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "boot/start-money-loop.cmd",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\boot\\start-money-loop.cmd",
+   "evidence": "746b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "clipper/run_session_watch.cmd",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\clipper\\run_session_watch.cmd",
+   "evidence": "1142b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "clipping/run_clipper.py",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\clipping\\run_clipper.py",
+   "evidence": "3032b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "ingest/RUN_IMPORT_EMBED.cmd",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\ingest\\RUN_IMPORT_EMBED.cmd",
+   "evidence": "406b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "ingest/RUN_INGEST.cmd",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\ingest\\RUN_INGEST.cmd",
+   "evidence": "536b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "loop/START-LOOP.cmd",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\loop\\START-LOOP.cmd",
+   "evidence": "140b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "marvin/START-MARVIN.cmd",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\marvin\\START-MARVIN.cmd",
+   "evidence": "792b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "reinstall/START_HERE.cmd",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\reinstall\\START_HERE.cmd",
+   "evidence": "784b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "v2-dev/continuity_worker.py",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\v2-dev\\continuity_worker.py",
+   "evidence": "18494b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "v2-dev/development_runtime.py",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\v2-dev\\development_runtime.py",
+   "evidence": "1346b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "v2-dev/handoff_runtime.py",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\v2-dev\\handoff_runtime.py",
+   "evidence": "20650b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "work/run-coderabbit-current-r3-review.py",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\work\\run-coderabbit-current-r3-review.py",
+   "evidence": "6494b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "work/run-coderabbit-current-r4-review.py",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\work\\run-coderabbit-current-r4-review.py",
+   "evidence": "5030b file on disk"
+  },
+  {
+   "kind": "capability",
+   "name": "work/run-coderabbit-fix-review.py",
+   "lane": "infra",
+   "status": "CONNECTED",
+   "entry": "H:\\NEXEN\\work\\run-coderabbit-fix-review.py",
+   "evidence": "4368b file on disk"
+  }
+ ]
+}

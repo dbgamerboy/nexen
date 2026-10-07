@@ -1,0 +1,124 @@
+{
+  "name": "VIDEO | Children’s educational video production | DdNVrqzuc4l",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "VIDEO VERSION\nSource: https://www.instagram.com/adri_builds222/reel/DdNVrqzuc4l/\nEvidence: [2.40s - 4.18s] [Speaker 0] Go chat GPT.\n[5.92s - 6.42s] [Speaker 0] Go\n[7.20s - 7.78s] [Speaker 0] chat GPT.\n[9.28s - 9.78s] [Speaker 0] Plugins.\n[11.28s - 11.78s] [Speaker 0] Click\n[12.49s - 12.99s] [Speaker 0] plugins.\n[14.02s - 15.00s] [Speaker 0] Higgs field.\n[16.02s - 16.52s] [Speaker 0] Add\n[17.14s - 18.20s] [Speaker 0] Higgs field.\n[19.30s - 19.80s] [Speaker 0] New\n[20.65s - 21.15s] [Speaker 0] tab.\n[22.34s - 22.84s] [Speaker 0] New\n[23.54s - 24.04s] [Speaker 0] tab.\n[24.81s - 25.31s] [Speaker 0] YouTube.\n[26.99s - 27.49s] [Speaker 0] Find\n[27.87s - 28.37s] [Speaker 0] YouTube.\n[30.03s - 30.93s] [Speaker 0] Find kids'\n[31.39s - 31.89s] [Speaker 0] channel.\n[32.51s - 33.01s] [Speaker 0] Screenshot\n[34.11s - 35.33s] [Speaker 0] kids' channel.\n[35.95s - 37.09s] [Speaker 0] Go back.\n[37.47s - 37.97s] [Speaker 0] Chat\n[38.35s - 41.95s] [Speaker 0] g p t. Do you get it? Do you get it? Paste\n[42.59s - 43.09s] [Speaker 0] picture.\n[44.59s - 45.82s] [Speaker 0] Paste prom.\n[46.20s - 46.70s] [Speaker 0] Post\n[47.08s - 47.58s] [Speaker 0] video\n[47.95s - 48.77s] [Speaker 0] on YouTube.\n[49.23s - 49.73s] [Speaker 0] Print.\n[50.65s - 51.71s] [Speaker 0] Print money.\n[52.97s - 53.47s] [Speaker 0] PIXFIELD\n[54.09s - 55.23s] [Speaker 0] make video.\n[56.49s - 57.95s] [Speaker 0] You post.\nFaithful sequence; unavailable prompts/contracts stay unresolved.\nExternal media generation/publishing is not marked complete.",
+        "height": 360,
+        "width": 440
+      },
+      "id": "b6c5e4f6-dbf4-4ec5-b358-f1218c629c1a",
+      "name": "Evidence and boundaries",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "df2d32ae-c155-4aba-9818-6a4c30281717",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$input.first().json;\nfor(const k of ['channel_reference','prompt_text','image_reference']) if(!j[k]) throw new Error(k+' required (the source prompt itself is unavailable)');\nreturn [{json:{research_reference:j.channel_reference,source_prompt:j.prompt_text,reference_image:j.image_reference,source_sequence:['ChatGPT: locate example kids channel','capture supplied reference','return to ChatGPT with image and prompt','Higgsfield MCP: generate video','human uploads to YouTube'],generation:'MANUAL_HIGGSFIELD_HANDOFF',output_status:'not_generated_by_this_workflow',review_status:'adult_editor_review_required',source_asr_confidence:'low'}}];"
+      },
+      "id": "aef09f24-0774-473d-9107-cbf1fd1b5cf3",
+      "name": "Reconstruct source method",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Expected input fixture is paired in fixtures/source-method-fixtures.json. This export prepares records/handoffs only when a required vendor API/worker is unresolved. Import inactive; run manually after reviewing its inputs.",
+        "height": 170,
+        "width": 420
+      },
+      "id": "d490c03a-897b-40fe-b97a-44ea4f2940c5",
+      "name": "Run status",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Reconstruct source method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "nexen": {
+      "catalog_id": "instagram:DdNVrqzuc4l:video:DdNVrqzuc4l-kids-education-video",
+      "source_id": "DdNVrqzuc4l",
+      "source_shortcode": "DdNVrqzuc4l",
+      "source_numbers": [
+        3,
+        43
+      ],
+      "source_url": "https://www.instagram.com/adri_builds222/reel/DdNVrqzuc4l/",
+      "method": "Children’s educational video production (grouped with source 43; low-confidence transcript)",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "Children’s education",
+      "required_software": [
+        {
+          "name": "ChatGPT",
+          "category": "Children’s education",
+          "state": "account_and_connector_unverified",
+          "reason": "Source uses plugin/connector UI; exact MCP contract unavailable."
+        },
+        {
+          "name": "Higgsfield",
+          "category": "Children’s education",
+          "state": "connector_unverified",
+          "reason": "Generation endpoint is unavailable; source workflow remains manual handoff."
+        },
+        {
+          "name": "Adult content reviewer",
+          "category": "Children’s education",
+          "state": "manual_required",
+          "reason": "Required before child-directed material is eligible for publication."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  },
+  "pinData": {}
+}

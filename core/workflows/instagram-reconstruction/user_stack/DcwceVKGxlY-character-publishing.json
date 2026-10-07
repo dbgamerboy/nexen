@@ -1,0 +1,123 @@
+{
+  "name": "USER_STACK | AI-character production cadence and scheduled publishing | DcwceVKGxlY",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER_STACK VERSION\nSource: https://www.instagram.com/coltonhavens6/reel/DcwceVKGxlY/\nEvidence: [0.16s - 11.94s] [Speaker 1] You could never over saturate the market even if you made 90 pieces of content a day. You can actually use cloud code to post 20 times a day or more for you. So what I did is I took my cloud account,\n[12.49s - 14.84s] [Speaker 1] I then hooked it up to my Hicksfield account.\n[15.21s - 25.77s] [Speaker 1] Then I hooked it up to my go high level to post across all my social media accounts 10 20 times a day. That's got me 80,000 views in the last twenty eight days and 1,300\n[25.77s - 28.04s] [Speaker 1] DM. This is what the post look like,\n[28.44s - 31.56s] [Speaker 1] image and text. This one's getting 13,000\n[31.56s - 35.08s] [Speaker 1] views, but more importantly, it's got me a 157\n[35.08s - 50.17s] [Speaker 1] people commenting the word system. You can set this up in about three total hours creating the brain content and start posting your first seven days worth of content. Just type the word content on this video and I'll send you the guide in our live workshop. I'll see you on the next video.\nReplaces source’s unverified Higgsfield/GHL automation with quota-aware queue, stable identity/provenance, dedupe and approval. Media generation and publishing adapters remain explicit pending dependencies.\nThis describes added USER-STACK controls, not source instructions.\nExternal media generation/publishing is not marked complete.",
+        "height": 360,
+        "width": 440
+      },
+      "id": "46b61ca8-852a-44f9-a1c7-9c9a449de6d5",
+      "name": "Evidence and boundaries",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "5b727019-e8c5-4c0e-ae47-873fde9d6b9c",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$input.first().json;\nconst hash=s=>{let h=2166136261;for(const c of s)h=Math.imul(h^c.charCodeAt(0),16777619);return (h>>>0).toString(16).padStart(8,'0')+'-'+s.length;};\nif(!Array.isArray(j.posts)||!j.posts.length) throw new Error('posts required');\nif(!Array.isArray(j.channels)||!j.channels.length) throw new Error('channels with verified per-account quotas required');\nconst caps=new Map(j.channels.map(c=>[String(c.channel_id),Number(c.verified_daily_quota)]));\nfor(const [id,n] of caps) if(!Number.isInteger(n)||n<1) throw new Error('invalid verified quota for '+id);\nconst seen=new Set(),counts=new Map(),out=[]; for(const p of j.posts){const id=String(p.channel_id||'');if(!caps.has(id))throw new Error('unknown channel '+id);if(!p.character_id||!p.content_brief)throw new Error('character_id/content_brief required');const k=id+'|'+p.character_id+'|'+String(p.content_brief).trim().toLowerCase();if(seen.has(k))continue;seen.add(k);const n=(counts.get(id)||0)+1;if(n>caps.get(id))throw new Error('daily channel quota exceeded: '+id);counts.set(id,n);out.push({json:{queue_key:hash(k),channel_id:id,character_id:p.character_id,content_brief:p.content_brief,slot:n,media_status:'pending_configured_worker',schedule_status:'draft',approval_required:true,publish_enabled:false}})}\nreturn out;"
+      },
+      "id": "ab652c83-44b2-42ee-87a7-3572ae31dae4",
+      "name": "Apply user-stack method",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Expected input fixture is paired in fixtures/source-method-fixtures.json. This export prepares records/handoffs only when a required vendor API/worker is unresolved. Import inactive; run manually after reviewing its inputs.",
+        "height": 170,
+        "width": 420
+      },
+      "id": "ab1ef5d8-4921-41dc-ab16-52ee40af8470",
+      "name": "Run status",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Apply user-stack method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "nexen": {
+      "catalog_id": "instagram:DcwceVKGxlY:user_stack:DcwceVKGxlY-character-publishing",
+      "source_id": "DcwceVKGxlY",
+      "source_shortcode": "DcwceVKGxlY",
+      "source_numbers": [
+        31
+      ],
+      "source_url": "https://www.instagram.com/coltonhavens6/reel/DcwceVKGxlY/",
+      "method": "AI-character production and scheduled publishing cadence (20/day source claim)",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "AI characters",
+      "required_software": [
+        {
+          "name": "Claude",
+          "category": "AI characters",
+          "state": "subscription_not_connected",
+          "reason": "No programmatic credential is assumed."
+        },
+        {
+          "name": "Higgsfield",
+          "category": "AI characters",
+          "state": "account_or_api_unverified",
+          "reason": "Source claims an MCP; contract not verified."
+        },
+        {
+          "name": "GoHighLevel",
+          "category": "AI characters",
+          "state": "account_or_api_unverified",
+          "reason": "Source connector/API not verified; no posting node is implemented."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  },
+  "pinData": {}
+}

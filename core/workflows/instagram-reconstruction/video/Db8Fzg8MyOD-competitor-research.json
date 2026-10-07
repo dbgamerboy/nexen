@@ -1,0 +1,191 @@
+{
+  "name": "VIDEO | Competitor revenue/site research -> differentiation brief | Db8Fzg8MyOD",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "VIDEO VERSION — faithful reconstruction from the source evidence.\nSource: https://www.instagram.com/ariacodez/reel/Db8Fzg8MyOD/\nEvidence: [0.08s - 21.74s] [Speaker 0] Ways to make money with AI you probably should not know part two four six. Following content is for educational purposes only. Do not abuse this unless you wanna get rich. Alright. First, you're gonna go to this free website, TrustMarm. Here, you can see how much companies are making. Sort the list from revenue high to low. Look for a profitable company that's easy to copy. This one, it's making 16,000 a month. It does is give your face a score with AI. All you need to do is copy the URL, go to emergent.sh,\n[21.74s - 59.83s] [Speaker 0] and paste in this prompt. Then replace URL with the URL of that. This prompt is the goal. I'm gonna scan the competitor's site and recreate your own branded version of that. Now I could literally just upload a photo. Boom. I got a detailed face score. Apparently, I have well defined lip. Do all these stuff to improve my face score. This is how it goes viral. It creates a leaderboard that you could share. What's special about this prompt? It scans every single competitor in the industry. Creates a versus page explaining why your website is better, boosting your SEO. Can you rank higher than them? Also creates hundreds of blogs. Even further boosts your SEO ranking. Oh, and if you want the prompt, just comment prompt and I'll send it over to you. There's so much potential with this method, guys. Follow for more, everybody. Cheers.\nSource-vs-engineering boundary: Safer source capture, URL provenance, bounded public-page parsing and an original differentiation brief; no cloning or mass SEO page generation.\nNo external side effects are enabled on import.",
+        "height": 420,
+        "width": 580
+      },
+      "id": "08000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        -480
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "08000000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -580,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: {\n  competitor_url: 'https://example.com',\n  your_angle: 'privacy-first, no account required',\n  authorized: true\n} }];"
+      },
+      "id": "08000000-0000-4000-8000-000000000003",
+      "name": "Sample Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -360,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst e = [];\ntry { const u = new URL(j.competitor_url); if (!/^https?:$/.test(u.protocol)) e.push('competitor_url must be http(s)'); } catch { e.push('competitor_url must be a valid URL'); }\nif (j.authorized !== true) e.push('authorized must be true: only analyze pages you are permitted to access');\nif (e.length) throw new Error('Blocked: ' + e.join('; '));\nreturn [{ json: j }];"
+      },
+      "id": "08000000-0000-4000-8000-000000000004",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -140,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.competitor_url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "id": "08000000-0000-4000-8000-000000000005",
+      "name": "Fetch Public Page",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        80,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const src = $input.first().json;\nconst html = (src.data || src.body || '').toString();\nif (!html) throw new Error('Empty page body; cannot analyze (site may block fetching)');\nconst pick = (re) => { const m = html.match(re); return m ? m[1].replace(/\\s+/g, ' ').trim().slice(0, 200) : ''; };\nconst title = pick(/<title[^>]*>([^<]*)<\\/title>/i);\nconst desc = pick(/<meta[^>]+name=[\"']description[\"'][^>]+content=[\"']([^\"']*)[\"']/i);\nconst h1s = [...html.matchAll(/<h1[^>]*>([\\s\\S]*?)<\\/h1>/gi)].map(m => m[1].replace(/<[^>]+>/g, '').replace(/\\s+/g, ' ').trim()).filter(Boolean).slice(0, 5);\nconst ctas = [...html.matchAll(/<(?:button|a)[^>]*>([\\s\\S]*?)<\\/(?:button|a)>/gi)].map(m => m[1].replace(/<[^>]+>/g, '').replace(/\\s+/g, ' ').trim()).filter(t => /sign up|start|try|buy|get|free|demo/i.test(t)).slice(0, 8);\nconst j = $('Validate Input').first().json;\nreturn [{ json: {\n  competitor_url: j.competitor_url,\n  observed: { title, meta_description: desc, headlines: h1s, cta_samples: [...new Set(ctas)] },\n  your_angle: j.your_angle || '',\n  differentiation_brief: [\n    'How the competitor positions itself: ' + (title || '(no title)'),\n    'Their primary CTAs suggest the conversion path above.',\n    'Your stated angle to differentiate: ' + (j.your_angle || '(define one)'),\n    'Ethical next step (MANUAL): build your OWN original product around your angle; write honest comparison content, not scraped clones or spam pages.'\n  ],\n  note: 'Research only. No site was cloned; no bulk SEO pages generated.'\n} }];"
+      },
+      "id": "08000000-0000-4000-8000-000000000006",
+      "name": "Build Differentiation Brief",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sample Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sample Input": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Fetch Public Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Public Page": {
+      "main": [
+        [
+          {
+            "node": "Build Differentiation Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:Db8Fzg8MyOD:video:Db8Fzg8MyOD-competitor-research",
+      "source_id": "Db8Fzg8MyOD",
+      "source_shortcode": "Db8Fzg8MyOD",
+      "source_numbers": [
+        12
+      ],
+      "source_url": "https://www.instagram.com/ariacodez/reel/Db8Fzg8MyOD/",
+      "method": "Competitor revenue/site research -> differentiation brief",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "Research & planning",
+      "required_software": [
+        {
+          "name": "TrustMarm (ASR uncertain)",
+          "category": "Research & planning",
+          "state": "identity_unresolved",
+          "reason": "Exact site identity is unclear; do not scrape based on this name."
+        },
+        {
+          "name": "Emergent.sh",
+          "category": "Research & planning",
+          "state": "tool_contract_unverified",
+          "reason": "Source refers to an unseen prompt and website; no API or prompt is implemented."
+        },
+        {
+          "name": "Public competitor pages",
+          "category": "Research & planning",
+          "state": "policy_and_access_review",
+          "reason": "Use public access lawfully; no site copying or bulk SEO pages."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

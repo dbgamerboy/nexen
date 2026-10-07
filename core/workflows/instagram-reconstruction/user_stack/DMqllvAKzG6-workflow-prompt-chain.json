@@ -1,0 +1,123 @@
+{
+  "name": "USER_STACK | Video analysis -> prompt packet -> Claude implementation -> n8n review | DMqllvAKzG6",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER_STACK VERSION\nSource: https://www.instagram.com/bennett.spooner/reel/DMqllvAKzG6/\nEvidence: [0.08s - 10.02s] [Speaker 0] I really want to grab this workflow from Nate Herc to say agent swarm, but I don't feel like building the entire workflow myself and spending hours to do so. So I build this cloud project right here\n[10.32s - 16.88s] [Speaker 0] that basically can craft you any workflow you want. So just to show you how it works, I will copy this and paste it into n a\n[17.18s - 17.68s] [Speaker 0] n\n[18.30s - 20.80s] [Speaker 0] and show you there's the entire workflow\n[21.34s - 28.80s] [Speaker 0] and how we actually did this. We started in Google Gemini AI studio, so you need the pro plan for this. You're gonna have to use 2.5 pro.\n[29.18s - 38.62s] [Speaker 0] I've made another video about how how you can get one of these accounts for free. So once you're in here, so you're gonna put the prom guidelines as well as the link to the YouTube video in here\n[39.00s - 42.14s] [Speaker 0] now that AI studio can natively support YouTube videos.\n[42.76s - 45.06s] [Speaker 0] So we're gonna run this, takes a little bit of\n[45.37s - 48.59s] [Speaker 0] time. You can copy this. So go back to Claude,\n[49.05s - 55.98s] [Speaker 0] throw this prompt in here, make sure you're on Opus four because you need a higher parameter model to execute a complex workflow like this.\n[56.38s - 5\nPreserves Gemini/AI Studio source analysis then Claude Code build and manual n8n import. User-stack treats Gemini strictly as evidence/prompt preparation and Claude as coder; adds schema, test and credential gates.\nThis describes added USER-STACK controls, not source instructions.\nExternal media generation/publishing is not marked complete.",
+        "height": 360,
+        "width": 440
+      },
+      "id": "d57ce191-24fb-432f-b66f-ed40d4b85516",
+      "name": "Evidence and boundaries",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "56a0414a-19a5-4b16-a1dc-0a9f626d0df4",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$input.first().json;\nfor(const k of ['source_video_url','source_evidence','implementation_goal']) if(!j[k]) throw new Error(k+' required');\nif(/api.?key|secret|bearer\\s+ey/i.test(JSON.stringify(j))) throw new Error('credential-like material must be removed before prompt assembly');\nreturn [{json:{packet_id:String(j.packet_id||'prompt-'+Date.now()),source_video_url:j.source_video_url,source_evidence:j.source_evidence,implementation_goal:j.implementation_goal,gemini_role:'source analysis/transcription/evidence and Claude prompt preparation only; no JSON/scripts',claude_role:'implement paired workflow from evidence',required_gates:['source/assumption split','official contract links','n8n import validation','offline fixtures including bad cases','human review before external calls'],n8n_import:'manual review required',credential_values_included:false}}];"
+      },
+      "id": "9a148fc1-2054-491a-81aa-537ee9651c0e",
+      "name": "Apply user-stack method",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Expected input fixture is paired in fixtures/source-method-fixtures.json. This export prepares records/handoffs only when a required vendor API/worker is unresolved. Import inactive; run manually after reviewing its inputs.",
+        "height": 170,
+        "width": 420
+      },
+      "id": "7c809713-376f-4d01-be83-62a87fd8980b",
+      "name": "Run status",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Apply user-stack method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "nexen": {
+      "catalog_id": "instagram:DMqllvAKzG6:user_stack:DMqllvAKzG6-workflow-prompt-chain",
+      "source_id": "DMqllvAKzG6",
+      "source_shortcode": "DMqllvAKzG6",
+      "source_numbers": [
+        10
+      ],
+      "source_url": "https://www.instagram.com/bennett.spooner/reel/DMqllvAKzG6/",
+      "method": "Video-analysis prompt chain -> Claude build -> n8n review",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "Research & planning",
+      "required_software": [
+        {
+          "name": "Gemini AI Studio",
+          "category": "Research & planning",
+          "state": "website_manual_only",
+          "reason": "Use for evidence analysis and Claude prompt preparation only; no JSON/scripts from Gemini."
+        },
+        {
+          "name": "Claude Code / subscription",
+          "category": "Research & planning",
+          "state": "interactive_manual_only",
+          "reason": "User supplies exact source-level Claude prompt; no CLI or provider access assumed."
+        },
+        {
+          "name": "n8n import and review",
+          "category": "N8N launch & credentials",
+          "state": "not_imported",
+          "reason": "Workflow ID and launch adapter are not configured."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  },
+  "pinData": {}
+}

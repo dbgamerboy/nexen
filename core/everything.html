@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NEXEN Everything</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1017;--panel:#131d29;--line:#26384a;--text:#e7eef6;--muted:#9fb1c4;--accent:#8ee3c8}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0,#1c3440 0,transparent 38%),var(--bg);color:var(--text);font:15px/1.55 system-ui,Segoe UI,sans-serif}
+    main{max-width:1240px;margin:0 auto;padding:28px 20px 60px}header{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap}
+    h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.05;margin:8px 0}h2{font-size:1.1rem;margin:0 0 12px}p{margin:6px 0;color:var(--muted)}
+    a{color:var(--accent)}nav{display:flex;gap:10px;flex-wrap:wrap}nav a,.button{border:1px solid var(--line);border-radius:9px;padding:8px 12px;text-decoration:none;background:#111b25;color:var(--text)}
+    button{font:inherit;cursor:pointer;color:var(--text)}.eyebrow{color:var(--accent);text-transform:uppercase;letter-spacing:.14em;font-size:.77rem}
+    #status{min-height:1.5em;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:22px 0}
+    .metric,.panel{background:linear-gradient(145deg,#15212d,#111923);border:1px solid var(--line);border-radius:14px;padding:16px}
+    .metric strong{display:block;font-size:1.8rem}.metric span{color:var(--muted);font-size:.9rem}
+    .columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.panel{margin-bottom:14px}
+    ul{list-style:none;margin:0;padding:0}li{padding:10px 0;border-top:1px solid #223242}li:first-child{border-top:0}
+    .row{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.tag{color:var(--accent);font-size:.82rem;white-space:nowrap}
+    .small{font-size:.88rem;color:var(--muted);overflow-wrap:anywhere}.empty{color:var(--muted);padding:6px 0}
+    details{margin-top:10px}summary{cursor:pointer;color:var(--accent)}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;color:var(--muted)}
+    @media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.columns{grid-template-columns:1fr}}
+    @media(max-width:420px){main{padding:20px 13px}.grid{gap:8px}.metric,.panel{padding:12px}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div><div class="eyebrow">Local read-only overview</div><h1>NEXEN Everything</h1><p>Shared tasks, workflows, readiness, tools and active V1 code at a glance.</p></div>
+    <nav aria-label="NEXEN workspaces">
+      <a href="/" target="_top">MARVIN</a><a href="/hub" target="_top">Hub</a><a href="/tasks" target="_top">Tasks</a>
+      <a href="/workflows" target="_top">Workflows</a><a href="/api/workflow-skills/status" target="_top">Skill routing</a>
+    </nav>
+  </header>
+  <p id="status" role="status" aria-live="polite">Loading local state…</p>
+  <section class="grid" aria-label="Summary">
+    <article class="metric"><strong id="tasks-total">—</strong><span>tracked tasks</span></article>
+    <article class="metric"><strong id="workflows-total">—</strong><span>workflow cards</span></article>
+    <article class="metric"><strong id="readiness-total">—</strong><span>readiness checks passed</span></article>
+    <article class="metric"><strong id="code-total">—</strong><span>active V1 code files</span></article>
+  </section>
+  <div class="columns">
+    <section class="panel"><h2>Tasks</h2><p id="task-summary"></p><ul id="task-list"></ul></section>
+    <section class="panel"><h2>Workflows</h2><p id="workflow-summary"></p><ul id="workflow-list"></ul></section>
+    <section class="panel"><h2>Readiness</h2><p id="readiness-summary"></p><ul id="readiness-list"></ul></section>
+    <section class="panel"><h2>Registered tools and capabilities</h2><p id="tool-summary"></p><ul id="tool-list"></ul></section>
+    <section class="panel"><h2>Open work</h2><p id="report-source" class="small"></p><pre id="report"></pre></section>
+    <section class="panel"><h2>Code inventory</h2><p id="code-summary"></p><details><summary>Show tracked code paths</summary><ul id="code-list"></ul></details></section>
+  </div>
+  <footer class="small" id="coverage"></footer>
+</main>
+<script>
+(() => {
+  const byId = (id) => document.getElementById(id);
+  function appendLine(list, title, detail, status = '') {
+    const item = document.createElement('li');
+    const row = document.createElement('div'); row.className = 'row';
+    const heading = document.createElement('strong'); heading.textContent = String(title || 'Unknown');
+    const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = String(status || '');
+    row.append(heading, tag); item.append(row);
+    if (detail) { const note = document.createElement('div'); note.className = 'small'; note.textContent = String(detail); item.append(note); }
+    list.append(item);
+  }
+  function empty(list, text) {
+    const item = document.createElement('li'); item.className = 'empty'; item.textContent = text; list.append(item);
+  }
+  async function load() {
+    try {
+      const response = await fetch('/api/everything?offset=0&limit=100', {cache: 'no-store', credentials: 'same-origin'});
+      if (!response.ok) throw new Error('NEXEN returned HTTP ' + response.status);
+      const data = await response.json();
+      const tasks = data.tasks || {}, workflows = data.workflows || {}, readiness = data.readiness || {};
+      const code = data.code || {}, tools = data.tools || {}, capabilities = data.capabilities || {};
+      byId('tasks-total').textContent = tasks.total ?? '—';
+      byId('workflows-total').textContent = workflows.total ?? '—';
+      byId('readiness-total').textContent = readiness.verified_count ?? '—';
+      byId('code-total').textContent = code.total ?? '—';
+      byId('task-summary').textContent = 'Status counts: ' + JSON.stringify(tasks.counts || {});
+      const taskList = byId('task-list');
+      for (const task of tasks.items || []) appendLine(taskList, '#' + task.id + ' · ' + task.text,
+        [task.priority, task.next_step].filter(Boolean).join(' · '), task.status);
+      if (!taskList.children.length) empty(taskList, 'No tasks were returned.');
+      byId('workflow-summary').textContent = 'States: ' + JSON.stringify(workflows.states || {});
+      const workflowList = byId('workflow-list');
+      for (const workflow of workflows.items || []) appendLine(workflowList, workflow.name,
+        [workflow.family, workflow.availability, ...(workflow.prerequisites || [])].filter(Boolean).join(' · '), workflow.status);
+      if (!workflowList.children.length) empty(workflowList, 'No workflow cards were returned.');
+      byId('readiness-summary').textContent = (readiness.blocker_count ?? 0) + ' checks need verification. ' + (readiness.coverage || '');
+      const readinessList = byId('readiness-list');
+      for (const item of readiness.items || []) appendLine(readinessList, item.title,
+        [item.evidence, item.next_step].filter(Boolean).join(' · '), item.verified ? 'VERIFIED' : item.status);
+      if (!readinessList.children.length) empty(readinessList, 'No readiness checks were returned.');
+      byId('tool-summary').textContent = 'Tools: ' + (tools.total ?? 0) + ' · Capabilities: ' + (capabilities.total ?? 0) +
+        '. Registry entries are not proof of a successful run.';
+      const toolList = byId('tool-list');
+      for (const item of (tools.items || []).slice(0, 12)) appendLine(toolList, item.name, item.version || item.health, item.status);
+      for (const item of (capabilities.items || []).slice(0, 12)) appendLine(toolList, item.name, item.entry, item.status);
+      if (!toolList.children.length) empty(toolList, 'No registered tools or capabilities were returned.');
+      const report = data.open_work_report || {};
+      byId('report-source').textContent = report.source || '';
+      byId('report').textContent = report.text || 'No current open-work summary was available.';
+      byId('code-summary').textContent = (code.python_modules ?? 0) + ' Python modules · ' +
+        (code.python_tests ?? 0) + ' test files. ' + (code.root_scope || 'Scope not reported.');
+      const codeList = byId('code-list');
+      for (const file of code.files || []) appendLine(codeList, file);
+      if (!codeList.children.length) empty(codeList, 'No code paths were returned.');
+      byId('coverage').textContent = (data.coverage && data.coverage.full_census_note) || 'Coverage details unavailable.';
+      byId('status').textContent = 'Read-only snapshot · ' + (data.checked_at || 'time unavailable');
+    } catch (error) {
+      byId('status').textContent = 'Could not load NEXEN state: ' + error.message;
+    }
+  }
+  load();
+})();
+</script>
+</body>
+</html>

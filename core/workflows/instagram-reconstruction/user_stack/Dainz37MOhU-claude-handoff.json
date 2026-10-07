@@ -1,0 +1,203 @@
+{
+  "name": "USER-STACK | Long Claude Code session -> handoff.md -> fresh session | Dainz37MOhU",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER-STACK VERSION — same source method with the user's practical stack.\nSource: https://www.instagram.com/rick_morty.tech/reel/Dainz37MOhU/\nEnhancement: MARVIN/NEXEN task ID, source citations, regression notes and a searchable append-only handoff index.\n\nOperational state: this is a proposed architecture. Required external credentials, models, worker or API are called out in the pair comparison and README. Nothing is activated by import.",
+        "height": 360,
+        "width": 540
+      },
+      "id": "04000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        -420
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "04000000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Sample input. Replace with the real session facts you want to hand off.\nreturn [{ json: {\n  goal: 'Add OAuth login to the dashboard and cover it with tests',\n  current_state: 'Login route works; token refresh is flaky under load',\n  files_touched: ['src/auth/oauth.ts', 'src/routes/login.ts', 'tests/auth.test.ts'],\n  what_changed: ['Added oauth.ts provider wrapper', 'Wired /login to provider', 'Added 4 happy-path tests'],\n  what_failed: ['Token refresh test intermittently times out', 'No test yet for expired refresh token'],\n  next_steps: ['Reproduce refresh timeout with a fixed clock', 'Add expired-token test', 'Review error handling in oauth.ts'],\n  output_path: './handoff.md'\n} }];"
+      },
+      "id": "04000000-0000-4000-8000-000000000003",
+      "name": "Sample Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -200,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const md = [];\nconst j = $input.first().json;\nconst e = [];\nconst reqStr = ['goal', 'current_state'];\nfor (const k of reqStr) if (typeof j[k] !== 'string' || !j[k].trim()) e.push(k + ' is required');\nconst reqArr = ['files_touched', 'what_changed', 'what_failed', 'next_steps'];\nfor (const k of reqArr) if (!Array.isArray(j[k])) e.push(k + ' must be an array');\nif (e.length) throw new Error('Invalid input: ' + e.join('; '));\nconst list = a => (a.length ? a.map(x => '- ' + x).join('\\n') : '- (none)');\nmd.push('# Session handoff');\nmd.push('');\nmd.push('_Generated ' + new Date().toISOString() + '_');\nmd.push('');\nmd.push('## Goal');\nmd.push(j.goal);\nmd.push('');\nmd.push('## Current state');\nmd.push(j.current_state);\nmd.push('');\nmd.push('## Files touched');\nmd.push(list(j.files_touched));\nmd.push('');\nmd.push('## What changed');\nmd.push(list(j.what_changed));\nmd.push('');\nmd.push('## What failed');\nmd.push(list(j.what_failed));\nmd.push('');\nmd.push('## What to do next');\nmd.push(list(j.next_steps));\nmd.push('');\nmd.push('---');\nmd.push('Start a fresh session (/clear or new) and instruct it: \"Read handoff.md and continue exactly where the last session left off.\"');\nreturn [{ json: { output_path: j.output_path || './handoff.md', markdown: md.join('\\n') } }];"
+      },
+      "id": "04000000-0000-4000-8000-000000000004",
+      "name": "Render Handoff",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        20,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "markdown",
+        "options": {
+          "fileName": "handoff.md"
+        }
+      },
+      "id": "04000000-0000-4000-8000-000000000005",
+      "name": "To Binary",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $('Render Handoff').item.json.output_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "04000000-0000-4000-8000-000000000006",
+      "name": "Write handoff.md",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        460,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const sourceId=\"Dainz37MOhU\";\nconst sourceUrl=\"https://www.instagram.com/rick_morty.tech/reel/Dainz37MOhU/\";\nconst variant='USER_STACK';\nconst seen=new Set();\nconst hash=s=>{let h=2166136261;for(const c of s)h=Math.imul(h^c.charCodeAt(0),16777619);return (h>>>0).toString(16).padStart(8,'0');};\nreturn $input.all().map(({json:j},i)=>{\n  const recordKey=String(j.row_id||j.clip_id||j.note_id||j.fileName||j.output_path||j.title||i);\n  const idempotencyKey=hash(sourceId+'|'+recordKey);\n  if(seen.has(idempotencyKey)) throw new Error('Duplicate output in one execution: '+idempotencyKey);\n  seen.add(idempotencyKey);\n  return {json:{...j,source_provenance:{source_id:sourceId,source_url:sourceUrl,variant},idempotency_key:idempotencyKey,review_status:'needs_human_review',review_notes:Array.isArray(j.review_notes)?j.review_notes:[],external_actions_enabled:false}};\n});"
+      },
+      "id": "337b45f3-629d-4630-9f7f-4c4dc6313423",
+      "name": "Attach Provenance + Review Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        250,
+        180
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sample Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sample Input": {
+      "main": [
+        [
+          {
+            "node": "Render Handoff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Render Handoff": {
+      "main": [
+        [
+          {
+            "node": "To Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "To Binary": {
+      "main": [
+        [
+          {
+            "node": "Attach Provenance + Review Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach Provenance + Review Gate": {
+      "main": [
+        [
+          {
+            "node": "Write handoff.md",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:Dainz37MOhU:user_stack:Dainz37MOhU-claude-handoff",
+      "source_id": "Dainz37MOhU",
+      "source_shortcode": "Dainz37MOhU",
+      "source_numbers": [
+        41
+      ],
+      "source_url": "https://www.instagram.com/rick_morty.tech/reel/Dainz37MOhU/",
+      "method": "Long Claude Code session -> handoff.md -> fresh session",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "Memory & handoffs",
+      "required_software": [
+        {
+          "name": "Claude Code",
+          "category": "Memory & handoffs",
+          "state": "interactive_manual_only",
+          "reason": "The handoff is a markdown file for a fresh Claude Code session; no API is required by the source."
+        },
+        {
+          "name": "Handoff archive/index",
+          "category": "Memory & handoffs",
+          "state": "local_path_unconfigured",
+          "reason": "USER-STACK adds searchable append-only index; output folder must be selected."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

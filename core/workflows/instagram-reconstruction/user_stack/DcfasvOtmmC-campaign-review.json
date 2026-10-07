@@ -1,0 +1,123 @@
+{
+  "name": "USER_STACK | Promote.fun manual campaign review and participation UI | DcfasvOtmmC",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER_STACK VERSION\nSource: https://www.instagram.com/aj.promotes/reel/DcfasvOtmmC/\nEvidence: none (separate run returned empty, detected_language=id; not proof of silence)\nUser-stack adds a local evidence and campaign decision ledger. Promote.fun remains manual UI because no official API contract was found; no guessed login, polling or join endpoint.\nThis describes added USER-STACK controls, not source instructions.\nExternal media generation/publishing is not marked complete.",
+        "height": 360,
+        "width": 440
+      },
+      "id": "8e5b5fb3-3ec2-4b94-9da4-0174ec04e7d2",
+      "name": "Evidence and boundaries",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "9e3e96b6-c212-493e-a88c-49992640473b",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$input.first().json;\nfor(const k of ['campaign_url','campaign_id','reviewed_at','source_asset_id']) if(!j[k]) throw new Error(k+' required');\nconst budget=Number(j.remaining_budget); if(!Number.isFinite(budget)||budget<0) throw new Error('remaining_budget must be supplied and nonnegative');\nreturn [{json:{campaign_id:j.campaign_id,campaign_url:j.campaign_url,reviewed_at:j.reviewed_at,source_asset_id:j.source_asset_id,remaining_budget:budget,accepted_platforms:Array.isArray(j.accepted_platforms)?j.accepted_platforms:[],requirements:Array.isArray(j.requirements)?j.requirements:[],decision:'human_review_required',evidence_snapshot_status:'operator_attached',join_campaign:'manual browser action only',submission:'draft only',api_contract:'unverified; no HTTP integration'}}];"
+      },
+      "id": "f71ba630-4b74-4ac2-ab9c-d8c411905cc7",
+      "name": "Apply user-stack method",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Expected input fixture is paired in fixtures/source-method-fixtures.json. This export prepares records/handoffs only when a required vendor API/worker is unresolved. Import inactive; run manually after reviewing its inputs.",
+        "height": 170,
+        "width": 420
+      },
+      "id": "0cf9618f-0826-447e-b001-74b52eaa2c06",
+      "name": "Run status",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Apply user-stack method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "nexen": {
+      "catalog_id": "instagram:DcfasvOtmmC:user_stack:DcfasvOtmmC-campaign-review",
+      "source_id": "DcfasvOtmmC",
+      "source_shortcode": "DcfasvOtmmC",
+      "source_numbers": [
+        1
+      ],
+      "source_url": "https://www.instagram.com/aj.promotes/reel/DcfasvOtmmC/",
+      "method": "Promote.fun manual campaign review and participation UI",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "Campaign review",
+      "required_software": [
+        {
+          "name": "Promote.fun UI",
+          "category": "Campaign review",
+          "state": "manual_browser_only",
+          "reason": "Gemini analysis only. No official API/endpoint/auth contract was found."
+        },
+        {
+          "name": "Campaign browser login",
+          "category": "Campaign review",
+          "state": "owner_session_required",
+          "reason": "Join/submission actions stay manual. Never collect credentials in NEXEN registry."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [
+        {
+          "type": "Promote.fun account",
+          "name": "Manual browser session",
+          "reason": "UI authentication is manual; this package has no supported API credential."
+        }
+      ],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  },
+  "pinData": {}
+}

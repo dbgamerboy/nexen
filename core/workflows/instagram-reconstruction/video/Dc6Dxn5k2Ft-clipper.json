@@ -1,0 +1,156 @@
+{
+  "name": "Clip method (VIDEO / faithful handoff) - bty.223 Dc6Dxn5k2Ft + theharis + keeran",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Source reconstruction (faithful)\nGrouped clipping method:\n- bty.223/Dc6Dxn5k2Ft: YouTube link -> snazzo.app -> get clips -> post everywhere.\n- theharis.ai/DdB5LAZMJmg: paste link -> count, clip length, captions, branding, background music.\n- keeran.ai/Db8mEo_x3K1: self-hosted 'Cardio' clipper + subtitles.\n\n## Why this is a HANDOFF, not an HTTP call\nsnazzo.app / 'my tool' / 'Cardio' have NO verified public API. Inventing an endpoint is forbidden. So this faithful build captures the source URL + theharis settings, emits an explicit operator handoff describing exactly what to do on the named tool, and records returned clip refs for approval-gated posting. The clip generation is PENDING a real contract. See the user-stack variant for a working clipper (OpenShorts).\n\n'Paid per 1000 views' = source claim, not implemented. No auto-posting.",
+        "height": 460,
+        "width": 600
+      },
+      "id": "0c6d0000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        -500
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "0c6d0000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -580,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Replace source_url with your long-form video; settings mirror theharis.ai's options.\nreturn [{ json: {\n  source_url: 'https://www.youtube.com/watch?v=EXAMPLE1234',\n  provider: 'snazzo.app',\n  clip_count: 6,\n  clip_length_sec: 45,\n  captions: 'karaoke-bold',\n  branding: 'lower-third @yourhandle',\n  background_music: 'subtle-lofi'\n} }];"
+      },
+      "id": "0c6d0000-0000-4000-8000-000000000003",
+      "name": "Sample Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -360,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst e = [];\ntry { const u = new URL(j.source_url); if (!/^https?:$/.test(u.protocol)) e.push('source_url must be http(s)'); } catch { e.push('source_url must be a valid URL'); }\nif (!Number.isInteger(j.clip_count) || j.clip_count < 1 || j.clip_count > 50) e.push('clip_count must be 1-50');\nif (!Number.isFinite(j.clip_length_sec) || j.clip_length_sec < 5 || j.clip_length_sec > 180) e.push('clip_length_sec must be 5-180');\nif (!['snazzo.app','theharis.tool','cardio'].includes((j.provider||'').toLowerCase().replace(/\\s+/g,''))) {\n  // allow any string but flag unknown named providers explicitly\n}\nif (e.length) throw new Error('Invalid input: ' + e.join('; '));\nreturn [{ json: j }];"
+      },
+      "id": "0c6d0000-0000-4000-8000-000000000004",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -140,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst crypto = require('crypto');\nconst job_id = crypto.createHash('sha1').update(j.source_url + '|' + j.provider + '|' + j.clip_count).digest('hex').slice(0, 12);\nreturn [{ json: {\n  job_id,\n  status: 'awaiting_operator',\n  provider: j.provider,\n  source_url: j.source_url,\n  operator_steps: [\n    'Open ' + j.provider + ' and paste: ' + j.source_url,\n    'Request ' + j.clip_count + ' clips at ~' + j.clip_length_sec + 's each',\n    'Captions: ' + j.captions + '; Branding: ' + j.branding + '; Music: ' + j.background_music,\n    'Download the produced clips and record their file paths / URLs against job_id ' + job_id\n  ],\n  clip_generation: 'PENDING: no verified API for ' + j.provider + '. Use the user-stack OpenShorts variant for an automated clipper.',\n  posting: 'DRAFT/APPROVAL ONLY: no auto-post is implemented.'\n} }];"
+      },
+      "id": "0c6d0000-0000-4000-8000-000000000005",
+      "name": "Emit Operator Handoff",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sample Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sample Input": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Emit Operator Handoff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:Dc6Dxn5k2Ft:video:Dc6Dxn5k2Ft-clipper",
+      "source_id": "Dc6Dxn5k2Ft",
+      "source_shortcode": "Dc6Dxn5k2Ft",
+      "source_numbers": [
+        8,
+        21,
+        54
+      ],
+      "source_url": "https://www.instagram.com/bty.223/reel/Dc6Dxn5k2Ft/",
+      "method": "Long video -> short clips (grouped: bty.223 snazzo, theharis, keeran Cardio)",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "Video & clips",
+      "required_software": [
+        {
+          "name": "OpenShorts",
+          "category": "Video & clips",
+          "state": "not_installed_or_unverified",
+          "reason": "Needs a deployed, version-pinned service and verified callback reachability."
+        },
+        {
+          "name": "FFmpeg",
+          "category": "Video & clips",
+          "state": "installed_not_proven_for_this_workflow",
+          "reason": "OpenShorts media processing uses FFmpeg; not invoked in this package."
+        },
+        {
+          "name": "OpenShorts callback receiver",
+          "category": "Video & clips",
+          "state": "not_runtime_tested",
+          "reason": "HMAC and correlation contract documented; callback must be exercised in isolated n8n before launch."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

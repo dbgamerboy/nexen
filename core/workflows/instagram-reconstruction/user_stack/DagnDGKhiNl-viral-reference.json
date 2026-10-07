@@ -1,0 +1,236 @@
+{
+  "name": "USER-STACK | Viral reference research -> original production queue | DagnDGKhiNl",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER-STACK VERSION — same source method with the user's practical stack.\nSource: https://www.instagram.com/adley/reel/DagnDGKhiNl/\nEnhancement: NEXEN content queue plus source URL provenance, duplicate suppression, per-channel quotas and approval status. Sort Feed stays a manual export because no API contract was shown.\n\nOperational state: this is a proposed architecture. Required external credentials, models, worker or API are called out in the pair comparison and README. Nothing is activated by import.",
+        "height": 380,
+        "width": 520
+      },
+      "id": "01000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        -420
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "01000000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Sample input. Replace with your own export of Sort Feed results (manual copy).\nreturn [{ json: {\n  niche: 'personal finance for students',\n  min_views: 10000000,\n  videos_per_day: 10,\n  start_date: '2026-10-01',\n  own_avg_views: 40000,\n  mega_viral_threshold_views: 1000000,\n  references: [\n    { page: '@pageA', url: 'https://www.instagram.com/reel/AAA111/', views: 12500000, hook: '3 money rules I wish I knew at 19' },\n    { page: '@pageB', url: 'https://www.instagram.com/reel/BBB222/', views: 9800000, hook: 'Stop doing this with your first paycheck' },\n    { page: '@pageA', url: 'https://www.instagram.com/reel/AAA111/?igsh=x', views: 12500000, hook: '3 money rules I wish I knew at 19' },\n    { page: '@pageC', url: 'https://www.instagram.com/reel/CCC333/', views: 64000000, hook: 'The student budget that actually works' },\n    { page: '@pageD', url: 'https://www.instagram.com/reel/DDD444/', views: 21000000, hook: 'Why your savings account is losing money' }\n  ]\n} }];"
+      },
+      "id": "01000000-0000-4000-8000-000000000003",
+      "name": "Sample Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -180,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nif (!items.length) throw new Error('No input items');\nreturn items.map(({ json: j }) => {\n  const e = [];\n  if (typeof j.niche !== 'string' || !j.niche.trim()) e.push('niche is required');\n  if (!Number.isFinite(j.min_views) || j.min_views <= 0) e.push('min_views must be a positive number');\n  if (!Number.isInteger(j.videos_per_day) || j.videos_per_day < 1 || j.videos_per_day > 50) e.push('videos_per_day must be an integer 1-50');\n  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(j.start_date || '')) e.push('start_date must be YYYY-MM-DD');\n  if (!Number.isFinite(j.own_avg_views) || !Number.isFinite(j.mega_viral_threshold_views)) e.push('own_avg_views and mega_viral_threshold_views must be numbers');\n  if (!Array.isArray(j.references) || !j.references.length) e.push('references must be a non-empty array');\n  else j.references.forEach((r, i) => {\n    if (!/^https?:\\/\\//.test(r.url || '')) e.push('references[' + i + '].url must be http(s)');\n    if (!Number.isFinite(r.views) || r.views < 0) e.push('references[' + i + '].views must be a non-negative number');\n  });\n  if (e.length) throw new Error('Invalid input: ' + e.join('; '));\n  return { json: j };\n});"
+      },
+      "id": "01000000-0000-4000-8000-000000000004",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        40,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const out = [];\nconst norm = u => { try { const x = new URL(u.trim()); return x.protocol + '//' + x.host.toLowerCase() + x.pathname.replace(/\\/+$/, ''); } catch { return u.trim().split('?')[0].replace(/\\/+$/, ''); } }; // host lowercased only; Instagram shortcodes are case-sensitive and preserved\nconst hash = s => { let x = 5381; for (const c of s) x = ((x << 5) + x + c.charCodeAt(0)) >>> 0; return x.toString(16); };\nconst addDays = (d, n) => { const t = new Date(d + 'T00:00:00Z'); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); };\nfor (const { json: j } of $input.all()) {\n  const seen = new Set();\n  const unique = [];\n  for (const r of j.references) { const k = norm(r.url); if (seen.has(k)) continue; seen.add(k); unique.push({ ...r, url_key: k }); }\n  const shortlisted = unique.filter(r => r.views >= j.min_views).sort((a, b) => b.views - a.views);\n  if (!shortlisted.length) throw new Error('No reference videos meet min_views=' + j.min_views + '; nothing queued');\n  const offerTier = j.own_avg_views >= j.mega_viral_threshold_views ? 'mega_viral_low_ticket' : 'niche_higher_ticket';\n  shortlisted.forEach((r, i) => out.push({ json: {\n    row_id: hash(j.niche + '|' + r.url_key),\n    niche: j.niche,\n    rank: i + 1,\n    page: r.page || '',\n    url: r.url,\n    views: r.views,\n    hook: r.hook || '',\n    production_date: addDays(j.start_date, Math.floor(i / j.videos_per_day)),\n    status: 'to_record',\n    offer_tier: offerTier,\n    duplicates_removed: j.references.length - unique.length,\n    excluded_below_threshold: unique.length - shortlisted.length,\n    retargeting: 'MANUAL_HANDOFF: build a retargeting audience of engaged viewers in your ads manager'\n  } }));\n}\nreturn out;"
+      },
+      "id": "01000000-0000-4000-8000-000000000005",
+      "name": "Build Production Queue",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "REPLACE_WITH_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "production_queue"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "row_id"
+          ],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "01000000-0000-4000-8000-000000000006",
+      "name": "Upsert Queue Rows",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        480,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": null,
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const sourceId=\"DagnDGKhiNl\";\nconst sourceUrl=\"https://www.instagram.com/adley/reel/DagnDGKhiNl/\";\nconst variant='USER_STACK';\nconst seen=new Set();\nconst hash=s=>{let h=2166136261;for(const c of s)h=Math.imul(h^c.charCodeAt(0),16777619);return (h>>>0).toString(16).padStart(8,'0');};\nreturn $input.all().map(({json:j},i)=>{\n  const recordKey=String(j.row_id||j.clip_id||j.note_id||j.fileName||j.output_path||j.title||i);\n  const idempotencyKey=hash(sourceId+'|'+recordKey);\n  if(seen.has(idempotencyKey)) throw new Error('Duplicate output in one execution: '+idempotencyKey);\n  seen.add(idempotencyKey);\n  return {json:{...j,source_provenance:{source_id:sourceId,source_url:sourceUrl,variant},idempotency_key:idempotencyKey,review_status:'needs_human_review',review_notes:Array.isArray(j.review_notes)?j.review_notes:[],external_actions_enabled:false}};\n});"
+      },
+      "id": "42d964ba-4187-40f2-84a8-db059daf9ecc",
+      "name": "Attach Provenance + Review Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        270,
+        180
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sample Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sample Input": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Build Production Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Production Queue": {
+      "main": [
+        [
+          {
+            "node": "Attach Provenance + Review Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach Provenance + Review Gate": {
+      "main": [
+        [
+          {
+            "node": "Upsert Queue Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:DagnDGKhiNl:user_stack:DagnDGKhiNl-viral-reference",
+      "source_id": "DagnDGKhiNl",
+      "source_shortcode": "DagnDGKhiNl",
+      "source_numbers": [
+        4
+      ],
+      "source_url": "https://www.instagram.com/adley/reel/DagnDGKhiNl/",
+      "method": "Viral reference research -> original production queue",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "Research & planning",
+      "required_software": [
+        {
+          "name": "Sort Feed browser extension",
+          "category": "Research & planning",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source names Sort Feed; no official export/API contract supplied."
+        },
+        {
+          "name": "Content production queue",
+          "category": "YouTube production",
+          "state": "local_draft_only",
+          "reason": "Research-to-original-video planning is represented; video generation is a separate workflow."
+        },
+        {
+          "name": "Retargeting ads account",
+          "category": "Commerce & offers",
+          "state": "owner_approval_required",
+          "reason": "Source describes retargeting but supplies no ad account/API; keep drafts and approval."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [
+        {
+          "type": "googleSheetsOAuth2Api",
+          "name": "Google Sheets account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

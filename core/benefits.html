@@ -1,0 +1,100 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEXEN · Benefits & Stability</title>
+<style>
+:root{font-family:Inter,Segoe UI,system-ui,sans-serif;color:#eef4ff;background:#07101b}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#07101b,#102033 55%,#101828);min-height:100vh}
+header{position:sticky;top:0;z-index:5;padding:14px 18px;background:#07101bef;border-bottom:1px solid #ffffff18;backdrop-filter:blur(15px);display:flex;gap:14px;align-items:center}
+header a{color:#b9dfff;text-decoration:none}header b{font-size:18px}.spacer{flex:1}.pill{padding:7px 10px;border:1px solid #ffffff22;border-radius:999px;color:#b8c7dc;font-size:12px}
+main{max-width:1550px;margin:auto;padding:20px}.hero{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start}
+.panel,.card{background:#ffffff08;border:1px solid #ffffff17;border-radius:18px;box-shadow:0 18px 50px #0003}
+.panel{padding:18px}.muted{color:#9fb0c7}.warn{color:#ffd39b}.good{color:#a8e8c1}.bad{color:#ffb0a6}
+h1{margin:0 0 8px;font-size:30px}.timer{min-width:270px;text-align:center}.clock{font-size:46px;font-weight:800;letter-spacing:2px}
+button,input,select,textarea{font:inherit;color:#eef4ff;background:#0d1a2b;border:1px solid #ffffff22;border-radius:10px;padding:9px}
+button{cursor:pointer}button:hover{background:#152943}.primary{background:#d8ecff;color:#0a1727;font-weight:700}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.toolbar input{min-width:280px;flex:1}
+.unknowns{margin-top:14px}.unknowns li{margin:6px 0}.profile{margin:18px 0}.profile summary{cursor:pointer;font-weight:800}.profilegrid{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:10px;margin-top:14px}.profilegrid label{font-size:12px;color:#aebdd1;display:grid;gap:5px}.profilegrid .wide{grid-column:span 2}.board{display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:14px;align-items:start}
+.col{background:#06101bd9;border:1px solid #ffffff12;border-radius:16px;padding:12px;min-height:320px}.col h2{font-size:14px;text-transform:uppercase;letter-spacing:1.5px;color:#b9c7db}
+.card{padding:14px;margin:10px 0}.meta{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.tag{font-size:11px;padding:4px 7px;border-radius:999px;background:#ffffff0d;border:1px solid #ffffff14}
+.card h3{margin:4px 0 8px;font-size:16px}.card p{font-size:13px;line-height:1.45;margin:6px 0}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.actions a,.actions button{font-size:12px}.actions a{padding:8px 9px;border-radius:10px;border:1px solid #ffffff22;color:#bde1ff;text-decoration:none}
+.details{margin-top:9px;display:grid;gap:7px}.details textarea{min-height:54px;resize:vertical;width:100%}
+footer{padding:24px 0;color:#8292a7;font-size:12px}@media(max-width:1050px){.board{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){.hero,.board{grid-template-columns:1fr}.timer{min-width:0}}
+</style></head><body>
+<header><a href="/">← MARVIN</a><b>🧭 Benefits & Stability</b><span class="pill" id="count">loading</span><span class="spacer"></span><a href="/tasks">Tasks</a><a href="/money">Money</a></header>
+<main>
+<section class="hero">
+<div class="panel"><h1>Benefits & Stability Applier</h1>
+<p class="muted">One place to screen, call, email, apply, follow up, and preserve evidence. This page never signs an attestation, submits a legal form, spends money, or sends sensitive records by itself.</p>
+<div class="unknowns"><b>Fill these facts when you know them</b><ul id="unknowns"></ul></div>
+<p class="warn" id="policy"></p></div>
+<div class="panel timer"><div class="muted">FOCUS TIMER</div><div class="clock" id="timer">25:00</div>
+<div class="actions" style="justify-content:center"><button class="primary" id="start">Start</button><button id="pause">Pause</button><button id="reset">Reset</button></div>
+<div class="muted" id="timerState">25 min focus · 5 min break</div></div>
+</section>
+<details class="panel profile" open><summary>Eligibility facts — fill once, reuse everywhere</summary>
+<p class="muted">Keep this generic. Do not put diagnoses, SSN, bank details, medical records, or detailed criminal history here.</p>
+<form id="profileForm" class="profilegrid">
+<label>City<input name="city" autocomplete="address-level2"></label><label>County<input name="county"></label><label>ZIP<input name="zip_code" inputmode="numeric"></label><label>Household size<input name="household_size" type="number" min="1" max="20"></label>
+<label>Gross monthly household income<input name="gross_monthly_income" type="number" min="0" step="0.01"></label><label class="wide">Current benefits / status<input name="current_benefits" placeholder="e.g. OHP active; SNAP unknown; SSI not receiving"></label><label>Current rent balance<input name="housing_balance" type="number" min="0" step="0.01"></label>
+<label>Housing stage<select name="housing_notice_stage"><option>unknown</option><option>none</option><option>late</option><option>notice</option><option>court</option></select></label><label>Driver license<select name="driver_license"><option>unknown</option><option>yes</option><option>no</option></select></label><label>Can insure/maintain car<select name="can_insure_vehicle"><option>unknown</option><option>yes</option><option>no</option></select></label>
+<label>Business registered<select name="business_registered"><option>unknown</option><option>yes</option><option>no</option></select></label><label>Business tax years available<input name="business_tax_years" type="number" min="0" max="20"></label>
+<label><span>Cat needs spay</span><input name="cat_spay_needed" type="checkbox"></label><label><span>IRS/refund issue active</span><input name="tax_issue_active" type="checkbox"></label>
+<div class="actions wide"><button class="primary" type="submit">Save eligibility facts</button><span class="muted" id="profileSaved"></span></div>
+</form></details>
+<div class="toolbar"><input id="search" placeholder="Search benefits, rent, food, car, tech, business, tax…">
+<select id="category"><option value="">All categories</option></select><button id="refresh">Refresh</button></div>
+<section class="board">
+<div class="col"><h2>Ready / Contact</h2><div id="ready"></div></div>
+<div class="col"><h2>Applied / Waiting</h2><div id="applied"></div></div>
+<div class="col"><h2>Won</h2><div id="won"></div></div>
+<div class="col"><h2>Blocked / Ineligible</h2><div id="blocked"></div></div>
+</section>
+<footer>Eligibility and availability change. Verify current rules at the official source before relying on a program. General inquiries should contain only the minimum facts required.</footer>
+</main><script>
+let state={resources:[],profile:{}}, seconds=1500, tick=null, mode='focus';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function api(path,opt={}){const r=await fetch(path,{...opt,headers:{'Content-Type':'application/json','X-Nexen-Action':'launch',...(opt.headers||{})}});const x=await r.json();if(!r.ok)throw Error(typeof x.detail==='string'?x.detail:JSON.stringify(x.detail));return x}
+function bucket(stage){if(stage==='won')return'won';if(['blocked','ineligible'].includes(stage))return'blocked';if(['applied','waiting'].includes(stage))return'applied';return'ready'}
+function card(r){
+const tags=(r.match_tags?.length?r.match_tags:r.tags||[]).slice(0,5).map(x=>'<span class="tag">'+esc(x)+'</span>').join('');
+const phone=r.phone?'<button onclick="copyPhone(\''+r.id+'\')">☎ Copy phone</button>':'';
+const email=r.email?'<button onclick="copyDraft(\''+r.id+'\',\'email\')">✉ Copy email</button>':'';
+return '<article class="card" data-id="'+esc(r.id)+'"><h3>'+esc(r.name)+'</h3><div class="meta"><span class="tag">P'+esc(r.priority)+'</span><span class="tag">'+esc(r.scope)+'</span>'+tags+'</div>'+
+'<p>'+esc(r.fit)+'</p><p><b>Next:</b> '+esc(r.action)+'</p><div class="actions"><a href="'+esc(r.url)+'" target="_blank" rel="noreferrer">Open official site</a>'+phone+email+'<button onclick="copyDraft(\''+r.id+'\',\'call\')">Copy call script</button></div>'+
+'<div class="details"><select class="stage">'+['ready','contacted','applied','waiting','won','blocked','ineligible'].map(x=>'<option '+(x===r.stage?'selected':'')+'>'+x+'</option>').join('')+'</select>'+
+'<input class="follow" type="date" value="'+esc(r.next_followup||'')+'"><input class="contact" placeholder="Last contact / confirmation #" value="'+esc(r.last_contact||'')+'">'+
+'<textarea class="notes" placeholder="Outcome, missing docs, exact next step">'+esc(r.notes||'')+'</textarea><button class="save primary">Save state</button></div></article>'}
+function render(){
+const q=$('#search').value.toLowerCase(),cat=$('#category').value;
+for(const id of ['ready','applied','won','blocked'])$('#'+id).innerHTML='';
+const rows=state.resources.filter(r=>(!cat||r.category===cat)&&JSON.stringify(r).toLowerCase().includes(q));
+for(const r of rows)$('#'+bucket(r.stage)).insertAdjacentHTML('beforeend',card(r));
+$('#count').textContent=rows.length+' shown · '+state.resources.length+' total';
+}
+function fillProfile(){
+const f=$('#profileForm'),p=state.profile.facts||{};
+for(const name of ['city','county','zip_code','current_benefits','housing_notice_stage','driver_license','can_insure_vehicle','business_registered'])if(f.elements[name])f.elements[name].value=p[name]??(f.elements[name].tagName==='SELECT'?'unknown':'');
+for(const name of ['household_size','gross_monthly_income','housing_balance','business_tax_years'])if(f.elements[name])f.elements[name].value=p[name]??'';
+f.elements.cat_spay_needed.checked=p.cat_spay_needed!==false;f.elements.tax_issue_active.checked=p.tax_issue_active!==false;
+}
+async function load(){
+state=await api('/api/benefits');const cats=[...new Set(state.resources.map(r=>r.category))].sort();
+$('#category').innerHTML='<option value="">All categories</option>'+cats.map(x=>'<option>'+esc(x)+'</option>').join('');
+$('#unknowns').innerHTML=(state.profile.unknowns||[]).map(x=>'<li>'+esc(x)+'</li>').join('')||'<li class="good">Core screening facts filled.</li>';
+$('#policy').textContent=state.profile.disclosure_policy||'';fillProfile();render()
+}
+$('#profileForm').onsubmit=async e=>{
+e.preventDefault();const f=e.target,raw=Object.fromEntries(new FormData(f));const num=n=>raw[n]===''||raw[n]===undefined?null:Number(raw[n]);
+const body={city:raw.city||'',county:raw.county||'',zip_code:raw.zip_code||'',household_size:num('household_size'),gross_monthly_income:num('gross_monthly_income'),current_benefits:raw.current_benefits||'',housing_balance:num('housing_balance'),housing_notice_stage:raw.housing_notice_stage||'unknown',driver_license:raw.driver_license||'unknown',can_insure_vehicle:raw.can_insure_vehicle||'unknown',business_registered:raw.business_registered||'unknown',business_tax_years:num('business_tax_years'),cat_spay_needed:f.elements.cat_spay_needed.checked,tax_issue_active:f.elements.tax_issue_active.checked};
+$('#profileSaved').textContent='Saving…';try{await api('/api/benefits/profile',{method:'PATCH',body:JSON.stringify(body)});$('#profileSaved').textContent='Saved';await load()}catch(err){$('#profileSaved').textContent=err.message}
+};
+document.addEventListener('click',async e=>{if(!e.target.classList.contains('save'))return;const c=e.target.closest('.card'),id=c.dataset.id;e.target.disabled=true;try{await api('/api/benefits/'+id,{method:'PATCH',body:JSON.stringify({stage:c.querySelector('.stage').value,notes:c.querySelector('.notes').value,next_followup:c.querySelector('.follow').value||null,last_contact:c.querySelector('.contact').value||null})});await load()}catch(err){alert(err.message)}finally{e.target.disabled=false}});
+async function copyDraft(id,method){try{const x=await api('/api/benefits/'+id+'/draft?method='+method);let t='';if(method==='email')t='TO: '+x.to+'\nSUBJECT: '+x.subject+'\n\n'+x.draft;else t=(x.to?'PHONE: '+x.to+'\n\n':'')+x.draft;await navigator.clipboard.writeText(t);alert(method+' draft copied. Review before sending.')}catch(e){alert(e.message)}}
+function copyPhone(id){const r=state.resources.find(x=>x.id===id);navigator.clipboard.writeText(r?.phone||'');}
+function drawTimer(){const m=String(Math.floor(seconds/60)).padStart(2,'0'),s=String(seconds%60).padStart(2,'0');$('#timer').textContent=m+':'+s;$('#timerState').textContent=(mode==='focus'?'Focus':'Break')+' · '+(mode==='focus'?'25':'5')+' min preset'}
+function step(){seconds--;if(seconds<=0){mode=mode==='focus'?'break':'focus';seconds=mode==='focus'?1500:300;clearInterval(tick);tick=null;try{new Notification('NEXEN '+(mode==='focus'?'focus':'break')+' block ready')}catch{} }drawTimer()}
+$('#start').onclick=()=>{if(!tick)tick=setInterval(step,1000)};$('#pause').onclick=()=>{clearInterval(tick);tick=null};$('#reset').onclick=()=>{clearInterval(tick);tick=null;mode='focus';seconds=1500;drawTimer()};
+$('#search').oninput=render;$('#category').onchange=render;$('#refresh').onclick=load;drawTimer();load().catch(e=>alert(e.message));
+</script></body></html>

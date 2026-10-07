@@ -1,0 +1,1165 @@
+{
+  "schema": "nexen.workflow-integrations.v1",
+  "generated_at": "2026-09-30T11:52:46.05Z",
+  "credential_policy": "Only status/name/type metadata is stored. Never persist, read or return credential values, tokens, cookies or account secrets.",
+  "categories": [
+    {
+      "category": "AI characters",
+      "label": "AI characters",
+      "description": "Fictional character identity, original assets, quotas, and review."
+    },
+    {
+      "category": "Campaign review",
+      "label": "Campaign review",
+      "description": "Campaign evidence review and human-operated platform steps."
+    },
+    {
+      "category": "Children’s education",
+      "label": "Children’s education",
+      "description": "Age-appropriate educational video production and adult review."
+    },
+    {
+      "category": "Commerce & offers",
+      "label": "Commerce & offers",
+      "description": "Original product and commerce drafts; no fabricated reviews or external writes."
+    },
+    {
+      "category": "Image & character generation · research queue",
+      "label": "Image & character generation · research queue",
+      "description": "Research candidates from the supplied tool list. Listed links are official project/site locations only when identified; candidate status does not mean installed, licensed for use, secure, maintained or wired into a workflow."
+    },
+    {
+      "category": "Memory & handoffs",
+      "label": "Memory & handoffs",
+      "description": "Obsidian note routing, cross-session handoffs, and business context."
+    },
+    {
+      "category": "Music production · research queue",
+      "label": "Music production · research queue",
+      "description": "Research candidates from the supplied tool list. Listed links are official project/site locations only when identified; candidate status does not mean installed, licensed for use, secure, maintained or wired into a workflow."
+    },
+    {
+      "category": "N8N launch & credentials",
+      "label": "N8N launch & credentials",
+      "description": "n8n workflow IDs, approved launch adapter, and credential binding."
+    },
+    {
+      "category": "Orchestration & knowledge · research queue",
+      "label": "Orchestration & knowledge · research queue",
+      "description": "Research candidates from the supplied tool list. Listed links are official project/site locations only when identified; candidate status does not mean installed, licensed for use, secure, maintained or wired into a workflow."
+    },
+    {
+      "category": "Research & planning",
+      "label": "Research & planning",
+      "description": "Source research, competitive analysis, daily briefs, and prompt handoffs."
+    },
+    {
+      "category": "Video & clips",
+      "label": "Video & clips",
+      "description": "Video editing, avatar pipelines, captioning, clip production, and media QA."
+    },
+    {
+      "category": "Video production · research queue",
+      "label": "Video production · research queue",
+      "description": "Research candidates from the supplied tool list. Listed links are official project/site locations only when identified; candidate status does not mean installed, licensed for use, secure, maintained or wired into a workflow."
+    },
+    {
+      "category": "Voice & assistant",
+      "label": "Voice & assistant",
+      "description": "Voice interaction, LLM response, and assistant handoffs."
+    },
+    {
+      "category": "YouTube production",
+      "label": "YouTube production",
+      "description": "Long-form and Shorts workflows, sources, freelancers, and upload drafts."
+    }
+  ],
+  "integrations": [
+    {
+      "name": "AI image/model generator",
+      "category": "AI characters",
+      "state": "provider_unresolved",
+      "reason": "Source describes a fictional adult influencer and character bible; exact generation tool/model remains incomplete in evidence.",
+      "credential_types": [],
+      "used_by": [
+        "DZThO_qvCK7 · video",
+        "DZThO_qvCK7 · user_stack"
+      ]
+    },
+    {
+      "name": "brainrot.ovid / brainrot.mauve",
+      "category": "AI characters",
+      "state": "identity_unresolved",
+      "reason": "Name is uncertain in machine transcript; endpoint not verified.",
+      "credential_types": [],
+      "used_by": [
+        "DbEGkS9B26F · video",
+        "DbEGkS9B26F · user_stack"
+      ]
+    },
+    {
+      "name": "Character-reference asset store",
+      "category": "AI characters",
+      "state": "not_implemented",
+      "reason": "Persistent reference identity and generated asset production remain to be wired.",
+      "credential_types": [],
+      "used_by": [
+        "DZThO_qvCK7 · video",
+        "DZThO_qvCK7 · user_stack"
+      ]
+    },
+    {
+      "name": "Claude",
+      "category": "AI characters",
+      "state": "subscription_not_connected",
+      "reason": "No programmatic credential is assumed.",
+      "credential_types": [],
+      "used_by": [
+        "DcwceVKGxlY · video",
+        "DcwceVKGxlY · user_stack"
+      ]
+    },
+    {
+      "name": "Configured media generation worker",
+      "category": "AI characters",
+      "state": "not_implemented",
+      "reason": "No render is claimed; stable character references, original prompts and asset QA needed.",
+      "credential_types": [],
+      "used_by": [
+        "DdOIy0DsPCK · video",
+        "DdOIy0DsPCK · user_stack"
+      ]
+    },
+    {
+      "name": "GoHighLevel",
+      "category": "AI characters",
+      "state": "account_or_api_unverified",
+      "reason": "Source connector/API not verified; no posting node is implemented.",
+      "credential_types": [],
+      "used_by": [
+        "DcwceVKGxlY · video",
+        "DcwceVKGxlY · user_stack"
+      ]
+    },
+    {
+      "name": "Unnamed custom connector",
+      "category": "AI characters",
+      "state": "identity_and_contract_unresolved",
+      "reason": "Source connector URL/server was never supplied.",
+      "credential_types": [],
+      "used_by": [
+        "DdOIy0DsPCK · video",
+        "DdOIy0DsPCK · user_stack"
+      ]
+    },
+    {
+      "name": "Versioned character media worker",
+      "category": "AI characters",
+      "state": "not_implemented",
+      "reason": "Requires persistent character reference and safe render/QA adapter.",
+      "credential_types": [],
+      "used_by": [
+        "DbEGkS9B26F · video",
+        "DbEGkS9B26F · user_stack"
+      ]
+    },
+    {
+      "name": "Campaign browser login",
+      "category": "Campaign review",
+      "state": "owner_session_required",
+      "reason": "Join/submission actions stay manual. Never collect credentials in NEXEN registry.",
+      "credential_types": [],
+      "used_by": [
+        "DcfasvOtmmC · video",
+        "DcfasvOtmmC · user_stack"
+      ]
+    },
+    {
+      "name": "Promote.fun UI",
+      "category": "Campaign review",
+      "state": "manual_browser_only",
+      "reason": "Gemini analysis only. No official API/endpoint/auth contract was found.",
+      "credential_types": [],
+      "used_by": [
+        "DcfasvOtmmC · video",
+        "DcfasvOtmmC · user_stack"
+      ]
+    },
+    {
+      "name": "Adult content reviewer",
+      "category": "Children’s education",
+      "state": "manual_required",
+      "reason": "Required before child-directed material is eligible for publication.",
+      "credential_types": [],
+      "used_by": [
+        "DdNVrqzuc4l · video",
+        "DdNVrqzuc4l · user_stack"
+      ]
+    },
+    {
+      "name": "Amazon KDP",
+      "category": "Children’s education",
+      "state": "manual_upload_only",
+      "reason": "Source ends with upload; account and publishing are not connected.",
+      "credential_types": [],
+      "used_by": [
+        "DcQzhCghRZI · video",
+        "DcQzhCghRZI · user_stack"
+      ]
+    },
+    {
+      "name": "ChatGPT",
+      "category": "Children’s education",
+      "state": "account_and_connector_unverified",
+      "reason": "Source uses plugin/connector UI; exact MCP contract unavailable.",
+      "credential_types": [],
+      "used_by": [
+        "DdNVrqzuc4l · video",
+        "DdNVrqzuc4l · user_stack"
+      ]
+    },
+    {
+      "name": "Claude image workflow",
+      "category": "Children’s education",
+      "state": "interactive_manual_only",
+      "reason": "Source copies unseen prompt plus reference image into Claude; prompt is unavailable.",
+      "credential_types": [],
+      "used_by": [
+        "DcQzhCghRZI · video",
+        "DcQzhCghRZI · user_stack"
+      ]
+    },
+    {
+      "name": "ComfyUI + supplied graph",
+      "category": "Children’s education",
+      "state": "service_and_model_unverified",
+      "reason": "USER-STACK needs a user-provided API-format graph, model weights and QA.",
+      "credential_types": [],
+      "used_by": [
+        "DcQzhCghRZI · video",
+        "DcQzhCghRZI · user_stack"
+      ]
+    },
+    {
+      "name": "Higgsfield",
+      "category": "Children’s education",
+      "state": "connector_unverified",
+      "reason": "Generation endpoint is unavailable; source workflow remains manual handoff.",
+      "credential_types": [],
+      "used_by": [
+        "DdNVrqzuc4l · video",
+        "DdNVrqzuc4l · user_stack",
+        "DcwceVKGxlY · video",
+        "DcwceVKGxlY · user_stack"
+      ]
+    },
+    {
+      "name": "Viewmax MCP",
+      "category": "Children’s education",
+      "state": "identity_and_contract_unresolved",
+      "reason": "Source says viewmax.io/mcp; contract and connector authentication are unavailable.",
+      "credential_types": [],
+      "used_by": [
+        "DcQzhCghRZI · video",
+        "DcQzhCghRZI · user_stack"
+      ]
+    },
+    {
+      "name": "AliExpress product data",
+      "category": "Commerce & offers",
+      "state": "manual_review_required",
+      "reason": "Verify supplier, product claims, shipping and image rights.",
+      "credential_types": [],
+      "used_by": [
+        "Dc4E_FTNloZ · video",
+        "Dc4E_FTNloZ · user_stack"
+      ]
+    },
+    {
+      "name": "Claude / image generation",
+      "category": "Commerce & offers",
+      "state": "interactive_manual_only",
+      "reason": "Commerce drafts depend on user-supplied product/brand facts.",
+      "credential_types": [],
+      "used_by": [
+        "DcrEsU6KyPb · video",
+        "DcrEsU6KyPb · user_stack"
+      ]
+    },
+    {
+      "name": "Claude-assisted store builder",
+      "category": "Commerce & offers",
+      "state": "product_identity_unresolved",
+      "reason": "No store builder name or API contract supplied.",
+      "credential_types": [],
+      "used_by": [
+        "Dc4E_FTNloZ · video",
+        "Dc4E_FTNloZ · user_stack"
+      ]
+    },
+    {
+      "name": "Ecommerce platform",
+      "category": "Commerce & offers",
+      "state": "not_selected",
+      "reason": "No store write or publish action is implemented.",
+      "credential_types": [],
+      "used_by": [
+        "Dc4E_FTNloZ · video",
+        "Dc4E_FTNloZ · user_stack"
+      ]
+    },
+    {
+      "name": "Make UGC / avatar renderer",
+      "category": "Commerce & offers",
+      "state": "service_unverified",
+      "reason": "Rendered video is a separate manual handoff; no renderer API is configured.",
+      "credential_types": [],
+      "used_by": [
+        "DcrEsU6KyPb · video",
+        "DcrEsU6KyPb · user_stack"
+      ]
+    },
+    {
+      "name": "Meta Ads",
+      "category": "Commerce & offers",
+      "state": "credential_and_approval_missing",
+      "reason": "Source references spend/ROAS; new paid usage requires exact MARVIN approval.",
+      "credential_types": [],
+      "used_by": [
+        "DaebyH0xIDQ · video",
+        "DaebyH0xIDQ · user_stack"
+      ]
+    },
+    {
+      "name": "Product evidence and rights",
+      "category": "Commerce & offers",
+      "state": "owner_input_required",
+      "reason": "No unsupported performance, body or earnings claims.",
+      "credential_types": [],
+      "used_by": [
+        "DcrEsU6KyPb · video",
+        "DcrEsU6KyPb · user_stack"
+      ]
+    },
+    {
+      "name": "Retargeting ads account",
+      "category": "Commerce & offers",
+      "state": "owner_approval_required",
+      "reason": "Source describes retargeting but supplies no ad account/API; keep drafts and approval.",
+      "credential_types": [],
+      "used_by": [
+        "DagnDGKhiNl · video",
+        "DagnDGKhiNl · user_stack"
+      ]
+    },
+    {
+      "name": "Business context inputs",
+      "category": "Memory & handoffs",
+      "state": "owner_input_required",
+      "reason": "Profile, positioning, offers and brand rules must be supplied by owner.",
+      "credential_types": [],
+      "used_by": [
+        "DdCF5u-hGKk · video",
+        "DdCF5u-hGKk · user_stack"
+      ]
+    },
+    {
+      "name": "Claude Code",
+      "category": "Memory & handoffs",
+      "state": "interactive_manual_only",
+      "reason": "The handoff is a markdown file for a fresh Claude Code session; no API is required by the source.",
+      "credential_types": [],
+      "used_by": [
+        "Dainz37MOhU · video",
+        "Dainz37MOhU · user_stack"
+      ]
+    },
+    {
+      "name": "Claude Code files/workspace",
+      "category": "Memory & handoffs",
+      "state": "local_path_unconfigured",
+      "reason": "Source scaffold requires cloud.md/context/skills/connectors folders and user-selected workspace.",
+      "credential_types": [],
+      "used_by": [
+        "DdCF5u-hGKk · video",
+        "DdCF5u-hGKk · user_stack"
+      ]
+    },
+    {
+      "name": "Handoff archive/index",
+      "category": "Memory & handoffs",
+      "state": "local_path_unconfigured",
+      "reason": "USER-STACK adds searchable append-only index; output folder must be selected.",
+      "credential_types": [],
+      "used_by": [
+        "Dainz37MOhU · video",
+        "Dainz37MOhU · user_stack"
+      ]
+    },
+    {
+      "name": "Obsidian vault",
+      "category": "Memory & handoffs",
+      "state": "local_path_unconfigured",
+      "reason": "Local note vault path must be selected.",
+      "credential_types": [],
+      "used_by": [
+        "Da0EUZAu0ve · video",
+        "Da0EUZAu0ve · user_stack"
+      ]
+    },
+    {
+      "name": "Telegram bot",
+      "category": "Memory & handoffs",
+      "state": "credential_missing",
+      "reason": "Source describes Telegram read/write agent. Never expose vault without owner-scoped bot.",
+      "credential_types": [],
+      "used_by": [
+        "Da0EUZAu0ve · video",
+        "Da0EUZAu0ve · user_stack"
+      ]
+    },
+    {
+      "name": "Anthropic account",
+      "category": "N8N launch & credentials",
+      "state": "missing_or_unverified",
+      "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault.",
+      "credential_types": [
+        "anthropicApi"
+      ],
+      "credential_state": "missing_or_unverified",
+      "used_by": [
+        "DZ7kMxgMboD · video",
+        "DZ7kMxgMboD · user_stack",
+        "Da0EUZAu0ve · video",
+        "Da0EUZAu0ve · user_stack",
+        "DYWFQKAPgmF · video",
+        "DYWFQKAPgmF · user_stack",
+        "DaebyH0xIDQ · video",
+        "DaebyH0xIDQ · user_stack"
+      ]
+    },
+    {
+      "name": "ElevenLabs API (xi-api-key header)",
+      "category": "N8N launch & credentials",
+      "state": "missing_or_unverified",
+      "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault.",
+      "credential_types": [
+        "httpHeaderAuth"
+      ],
+      "credential_state": "missing_or_unverified",
+      "used_by": [
+        "DZ7kMxgMboD · video",
+        "DZ7kMxgMboD · user_stack",
+        "Dc6Dxn5k2Ft · user_stack"
+      ]
+    },
+    {
+      "name": "Gmail account",
+      "category": "N8N launch & credentials",
+      "state": "missing_or_unverified",
+      "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault.",
+      "credential_types": [
+        "gmailOAuth2"
+      ],
+      "credential_state": "missing_or_unverified",
+      "used_by": [
+        "DaebyH0xIDQ · video",
+        "DaebyH0xIDQ · user_stack"
+      ]
+    },
+    {
+      "name": "Google Sheets account",
+      "category": "N8N launch & credentials",
+      "state": "missing_or_unverified",
+      "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault.",
+      "credential_types": [
+        "googleSheetsOAuth2Api"
+      ],
+      "credential_state": "missing_or_unverified",
+      "used_by": [
+        "DagnDGKhiNl · video",
+        "DagnDGKhiNl · user_stack",
+        "DbzL_FByZ6t · video",
+        "DbzL_FByZ6t · user_stack"
+      ]
+    },
+    {
+      "name": "Manual browser session",
+      "category": "N8N launch & credentials",
+      "state": "missing_or_unverified",
+      "reason": "UI authentication is manual; this package has no supported API credential.",
+      "credential_types": [
+        "Promote.fun account"
+      ],
+      "credential_state": "missing_or_unverified",
+      "used_by": [
+        "DcfasvOtmmC · video",
+        "DcfasvOtmmC · user_stack"
+      ]
+    },
+    {
+      "name": "n8n import and review",
+      "category": "N8N launch & credentials",
+      "state": "not_imported",
+      "reason": "Workflow ID and launch adapter are not configured.",
+      "credential_types": [],
+      "used_by": [
+        "DMqllvAKzG6 · video",
+        "DMqllvAKzG6 · user_stack"
+      ]
+    },
+    {
+      "name": "NEXEN → n8n launch adapter",
+      "category": "N8N launch & credentials",
+      "state": "not_implemented",
+      "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked.",
+      "credential_types": [],
+      "used_by": [
+        "DZ7kMxgMboD · video",
+        "DZ7kMxgMboD · user_stack",
+        "Dc6Dxn5k2Ft · video",
+        "Dc6Dxn5k2Ft · user_stack",
+        "DagnDGKhiNl · video",
+        "DagnDGKhiNl · user_stack",
+        "DbzL_FByZ6t · video",
+        "DbzL_FByZ6t · user_stack",
+        "Da0EUZAu0ve · video",
+        "Da0EUZAu0ve · user_stack",
+        "Dainz37MOhU · video",
+        "Dainz37MOhU · user_stack",
+        "DZThO_qvCK7 · video",
+        "DZThO_qvCK7 · user_stack",
+        "DYWFQKAPgmF · video",
+        "DYWFQKAPgmF · user_stack",
+        "DcQzhCghRZI · video",
+        "DcQzhCghRZI · user_stack",
+        "Db8Fzg8MyOD · video",
+        "Db8Fzg8MyOD · user_stack",
+        "DdCF5u-hGKk · video",
+        "DdCF5u-hGKk · user_stack",
+        "DaebyH0xIDQ · video",
+        "DaebyH0xIDQ · user_stack",
+        "DdOIy0DsPCK · video",
+        "DdOIy0DsPCK · user_stack",
+        "DdNVrqzuc4l · video",
+        "DdNVrqzuc4l · user_stack",
+        "DY3KmLzt88t · video",
+        "DY3KmLzt88t · user_stack",
+        "DcwceVKGxlY · video",
+        "DcwceVKGxlY · user_stack",
+        "DbEGkS9B26F · video",
+        "DbEGkS9B26F · user_stack",
+        "Dc4E_FTNloZ · video",
+        "Dc4E_FTNloZ · user_stack",
+        "Dc4WJsjp5e2 · video",
+        "Dc4WJsjp5e2 · user_stack",
+        "DMqllvAKzG6 · video",
+        "DMqllvAKzG6 · user_stack",
+        "DcfasvOtmmC · video",
+        "DcfasvOtmmC · user_stack",
+        "DcrEsU6KyPb · video",
+        "DcrEsU6KyPb · user_stack"
+      ]
+    },
+    {
+      "name": "Telegram Second Brain Bot",
+      "category": "N8N launch & credentials",
+      "state": "missing_or_unverified",
+      "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault.",
+      "credential_types": [
+        "telegramApi"
+      ],
+      "credential_state": "missing_or_unverified",
+      "used_by": [
+        "Da0EUZAu0ve · video",
+        "Da0EUZAu0ve · user_stack"
+      ]
+    },
+    {
+      "name": "Unresolved connector",
+      "category": "N8N launch & credentials",
+      "state": "missing_or_unverified",
+      "reason": "The source never supplies its URL/server identity.",
+      "credential_types": [
+        "Custom media connector"
+      ],
+      "credential_state": "missing_or_unverified",
+      "used_by": [
+        "DdOIy0DsPCK · video",
+        "DdOIy0DsPCK · user_stack"
+      ]
+    },
+    {
+      "name": "Buffer",
+      "category": "Research & planning",
+      "state": "credential_missing",
+      "reason": "Source references scheduled organic posts; publishing remains disabled.",
+      "credential_types": [],
+      "used_by": [
+        "DaebyH0xIDQ · video",
+        "DaebyH0xIDQ · user_stack"
+      ]
+    },
+    {
+      "name": "Claude Code / subscription",
+      "category": "Research & planning",
+      "state": "interactive_manual_only",
+      "reason": "User supplies exact source-level Claude prompt; no CLI or provider access assumed.",
+      "credential_types": [],
+      "used_by": [
+        "DMqllvAKzG6 · video",
+        "DMqllvAKzG6 · user_stack"
+      ]
+    },
+    {
+      "name": "Claude subagents",
+      "category": "Research & planning",
+      "state": "interactive_manual_only",
+      "reason": "Source asks for custom subagents; no delegated agents are created here.",
+      "credential_types": [],
+      "used_by": [
+        "DaebyH0xIDQ · video",
+        "DaebyH0xIDQ · user_stack"
+      ]
+    },
+    {
+      "name": "Emergent.sh",
+      "category": "Research & planning",
+      "state": "tool_contract_unverified",
+      "reason": "Source refers to an unseen prompt and website; no API or prompt is implemented.",
+      "credential_types": [],
+      "used_by": [
+        "Db8Fzg8MyOD · video",
+        "Db8Fzg8MyOD · user_stack"
+      ]
+    },
+    {
+      "name": "Gemini AI Studio",
+      "category": "Research & planning",
+      "state": "website_manual_only",
+      "reason": "Use for evidence analysis and Claude prompt preparation only; no JSON/scripts from Gemini.",
+      "credential_types": [],
+      "used_by": [
+        "DMqllvAKzG6 · video",
+        "DMqllvAKzG6 · user_stack"
+      ]
+    },
+    {
+      "name": "Gmail",
+      "category": "Research & planning",
+      "state": "credential_missing",
+      "reason": "Source daily report includes customer email summaries.",
+      "credential_types": [],
+      "used_by": [
+        "DaebyH0xIDQ · video",
+        "DaebyH0xIDQ · user_stack"
+      ]
+    },
+    {
+      "name": "Public competitor pages",
+      "category": "Research & planning",
+      "state": "policy_and_access_review",
+      "reason": "Use public access lawfully; no site copying or bulk SEO pages.",
+      "credential_types": [],
+      "used_by": [
+        "Db8Fzg8MyOD · video",
+        "Db8Fzg8MyOD · user_stack"
+      ]
+    },
+    {
+      "name": "RevenueCat",
+      "category": "Research & planning",
+      "state": "credential_missing",
+      "reason": "Source daily report references app analytics.",
+      "credential_types": [],
+      "used_by": [
+        "DaebyH0xIDQ · video",
+        "DaebyH0xIDQ · user_stack"
+      ]
+    },
+    {
+      "name": "Sort Feed browser extension",
+      "category": "Research & planning",
+      "state": "identity_and_contract_unresolved",
+      "reason": "Source names Sort Feed; no official export/API contract supplied.",
+      "credential_types": [],
+      "used_by": [
+        "DagnDGKhiNl · video",
+        "DagnDGKhiNl · user_stack"
+      ]
+    },
+    {
+      "name": "TrustMarm (ASR uncertain)",
+      "category": "Research & planning",
+      "state": "identity_unresolved",
+      "reason": "Exact site identity is unclear; do not scrape based on this name.",
+      "credential_types": [],
+      "used_by": [
+        "Db8Fzg8MyOD · video",
+        "Db8Fzg8MyOD · user_stack"
+      ]
+    },
+    {
+      "name": "AI for Savages create-agent skill",
+      "category": "Video & clips",
+      "state": "identity_and_contract_unresolved",
+      "reason": "Skill folder/source URL not supplied.",
+      "credential_types": [],
+      "used_by": [
+        "DY3KmLzt88t · video",
+        "DY3KmLzt88t · user_stack"
+      ]
+    },
+    {
+      "name": "FFmpeg",
+      "category": "Video & clips",
+      "state": "installed_not_proven_for_this_workflow",
+      "reason": "OpenShorts media processing uses FFmpeg; not invoked in this package.",
+      "credential_types": [],
+      "used_by": [
+        "Dc6Dxn5k2Ft · video",
+        "Dc6Dxn5k2Ft · user_stack"
+      ]
+    },
+    {
+      "name": "FFmpeg + ffprobe",
+      "category": "Video & clips",
+      "state": "installed_not_connected",
+      "reason": "Required to compose/export/inspect rendered output; no worker adapter configured.",
+      "credential_types": [],
+      "used_by": [
+        "DY3KmLzt88t · video",
+        "DY3KmLzt88t · user_stack"
+      ]
+    },
+    {
+      "name": "NEXEN baseline FFmpeg clipper",
+      "category": "Video & clips",
+      "state": "installed_not_connected",
+      "reason": "Existing worker is available locally; run only under paid-or-research gate.",
+      "credential_types": [],
+      "used_by": [
+        "DbzL_FByZ6t · video",
+        "DbzL_FByZ6t · user_stack"
+      ]
+    },
+    {
+      "name": "OpenShorts",
+      "category": "Video & clips",
+      "state": "not_installed_or_unverified",
+      "reason": "Needs a deployed, version-pinned service and verified callback reachability.",
+      "credential_types": [],
+      "used_by": [
+        "Dc6Dxn5k2Ft · video",
+        "Dc6Dxn5k2Ft · user_stack"
+      ]
+    },
+    {
+      "name": "OpenShorts callback receiver",
+      "category": "Video & clips",
+      "state": "not_runtime_tested",
+      "reason": "HMAC and correlation contract documented; callback must be exercised in isolated n8n before launch.",
+      "credential_types": [],
+      "used_by": [
+        "Dc6Dxn5k2Ft · video",
+        "Dc6Dxn5k2Ft · user_stack"
+      ]
+    },
+    {
+      "name": "Source live-stream video",
+      "category": "Video & clips",
+      "state": "owner_input_required",
+      "reason": "Input must be owned/licensed or covered by a paid campaign.",
+      "credential_types": [],
+      "used_by": [
+        "DbzL_FByZ6t · video",
+        "DbzL_FByZ6t · user_stack"
+      ]
+    },
+    {
+      "name": "StreamLadders (source spelling)",
+      "category": "Video & clips",
+      "state": "identity_and_contract_unresolved",
+      "reason": "Source names StreamLadders; no official API contract or account binding.",
+      "credential_types": [],
+      "used_by": [
+        "DbzL_FByZ6t · video",
+        "DbzL_FByZ6t · user_stack"
+      ]
+    },
+    {
+      "name": "Talking-avatar renderer",
+      "category": "Video & clips",
+      "state": "not_implemented",
+      "reason": "Avatar video render is a required production stage, currently manual/pending.",
+      "credential_types": [],
+      "used_by": [
+        "DY3KmLzt88t · video",
+        "DY3KmLzt88t · user_stack"
+      ]
+    },
+    {
+      "name": "Anthropic Messages API",
+      "category": "Voice & assistant",
+      "state": "pending_configuration",
+      "reason": "Source workflow has an Anthropic credential stub; bind the named n8n credential.",
+      "credential_types": [],
+      "used_by": [
+        "DZ7kMxgMboD · video",
+        "DZ7kMxgMboD · user_stack"
+      ]
+    },
+    {
+      "name": "ElevenLabs API or edge-tts adapter",
+      "category": "Voice & assistant",
+      "state": "pending_configuration",
+      "reason": "Source TTS requires account API credential. USER-STACK Edge TTS is online and not guaranteed-free/offline.",
+      "credential_types": [],
+      "used_by": [
+        "DZ7kMxgMboD · video",
+        "DZ7kMxgMboD · user_stack"
+      ]
+    },
+    {
+      "name": "MARVIN companion app",
+      "category": "Voice & assistant",
+      "state": "not_implemented",
+      "reason": "Electron HUD, mic capture and playback are outside the n8n export.",
+      "credential_types": [],
+      "used_by": [
+        "DZ7kMxgMboD · video",
+        "DZ7kMxgMboD · user_stack"
+      ]
+    },
+    {
+      "name": "CapCut",
+      "category": "YouTube production",
+      "state": "manual_handoff",
+      "reason": "Editing app remains a human production stage.",
+      "credential_types": [],
+      "used_by": [
+        "DYWFQKAPgmF · video",
+        "DYWFQKAPgmF · user_stack"
+      ]
+    },
+    {
+      "name": "Claude subscription",
+      "category": "YouTube production",
+      "state": "interactive_manual_only",
+      "reason": "Source prompt uses Claude; no API billing or provider entitlement assumed.",
+      "credential_types": [],
+      "used_by": [
+        "DYWFQKAPgmF · video",
+        "DYWFQKAPgmF · user_stack"
+      ]
+    },
+    {
+      "name": "Content production queue",
+      "category": "YouTube production",
+      "state": "local_draft_only",
+      "reason": "Research-to-original-video planning is represented; video generation is a separate workflow.",
+      "credential_types": [],
+      "used_by": [
+        "DagnDGKhiNl · video",
+        "DagnDGKhiNl · user_stack"
+      ]
+    },
+    {
+      "name": "ElevenLabs",
+      "category": "YouTube production",
+      "state": "credential_missing",
+      "reason": "Source uses voice-over; bind a named credential only after setup.",
+      "credential_types": [],
+      "used_by": [
+        "DYWFQKAPgmF · video",
+        "DYWFQKAPgmF · user_stack"
+      ]
+    },
+    {
+      "name": "Freelancer/vendor",
+      "category": "YouTube production",
+      "state": "manual_handoff",
+      "reason": "No marketplace/API, vendor, budget or brief contract supplied.",
+      "credential_types": [],
+      "used_by": [
+        "Dc4WJsjp5e2 · video",
+        "Dc4WJsjp5e2 · user_stack"
+      ]
+    },
+    {
+      "name": "Nano Banana Pro",
+      "category": "YouTube production",
+      "state": "identity_and_contract_unresolved",
+      "reason": "Exact model access/contract is not configured.",
+      "credential_types": [],
+      "used_by": [
+        "DYWFQKAPgmF · video",
+        "DYWFQKAPgmF · user_stack"
+      ]
+    },
+    {
+      "name": "Pexels media",
+      "category": "YouTube production",
+      "state": "license_and_access_unverified",
+      "reason": "Stock asset use requires license/provenance per asset.",
+      "credential_types": [],
+      "used_by": [
+        "DYWFQKAPgmF · video",
+        "DYWFQKAPgmF · user_stack"
+      ]
+    },
+    {
+      "name": "Rights-cleared footage",
+      "category": "YouTube production",
+      "state": "owner_input_required",
+      "reason": "Footage license and source provenance required.",
+      "credential_types": [],
+      "used_by": [
+        "Dc4WJsjp5e2 · video",
+        "Dc4WJsjp5e2 · user_stack"
+      ]
+    },
+    {
+      "name": "TubeBuddy or VidIQ",
+      "category": "YouTube production",
+      "state": "optional_manual_research",
+      "reason": "Keyword check is an optional source stage; no API integrated.",
+      "credential_types": [],
+      "used_by": [
+        "DYWFQKAPgmF · video",
+        "DYWFQKAPgmF · user_stack"
+      ]
+    },
+    {
+      "name": "YouTube account/upload",
+      "category": "YouTube production",
+      "state": "not_connected",
+      "reason": "Owner upload is a manual source stage; no external publish node is implemented.",
+      "credential_types": [],
+      "used_by": [
+        "Dc4WJsjp5e2 · video",
+        "Dc4WJsjp5e2 · user_stack"
+      ]
+    }
+  ],
+  "launch_adapter": {
+    "name": "NEXEN-to-n8n manual trigger",
+    "state": "documented_cli_not_configured",
+    "reason": "Official n8n self-hosted CLI documentation describes n8n execute --id <ID> for saved workflows (https://docs.n8n.io/deploy/host-n8n/configure-n8n/use-the-command-line/). This target is not runtime-validated here; actual imported IDs, instance path/context, dependency and credential readiness are not configured. Keep all Start controls fail-closed. CLI executions may have different error-workflow behavior than normal production triggers; inspect executions manually."
+  },
+  "research_queue": [
+    {
+      "name": "HotClip",
+      "category": "Video production · research queue",
+      "state": "contract_verified_setup_and_adapter_pending",
+      "official_url": "https://github.com/xixihhhh/hotclip",
+      "license": "AGPL-3.0",
+      "reason": "Official README documents Windows/macOS/experimental Linux releases, local CLI (transcribe/highlights/clip), local MCP names (clip_video/detect_highlights/transcribe_video), and a local model/FFmpeg pipeline. Strong clipper candidate. Exact MCP input/output schema and NEXEN adapter/runtime are not yet tested; install is not evidence."
+    },
+    {
+      "name": "ClipForge",
+      "category": "Video production · research queue",
+      "state": "contract_partially_verified_candidate",
+      "official_url": "https://github.com/xixihhhh/clipforge",
+      "license": "AGPL-3.0",
+      "reason": "Official README documents original short-video generation from product image/topic, CLI/MCP and local FFmpeg composition. Source setup lists Node 20+ and pnpm; provider keys may be required for AI image/video or paid TTS. Inspect against original-video pipeline fixtures before selection."
+    },
+    {
+      "name": "ViMax",
+      "category": "Video production · research queue",
+      "state": "identity_or_contract_unresolved",
+      "official_url": "https://github.com/HKUDS/ViMax",
+      "reason": "Candidate from the supplied tool list. Exact maintained branch/API, license and current dependencies remain unverified."
+    },
+    {
+      "name": "OpenMontage",
+      "category": "Video production · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/calesthio/OpenMontage",
+      "reason": "Candidate from the supplied tool list. Inspect license, supported formats, platform, CLI/API contract and maintenance before selection."
+    },
+    {
+      "name": "Remotion",
+      "category": "Video production · research queue",
+      "state": "candidate_not_a_native_n8n_node",
+      "official_url": "https://www.remotion.dev/",
+      "reason": "Official project/site candidate for programmatic video composition; repository/license, rendering host, scale and n8n adapter need a separate review."
+    },
+    {
+      "name": "youtube-automation-agent (OleLehmann)",
+      "category": "Video production · research queue",
+      "state": "conflicting_repository_identity",
+      "official_url": "https://github.com/OleLehmann/youtube-automation-agent",
+      "reason": "The supplied list contains two different repositories with this name. This link is one cited identity only; do not assume it is the intended project."
+    },
+    {
+      "name": "youtube-automation-agent (darkzOGx)",
+      "category": "Video production · research queue",
+      "state": "conflicting_repository_identity",
+      "official_url": "https://github.com/darkzOGx/youtube-automation-agent",
+      "reason": "The supplied list contains two different repositories with this name. Compare against the other cited repo; license, code and maintenance unverified."
+    },
+    {
+      "name": "podcast-shorts-factory",
+      "category": "Video production · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/krakonjac300-pixel/podcast-shorts-factory",
+      "reason": "Candidate from the supplied tool list; contract, license, prerequisites, maintenance and source rights need review."
+    },
+    {
+      "name": "agent-media-toolkit-mcp",
+      "category": "Video production · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/krakonjac300-pixel/agent-media-toolkit-mcp",
+      "reason": "Candidate from the supplied tool list; MCP tool schemas, file safety, license and maintenance need review."
+    },
+    {
+      "name": "ComfyUI",
+      "category": "Image & character generation · research queue",
+      "state": "contract_verified_graph_and_models_pending",
+      "official_url": "https://github.com/Comfy-Org/ComfyUI",
+      "license": "GPL-3.0",
+      "reason": "Official API documents POST /prompt and queue/history routes. USER-STACK still needs the exact operator-supplied API graph, node packs, weights, hardware and output fixture; no render is claimed."
+    },
+    {
+      "name": "OpenArt",
+      "category": "Image & character generation · research queue",
+      "state": "identity_or_contract_unresolved",
+      "official_url": null,
+      "reason": "Name appears without a stable official repo/product URL in the supplied list. Do not bind credentials or invent an endpoint until the exact service is identified."
+    },
+    {
+      "name": "OpenArtMCP",
+      "category": "Image & character generation · research queue",
+      "state": "identity_or_contract_unresolved",
+      "official_url": null,
+      "reason": "The supplied list gives a name but no exact repository URL or maintained MCP tool contract."
+    },
+    {
+      "name": "Open-Higgsfield-AI (Autom8AI)",
+      "category": "Image & character generation · research queue",
+      "state": "unofficial_connector_candidate_unverified",
+      "official_url": "https://github.com/Autom8AI/Open-Higgsfield-AI",
+      "reason": "Third-party connector candidate, not asserted to be a vendor-supported Higgsfield API. Inspect authentication, license and terms before use."
+    },
+    {
+      "name": "open-higgsfield (wide-trace)",
+      "category": "Image & character generation · research queue",
+      "state": "unofficial_connector_candidate_unverified",
+      "official_url": "https://github.com/wide-trace/open-higgsfield",
+      "reason": "Second third-party connector candidate from the supplied list. Keep distinct from the Autom8AI repo; no vendor endorsement assumed."
+    },
+    {
+      "name": "HeartMuLa",
+      "category": "Music production · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/HeartMuLa/heartlib",
+      "reason": "Music generation candidate. Verify model weights/license, VRAM, platform, inference interface and maintenance before a workflow adapter is selected."
+    },
+    {
+      "name": "ACE-Step 1.5",
+      "category": "Music production · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/ace-step/ACE-Step-1.5",
+      "reason": "Music generation candidate. Verify exact repository identity, model license/weights, GPU or accelerator support, inference CLI/API and maintenance."
+    },
+    {
+      "name": "MusicGen / AudioCraft",
+      "category": "Music production · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/facebookresearch/audiocraft",
+      "reason": "Music generation candidate. Model/code terms, model-weight access, hardware and commercial-use requirements need separate review."
+    },
+    {
+      "name": "YuE",
+      "category": "Music production · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/multimodal-art-projection/YuE",
+      "reason": "Full-song generation candidate. Inspect official model/code licensing, hardware and reproducible inference contract."
+    },
+    {
+      "name": "Demucs",
+      "category": "Music production · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/facebookresearch/demucs",
+      "reason": "Stem-separation candidate for owned or licensed audio. Verify current maintenance, model terms, supported runtimes and GPU/CPU throughput."
+    },
+    {
+      "name": "Spotify Basic Pitch",
+      "category": "Music production · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/spotify/basic-pitch",
+      "reason": "Audio-to-MIDI candidate. Validate input limits, output quality on owner audio, platform support and license before wiring."
+    },
+    {
+      "name": "Spotify Pedalboard",
+      "category": "Music production · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/spotify/pedalboard",
+      "reason": "Audio DSP library candidate. Confirm Python/audio format behavior, supported operating systems and latency on local fixtures."
+    },
+    {
+      "name": "Matchering",
+      "category": "Music production · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/sergree/matchering",
+      "reason": "Reference-based mastering candidate. Use owned/licensed references; evaluate levels, clipping and blind listening before any automatic master is accepted."
+    },
+    {
+      "name": "master_me",
+      "category": "Music production · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/trummerschlunk/master_me",
+      "reason": "Open-source mastering plugin candidate. Verify current plugin formats, DAW/OS compatibility and license."
+    },
+    {
+      "name": "LangGraph",
+      "category": "Orchestration & knowledge · research queue",
+      "state": "identity_unresolved_in_source_list",
+      "official_url": null,
+      "reason": "Only a bare name appears in the supplied list; exact intended repository/version is not pinned."
+    },
+    {
+      "name": "Activepieces",
+      "category": "Orchestration & knowledge · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/activepieces/activepieces",
+      "reason": "Alternative workflow orchestrator. Inspect n8n overlap, connector licenses, deployment and migration cost before adding a dependency."
+    },
+    {
+      "name": "RAG-Anything",
+      "category": "Orchestration & knowledge · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/HKUDS/RAG-Anything",
+      "reason": "Knowledge/RAG candidate. Verify supported parsers, license, model/GPU needs and value over current NEXEN search before integration."
+    },
+    {
+      "name": "SurfSense",
+      "category": "Orchestration & knowledge · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/MODSetter/SurfSense",
+      "reason": "Research capture candidate. Inspect connectors, permissions, license, local/hosted mode and maintenance before selection."
+    },
+    {
+      "name": "Milvus",
+      "category": "Orchestration & knowledge · research queue",
+      "state": "candidate_unverified",
+      "official_url": "https://github.com/milvus-io/milvus",
+      "reason": "Vector database candidate. Establish need, deployment/backup requirements and supported resource footprint before adding operational cost."
+    },
+    {
+      "name": "zvec-grep",
+      "category": "Orchestration & knowledge · research queue",
+      "state": "candidate_identity_and_contract_unverified",
+      "official_url": "https://github.com/zvec-ai/zvec-grep",
+      "reason": "Candidate URL was supplied, but exact use, API/CLI contract and maintenance are not yet verified."
+    },
+    {
+      "name": "Supermemory MCP / CLI",
+      "category": "Orchestration & knowledge · research queue",
+      "state": "identity_unresolved_in_source_list",
+      "official_url": null,
+      "reason": "Supplied list says MCP or CLI but gives no exact upstream URL/version; exact identity and data-handling terms are required."
+    }
+  ]
+}

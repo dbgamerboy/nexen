@@ -1,0 +1,117 @@
+{
+  "name": "VIDEO | AI fictional-character Shorts generation | DbEGkS9B26F",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "VIDEO VERSION\nSource: https://www.instagram.com/petervibecoder/reel/DbEGkS9B26F/\nEvidence: [0.16s - 4.08s] [Speaker 0] YouTube just changed their shorts payment model and people are making $3,000\n[4.08s - 17.14s] [Speaker 0] a month uploading AI Slop. I'm about to show you the cheat code. Wait. YouTube pays for shorts now? I thought you needed like a million subscribers and a sponsorship deal. Not anymore. YouTube rolled out ad revenue sharing for shorts in 2023.\n[17.14s - 22.66s] [Speaker 0] Now they pay based on views alone. A million views can net you $200 to $500,\n[22.66s - 32.34s] [Speaker 2] and people are cranking out 10 videos a day using AI. So you're telling me I could pump out videos without filming anything. How does that even work? Simple. Go to brainrot.ovid.\n[32.56s - 33.86s] [Speaker 0] Click AI scriptwriter.\n[34.24s - 45.39s] [Speaker 0] Pick your niche like finance or tech or whatever. Then select your characters, your video idea, your caption style, and hit generate. The AI spits out a full video in sixty seconds.\n[45.70s - 56.35s] [Speaker 2] Hold on. If it's this easy, won't YouTube just ban AI content? This sounds too good to be true. YouTube doesn't care if it's AI as long as it's not spam. And channels using brainrot.mauve\n[56.35s - 69.03s] [Speaker 0] are hitting millions of views because the content is actually watchable. It's not some robot v\nFaithful sequence; unavailable prompts/contracts stay unresolved.\nExternal media generation/publishing is not marked complete.",
+        "height": 360,
+        "width": 440
+      },
+      "id": "109ef7b7-1a4b-4323-a9dd-6cfd2cbd11af",
+      "name": "Evidence and boundaries",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "2deb6e2d-3b38-454d-9037-933752f4ba07",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$input.first().json;\nfor(const k of ['niche','characters','video_idea','caption_style']) if(!j[k]) throw new Error(k+' required');\nreturn [{json:{niche:j.niche,characters:j.characters,video_idea:j.video_idea,caption_style:j.caption_style,tool_name:'brainrot.ovid / brainrot.mauve [uncertain ASR]',generate_status:'manual_tool_handoff',reported_duration_seconds:60,reported_claim_status:'unverified source claim',publish_enabled:false}}];"
+      },
+      "id": "16607751-dfd7-4d7d-b5ef-a2e27ab5a386",
+      "name": "Reconstruct source method",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Expected input fixture is paired in fixtures/source-method-fixtures.json. This export prepares records/handoffs only when a required vendor API/worker is unresolved. Import inactive; run manually after reviewing its inputs.",
+        "height": 170,
+        "width": 420
+      },
+      "id": "8447ad9d-6435-4c89-b078-645e88573556",
+      "name": "Run status",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Reconstruct source method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "nexen": {
+      "catalog_id": "instagram:DbEGkS9B26F:video:DbEGkS9B26F-character-shorts",
+      "source_id": "DbEGkS9B26F",
+      "source_shortcode": "DbEGkS9B26F",
+      "source_numbers": [
+        9
+      ],
+      "source_url": "https://www.instagram.com/petervibecoder/reel/DbEGkS9B26F/",
+      "method": "AI fictional-character Shorts generation",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "AI characters",
+      "required_software": [
+        {
+          "name": "brainrot.ovid / brainrot.mauve",
+          "category": "AI characters",
+          "state": "identity_unresolved",
+          "reason": "Name is uncertain in machine transcript; endpoint not verified."
+        },
+        {
+          "name": "Versioned character media worker",
+          "category": "AI characters",
+          "state": "not_implemented",
+          "reason": "Requires persistent character reference and safe render/QA adapter."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  },
+  "pinData": {}
+}

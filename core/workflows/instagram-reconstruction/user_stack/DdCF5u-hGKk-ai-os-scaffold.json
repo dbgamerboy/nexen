@@ -1,0 +1,203 @@
+{
+  "name": "USER-STACK | Business AI operating-system folder and connector scaffold | DdCF5u-hGKk",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER-STACK VERSION — same source method with the user's practical stack.\nSource: https://www.instagram.com/wesbookland/reel/DdCF5u-hGKk/\nEnhancement: NEXEN decision/source provenance and reusable skill/checklist index; connector bindings remain explicit per service.\n\nOperational state: this is a proposed architecture. Required external credentials, models, worker or API are called out in the pair comparison and README. Nothing is activated by import.",
+        "height": 400,
+        "width": 580
+      },
+      "id": "09000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        -460
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "09000000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: {\n  business_name: 'Acme Studio',\n  who_i_am: 'Solo founder, direct and concise writer',\n  positioning: 'Done-for-you brand systems for B2B SaaS',\n  offer: 'Fixed-scope brand sprint, 3 tiers',\n  brand_voice: 'Plain, confident, no hype',\n  connectors: ['linear', 'google_drive', 'crm', 'meta_ads', 'accounting'],\n  root_dir: './ai-os'\n} }];"
+      },
+      "id": "09000000-0000-4000-8000-000000000003",
+      "name": "Sample Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nif (!j.business_name) throw new Error('business_name is required');\nconst root = (j.root_dir || './ai-os').replace(/\\/+$/, '');\nconst files = [];\nfiles.push({ fileName: root + '/CLAUDE.md', content: ['# CLAUDE.md', '', 'Rules and preferences for ' + j.business_name + '.', '', '- Always write in this brand voice: ' + (j.brand_voice||'(define)'), '- Read context/ before any task.', '- Run repeated work via skills/.', '- Keep a human in the loop for publishing, outreach and spend.'].join('\\n') });\nfiles.push({ fileName: root + '/context/profile.md', content: '# Profile\\n\\n' + (j.who_i_am||'(who I am and how I talk)') });\nfiles.push({ fileName: root + '/context/positioning.md', content: '# Positioning\\n\\n' + (j.positioning||'(what I do and what sets me apart)') });\nfiles.push({ fileName: root + '/context/offer.md', content: '# Offer\\n\\n' + (j.offer||'(what I sell and how it is structured)') });\nfiles.push({ fileName: root + '/context/brand.md', content: '# Brand guidelines\\n\\nVoice: ' + (j.brand_voice||'(define)') });\nfiles.push({ fileName: root + '/skills/README.md', content: '# Skills\\n\\nOne folder per routine you run more than once, so it runs the same way every time.' });\nconst conn = (j.connectors||[]).map(c => '- [ ] ' + c + ' (MANUAL: authorise + wire MCP/credential later)').join('\\n');\nfiles.push({ fileName: root + '/connectors.md', content: ['# Connectors (manual handoffs)', '', 'MCP + memory layers and each integration are wired later, outside this scaffold:', '', conn || '- (none listed)', '', 'Document each connection and its purpose here so a new hire can run the system.'].join('\\n') });\nreturn files.map(f => ({ json: f }));"
+      },
+      "id": "09000000-0000-4000-8000-000000000004",
+      "name": "Render Scaffold",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "content",
+        "options": {
+          "fileName": "={{ $json.fileName.split('/').pop() }}"
+        }
+      },
+      "id": "09000000-0000-4000-8000-000000000005",
+      "name": "To Binary",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        180,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.fileName }}",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "09000000-0000-4000-8000-000000000006",
+      "name": "Write Scaffold",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const sourceId=\"DdCF5u-hGKk\";\nconst sourceUrl=\"https://www.instagram.com/wesbookland/reel/DdCF5u-hGKk/\";\nconst variant='USER_STACK';\nconst seen=new Set();\nconst hash=s=>{let h=2166136261;for(const c of s)h=Math.imul(h^c.charCodeAt(0),16777619);return (h>>>0).toString(16).padStart(8,'0');};\nreturn $input.all().map(({json:j},i)=>{\n  const recordKey=String(j.row_id||j.clip_id||j.note_id||j.fileName||j.output_path||j.title||i);\n  const idempotencyKey=hash(sourceId+'|'+recordKey);\n  if(seen.has(idempotencyKey)) throw new Error('Duplicate output in one execution: '+idempotencyKey);\n  seen.add(idempotencyKey);\n  return {json:{...j,source_provenance:{source_id:sourceId,source_url:sourceUrl,variant},idempotency_key:idempotencyKey,review_status:'needs_human_review',review_notes:Array.isArray(j.review_notes)?j.review_notes:[],external_actions_enabled:false}};\n});"
+      },
+      "id": "25e7ad79-55ec-49ba-945c-1329309acc85",
+      "name": "Attach Provenance + Review Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        190,
+        180
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sample Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sample Input": {
+      "main": [
+        [
+          {
+            "node": "Render Scaffold",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Render Scaffold": {
+      "main": [
+        [
+          {
+            "node": "To Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "To Binary": {
+      "main": [
+        [
+          {
+            "node": "Attach Provenance + Review Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach Provenance + Review Gate": {
+      "main": [
+        [
+          {
+            "node": "Write Scaffold",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:DdCF5u-hGKk:user_stack:DdCF5u-hGKk-ai-os-scaffold",
+      "source_id": "DdCF5u-hGKk",
+      "source_shortcode": "DdCF5u-hGKk",
+      "source_numbers": [
+        17
+      ],
+      "source_url": "https://www.instagram.com/wesbookland/reel/DdCF5u-hGKk/",
+      "method": "Business AI operating-system folder and connector scaffold",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "Memory & handoffs",
+      "required_software": [
+        {
+          "name": "Claude Code files/workspace",
+          "category": "Memory & handoffs",
+          "state": "local_path_unconfigured",
+          "reason": "Source scaffold requires cloud.md/context/skills/connectors folders and user-selected workspace."
+        },
+        {
+          "name": "Business context inputs",
+          "category": "Memory & handoffs",
+          "state": "owner_input_required",
+          "reason": "Profile, positioning, offers and brand rules must be supplied by owner."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

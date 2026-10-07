@@ -1,0 +1,1965 @@
+{
+  "schema": "nexen.instagram-workflow-assets.v1",
+  "generated_at": "2026-09-30T11:52:46.053Z",
+  "source_count": 82,
+  "paired_methods": 25,
+  "export_count": 50,
+  "items": [
+    {
+      "sourceId": "DZ7kMxgMboD",
+      "variant": "video",
+      "category": "Voice & assistant",
+      "path": "workflows/instagram-reconstruction/video/DZ7kMxgMboD-marvin.json",
+      "source_url": "https://www.instagram.com/dhaibuilds/reel/DZ7kMxgMboD/",
+      "workflow_name": "MARVIN turn-handler (VIDEO / faithful) - dhaibuilds DZ7kMxgMboD",
+      "software": [
+        {
+          "name": "Anthropic Messages API",
+          "category": "Voice & assistant",
+          "state": "pending_configuration",
+          "reason": "Source workflow has an Anthropic credential stub; bind the named n8n credential."
+        },
+        {
+          "name": "ElevenLabs API or edge-tts adapter",
+          "category": "Voice & assistant",
+          "state": "pending_configuration",
+          "reason": "Source TTS requires account API credential. USER-STACK Edge TTS is online and not guaranteed-free/offline."
+        },
+        {
+          "name": "MARVIN companion app",
+          "category": "Voice & assistant",
+          "state": "not_implemented",
+          "reason": "Electron HUD, mic capture and playback are outside the n8n export."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        },
+        {
+          "type": "httpHeaderAuth",
+          "name": "ElevenLabs API (xi-api-key header)",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DZ7kMxgMboD",
+      "variant": "user_stack",
+      "category": "Voice & assistant",
+      "path": "workflows/instagram-reconstruction/user_stack/DZ7kMxgMboD-marvin.json",
+      "source_url": "https://www.instagram.com/dhaibuilds/reel/DZ7kMxgMboD/",
+      "workflow_name": "MARVIN turn-handler (USER-STACK / self-hosted TTS) - dhaibuilds DZ7kMxgMboD",
+      "software": [
+        {
+          "name": "Anthropic Messages API",
+          "category": "Voice & assistant",
+          "state": "pending_configuration",
+          "reason": "Source workflow has an Anthropic credential stub; bind the named n8n credential."
+        },
+        {
+          "name": "ElevenLabs API or edge-tts adapter",
+          "category": "Voice & assistant",
+          "state": "pending_configuration",
+          "reason": "Source TTS requires account API credential. USER-STACK Edge TTS is online and not guaranteed-free/offline."
+        },
+        {
+          "name": "MARVIN companion app",
+          "category": "Voice & assistant",
+          "state": "not_implemented",
+          "reason": "Electron HUD, mic capture and playback are outside the n8n export."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        },
+        {
+          "type": "httpHeaderAuth",
+          "name": "openai-edge-tts (Bearer)",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "Dc6Dxn5k2Ft",
+      "variant": "video",
+      "category": "Video & clips",
+      "path": "workflows/instagram-reconstruction/video/Dc6Dxn5k2Ft-clipper.json",
+      "source_url": "https://www.instagram.com/bty.223/reel/Dc6Dxn5k2Ft/",
+      "workflow_name": "Clip method (VIDEO / faithful handoff) - bty.223 Dc6Dxn5k2Ft + theharis + keeran",
+      "software": [
+        {
+          "name": "OpenShorts",
+          "category": "Video & clips",
+          "state": "not_installed_or_unverified",
+          "reason": "Needs a deployed, version-pinned service and verified callback reachability."
+        },
+        {
+          "name": "FFmpeg",
+          "category": "Video & clips",
+          "state": "installed_not_proven_for_this_workflow",
+          "reason": "OpenShorts media processing uses FFmpeg; not invoked in this package."
+        },
+        {
+          "name": "OpenShorts callback receiver",
+          "category": "Video & clips",
+          "state": "not_runtime_tested",
+          "reason": "HMAC and correlation contract documented; callback must be exercised in isolated n8n before launch."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "Dc6Dxn5k2Ft",
+      "variant": "user_stack",
+      "category": "Video & clips",
+      "path": "workflows/instagram-reconstruction/user_stack/Dc6Dxn5k2Ft-clipper.json",
+      "source_url": "https://www.instagram.com/bty.223/reel/Dc6Dxn5k2Ft/",
+      "workflow_name": "Clip method (USER-STACK / OpenShorts clipper integration) - Dc6Dxn5k2Ft",
+      "software": [
+        {
+          "name": "OpenShorts",
+          "category": "Video & clips",
+          "state": "not_installed_or_unverified",
+          "reason": "Needs a deployed, version-pinned service and verified callback reachability."
+        },
+        {
+          "name": "FFmpeg",
+          "category": "Video & clips",
+          "state": "installed_not_proven_for_this_workflow",
+          "reason": "OpenShorts media processing uses FFmpeg; not invoked in this package."
+        },
+        {
+          "name": "OpenShorts callback receiver",
+          "category": "Video & clips",
+          "state": "not_runtime_tested",
+          "reason": "HMAC and correlation contract documented; callback must be exercised in isolated n8n before launch."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "httpHeaderAuth",
+          "name": "OpenShorts API (Bearer osk_)",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DagnDGKhiNl",
+      "variant": "video",
+      "category": "Research & planning",
+      "path": "workflows/instagram-reconstruction/video/DagnDGKhiNl-viral-reference.json",
+      "source_url": "https://www.instagram.com/adley/reel/DagnDGKhiNl/",
+      "workflow_name": "VIDEO | Viral reference research -> original production queue | DagnDGKhiNl",
+      "software": [
+        {
+          "name": "Sort Feed browser extension",
+          "category": "Research & planning",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source names Sort Feed; no official export/API contract supplied."
+        },
+        {
+          "name": "Content production queue",
+          "category": "YouTube production",
+          "state": "local_draft_only",
+          "reason": "Research-to-original-video planning is represented; video generation is a separate workflow."
+        },
+        {
+          "name": "Retargeting ads account",
+          "category": "Commerce & offers",
+          "state": "owner_approval_required",
+          "reason": "Source describes retargeting but supplies no ad account/API; keep drafts and approval."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "googleSheetsOAuth2Api",
+          "name": "Google Sheets account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DagnDGKhiNl",
+      "variant": "user_stack",
+      "category": "Research & planning",
+      "path": "workflows/instagram-reconstruction/user_stack/DagnDGKhiNl-viral-reference.json",
+      "source_url": "https://www.instagram.com/adley/reel/DagnDGKhiNl/",
+      "workflow_name": "USER-STACK | Viral reference research -> original production queue | DagnDGKhiNl",
+      "software": [
+        {
+          "name": "Sort Feed browser extension",
+          "category": "Research & planning",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source names Sort Feed; no official export/API contract supplied."
+        },
+        {
+          "name": "Content production queue",
+          "category": "YouTube production",
+          "state": "local_draft_only",
+          "reason": "Research-to-original-video planning is represented; video generation is a separate workflow."
+        },
+        {
+          "name": "Retargeting ads account",
+          "category": "Commerce & offers",
+          "state": "owner_approval_required",
+          "reason": "Source describes retargeting but supplies no ad account/API; keep drafts and approval."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "googleSheetsOAuth2Api",
+          "name": "Google Sheets account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DbzL_FByZ6t",
+      "variant": "video",
+      "category": "Video & clips",
+      "path": "workflows/instagram-reconstruction/video/DbzL_FByZ6t-streamer-clips.json",
+      "source_url": "https://www.instagram.com/billsabertv/reel/DbzL_FByZ6t/",
+      "workflow_name": "VIDEO | Streamer live -> clip -> wake/pre-live/bedtime schedule | DbzL_FByZ6t",
+      "software": [
+        {
+          "name": "Source live-stream video",
+          "category": "Video & clips",
+          "state": "owner_input_required",
+          "reason": "Input must be owned/licensed or covered by a paid campaign."
+        },
+        {
+          "name": "NEXEN baseline FFmpeg clipper",
+          "category": "Video & clips",
+          "state": "installed_not_connected",
+          "reason": "Existing worker is available locally; run only under paid-or-research gate."
+        },
+        {
+          "name": "StreamLadders (source spelling)",
+          "category": "Video & clips",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source names StreamLadders; no official API contract or account binding."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "googleSheetsOAuth2Api",
+          "name": "Google Sheets account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DbzL_FByZ6t",
+      "variant": "user_stack",
+      "category": "Video & clips",
+      "path": "workflows/instagram-reconstruction/user_stack/DbzL_FByZ6t-streamer-clips.json",
+      "source_url": "https://www.instagram.com/billsabertv/reel/DbzL_FByZ6t/",
+      "workflow_name": "USER-STACK | Streamer live -> clip -> wake/pre-live/bedtime schedule | DbzL_FByZ6t",
+      "software": [
+        {
+          "name": "Source live-stream video",
+          "category": "Video & clips",
+          "state": "owner_input_required",
+          "reason": "Input must be owned/licensed or covered by a paid campaign."
+        },
+        {
+          "name": "NEXEN baseline FFmpeg clipper",
+          "category": "Video & clips",
+          "state": "installed_not_connected",
+          "reason": "Existing worker is available locally; run only under paid-or-research gate."
+        },
+        {
+          "name": "StreamLadders (source spelling)",
+          "category": "Video & clips",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source names StreamLadders; no official API contract or account binding."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "googleSheetsOAuth2Api",
+          "name": "Google Sheets account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "Da0EUZAu0ve",
+      "variant": "video",
+      "category": "Memory & handoffs",
+      "path": "workflows/instagram-reconstruction/video/Da0EUZAu0ve-obsidian-brain.json",
+      "source_url": "https://www.instagram.com/_no_hype_ai/reel/Da0EUZAu0ve/",
+      "workflow_name": "VIDEO | Dictated note -> classified Obsidian note -> Telegram read/write | Da0EUZAu0ve",
+      "software": [
+        {
+          "name": "Obsidian vault",
+          "category": "Memory & handoffs",
+          "state": "local_path_unconfigured",
+          "reason": "Local note vault path must be selected."
+        },
+        {
+          "name": "Telegram bot",
+          "category": "Memory & handoffs",
+          "state": "credential_missing",
+          "reason": "Source describes Telegram read/write agent. Never expose vault without owner-scoped bot."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        },
+        {
+          "type": "telegramApi",
+          "name": "Telegram Second Brain Bot",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "Da0EUZAu0ve",
+      "variant": "user_stack",
+      "category": "Memory & handoffs",
+      "path": "workflows/instagram-reconstruction/user_stack/Da0EUZAu0ve-obsidian-brain.json",
+      "source_url": "https://www.instagram.com/_no_hype_ai/reel/Da0EUZAu0ve/",
+      "workflow_name": "USER-STACK | Dictated note -> classified Obsidian note -> Telegram read/write | Da0EUZAu0ve",
+      "software": [
+        {
+          "name": "Obsidian vault",
+          "category": "Memory & handoffs",
+          "state": "local_path_unconfigured",
+          "reason": "Local note vault path must be selected."
+        },
+        {
+          "name": "Telegram bot",
+          "category": "Memory & handoffs",
+          "state": "credential_missing",
+          "reason": "Source describes Telegram read/write agent. Never expose vault without owner-scoped bot."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        },
+        {
+          "type": "telegramApi",
+          "name": "Telegram Second Brain Bot",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "Dainz37MOhU",
+      "variant": "video",
+      "category": "Memory & handoffs",
+      "path": "workflows/instagram-reconstruction/video/Dainz37MOhU-claude-handoff.json",
+      "source_url": "https://www.instagram.com/rick_morty.tech/reel/Dainz37MOhU/",
+      "workflow_name": "VIDEO | Long Claude Code session -> handoff.md -> fresh session | Dainz37MOhU",
+      "software": [
+        {
+          "name": "Claude Code",
+          "category": "Memory & handoffs",
+          "state": "interactive_manual_only",
+          "reason": "The handoff is a markdown file for a fresh Claude Code session; no API is required by the source."
+        },
+        {
+          "name": "Handoff archive/index",
+          "category": "Memory & handoffs",
+          "state": "local_path_unconfigured",
+          "reason": "USER-STACK adds searchable append-only index; output folder must be selected."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "Dainz37MOhU",
+      "variant": "user_stack",
+      "category": "Memory & handoffs",
+      "path": "workflows/instagram-reconstruction/user_stack/Dainz37MOhU-claude-handoff.json",
+      "source_url": "https://www.instagram.com/rick_morty.tech/reel/Dainz37MOhU/",
+      "workflow_name": "USER-STACK | Long Claude Code session -> handoff.md -> fresh session | Dainz37MOhU",
+      "software": [
+        {
+          "name": "Claude Code",
+          "category": "Memory & handoffs",
+          "state": "interactive_manual_only",
+          "reason": "The handoff is a markdown file for a fresh Claude Code session; no API is required by the source."
+        },
+        {
+          "name": "Handoff archive/index",
+          "category": "Memory & handoffs",
+          "state": "local_path_unconfigured",
+          "reason": "USER-STACK adds searchable append-only index; output folder must be selected."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DZThO_qvCK7",
+      "variant": "video",
+      "category": "AI characters",
+      "path": "workflows/instagram-reconstruction/video/DZThO_qvCK7-ai-character.json",
+      "source_url": "https://www.instagram.com/raycfu/reel/DZThO_qvCK7/",
+      "workflow_name": "VIDEO | AI fictional adult influencer character bible and four files | DZThO_qvCK7",
+      "software": [
+        {
+          "name": "AI image/model generator",
+          "category": "AI characters",
+          "state": "provider_unresolved",
+          "reason": "Source describes a fictional adult influencer and character bible; exact generation tool/model remains incomplete in evidence."
+        },
+        {
+          "name": "Character-reference asset store",
+          "category": "AI characters",
+          "state": "not_implemented",
+          "reason": "Persistent reference identity and generated asset production remain to be wired."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DZThO_qvCK7",
+      "variant": "user_stack",
+      "category": "AI characters",
+      "path": "workflows/instagram-reconstruction/user_stack/DZThO_qvCK7-ai-character.json",
+      "source_url": "https://www.instagram.com/raycfu/reel/DZThO_qvCK7/",
+      "workflow_name": "USER-STACK | AI fictional adult influencer character bible and four files | DZThO_qvCK7",
+      "software": [
+        {
+          "name": "AI image/model generator",
+          "category": "AI characters",
+          "state": "provider_unresolved",
+          "reason": "Source describes a fictional adult influencer and character bible; exact generation tool/model remains incomplete in evidence."
+        },
+        {
+          "name": "Character-reference asset store",
+          "category": "AI characters",
+          "state": "not_implemented",
+          "reason": "Persistent reference identity and generated asset production remain to be wired."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DYWFQKAPgmF",
+      "variant": "video",
+      "category": "YouTube production",
+      "path": "workflows/instagram-reconstruction/video/DYWFQKAPgmF-youtube-script.json",
+      "source_url": "https://www.instagram.com/raycfu/reel/DYWFQKAPgmF/",
+      "workflow_name": "VIDEO | Faceless YouTube niche criteria -> source-style script system | DYWFQKAPgmF",
+      "software": [
+        {
+          "name": "Claude subscription",
+          "category": "YouTube production",
+          "state": "interactive_manual_only",
+          "reason": "Source prompt uses Claude; no API billing or provider entitlement assumed."
+        },
+        {
+          "name": "ElevenLabs",
+          "category": "YouTube production",
+          "state": "credential_missing",
+          "reason": "Source uses voice-over; bind a named credential only after setup."
+        },
+        {
+          "name": "CapCut",
+          "category": "YouTube production",
+          "state": "manual_handoff",
+          "reason": "Editing app remains a human production stage."
+        },
+        {
+          "name": "Pexels media",
+          "category": "YouTube production",
+          "state": "license_and_access_unverified",
+          "reason": "Stock asset use requires license/provenance per asset."
+        },
+        {
+          "name": "Nano Banana Pro",
+          "category": "YouTube production",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Exact model access/contract is not configured."
+        },
+        {
+          "name": "TubeBuddy or VidIQ",
+          "category": "YouTube production",
+          "state": "optional_manual_research",
+          "reason": "Keyword check is an optional source stage; no API integrated."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DYWFQKAPgmF",
+      "variant": "user_stack",
+      "category": "YouTube production",
+      "path": "workflows/instagram-reconstruction/user_stack/DYWFQKAPgmF-youtube-script.json",
+      "source_url": "https://www.instagram.com/raycfu/reel/DYWFQKAPgmF/",
+      "workflow_name": "USER-STACK | Faceless YouTube niche criteria -> source-style script system | DYWFQKAPgmF",
+      "software": [
+        {
+          "name": "Claude subscription",
+          "category": "YouTube production",
+          "state": "interactive_manual_only",
+          "reason": "Source prompt uses Claude; no API billing or provider entitlement assumed."
+        },
+        {
+          "name": "ElevenLabs",
+          "category": "YouTube production",
+          "state": "credential_missing",
+          "reason": "Source uses voice-over; bind a named credential only after setup."
+        },
+        {
+          "name": "CapCut",
+          "category": "YouTube production",
+          "state": "manual_handoff",
+          "reason": "Editing app remains a human production stage."
+        },
+        {
+          "name": "Pexels media",
+          "category": "YouTube production",
+          "state": "license_and_access_unverified",
+          "reason": "Stock asset use requires license/provenance per asset."
+        },
+        {
+          "name": "Nano Banana Pro",
+          "category": "YouTube production",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Exact model access/contract is not configured."
+        },
+        {
+          "name": "TubeBuddy or VidIQ",
+          "category": "YouTube production",
+          "state": "optional_manual_research",
+          "reason": "Keyword check is an optional source stage; no API integrated."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DcQzhCghRZI",
+      "variant": "video",
+      "category": "Children’s education",
+      "path": "workflows/instagram-reconstruction/video/DcQzhCghRZI-original-coloring-book.json",
+      "source_url": "https://www.instagram.com/xanderdoesai/reel/DcQzhCghRZI/",
+      "workflow_name": "VIDEO | Original coloring-page concept -> KDP-ready book preparation | DcQzhCghRZI",
+      "software": [
+        {
+          "name": "Viewmax MCP",
+          "category": "Children’s education",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source says viewmax.io/mcp; contract and connector authentication are unavailable."
+        },
+        {
+          "name": "Claude image workflow",
+          "category": "Children’s education",
+          "state": "interactive_manual_only",
+          "reason": "Source copies unseen prompt plus reference image into Claude; prompt is unavailable."
+        },
+        {
+          "name": "Amazon KDP",
+          "category": "Children’s education",
+          "state": "manual_upload_only",
+          "reason": "Source ends with upload; account and publishing are not connected."
+        },
+        {
+          "name": "ComfyUI + supplied graph",
+          "category": "Children’s education",
+          "state": "service_and_model_unverified",
+          "reason": "USER-STACK needs a user-provided API-format graph, model weights and QA."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DcQzhCghRZI",
+      "variant": "user_stack",
+      "category": "Children’s education",
+      "path": "workflows/instagram-reconstruction/user_stack/DcQzhCghRZI-original-coloring-book.json",
+      "source_url": "https://www.instagram.com/xanderdoesai/reel/DcQzhCghRZI/",
+      "workflow_name": "USER-STACK | Original coloring-page concept -> KDP-ready book preparation | DcQzhCghRZI",
+      "software": [
+        {
+          "name": "Viewmax MCP",
+          "category": "Children’s education",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source says viewmax.io/mcp; contract and connector authentication are unavailable."
+        },
+        {
+          "name": "Claude image workflow",
+          "category": "Children’s education",
+          "state": "interactive_manual_only",
+          "reason": "Source copies unseen prompt plus reference image into Claude; prompt is unavailable."
+        },
+        {
+          "name": "Amazon KDP",
+          "category": "Children’s education",
+          "state": "manual_upload_only",
+          "reason": "Source ends with upload; account and publishing are not connected."
+        },
+        {
+          "name": "ComfyUI + supplied graph",
+          "category": "Children’s education",
+          "state": "service_and_model_unverified",
+          "reason": "USER-STACK needs a user-provided API-format graph, model weights and QA."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "Db8Fzg8MyOD",
+      "variant": "video",
+      "category": "Research & planning",
+      "path": "workflows/instagram-reconstruction/video/Db8Fzg8MyOD-competitor-research.json",
+      "source_url": "https://www.instagram.com/ariacodez/reel/Db8Fzg8MyOD/",
+      "workflow_name": "VIDEO | Competitor revenue/site research -> differentiation brief | Db8Fzg8MyOD",
+      "software": [
+        {
+          "name": "TrustMarm (ASR uncertain)",
+          "category": "Research & planning",
+          "state": "identity_unresolved",
+          "reason": "Exact site identity is unclear; do not scrape based on this name."
+        },
+        {
+          "name": "Emergent.sh",
+          "category": "Research & planning",
+          "state": "tool_contract_unverified",
+          "reason": "Source refers to an unseen prompt and website; no API or prompt is implemented."
+        },
+        {
+          "name": "Public competitor pages",
+          "category": "Research & planning",
+          "state": "policy_and_access_review",
+          "reason": "Use public access lawfully; no site copying or bulk SEO pages."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "Db8Fzg8MyOD",
+      "variant": "user_stack",
+      "category": "Research & planning",
+      "path": "workflows/instagram-reconstruction/user_stack/Db8Fzg8MyOD-competitor-research.json",
+      "source_url": "https://www.instagram.com/ariacodez/reel/Db8Fzg8MyOD/",
+      "workflow_name": "USER-STACK | Competitor revenue/site research -> differentiation brief | Db8Fzg8MyOD",
+      "software": [
+        {
+          "name": "TrustMarm (ASR uncertain)",
+          "category": "Research & planning",
+          "state": "identity_unresolved",
+          "reason": "Exact site identity is unclear; do not scrape based on this name."
+        },
+        {
+          "name": "Emergent.sh",
+          "category": "Research & planning",
+          "state": "tool_contract_unverified",
+          "reason": "Source refers to an unseen prompt and website; no API or prompt is implemented."
+        },
+        {
+          "name": "Public competitor pages",
+          "category": "Research & planning",
+          "state": "policy_and_access_review",
+          "reason": "Use public access lawfully; no site copying or bulk SEO pages."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DdCF5u-hGKk",
+      "variant": "video",
+      "category": "Memory & handoffs",
+      "path": "workflows/instagram-reconstruction/video/DdCF5u-hGKk-ai-os-scaffold.json",
+      "source_url": "https://www.instagram.com/wesbookland/reel/DdCF5u-hGKk/",
+      "workflow_name": "VIDEO | Business AI operating-system folder and connector scaffold | DdCF5u-hGKk",
+      "software": [
+        {
+          "name": "Claude Code files/workspace",
+          "category": "Memory & handoffs",
+          "state": "local_path_unconfigured",
+          "reason": "Source scaffold requires cloud.md/context/skills/connectors folders and user-selected workspace."
+        },
+        {
+          "name": "Business context inputs",
+          "category": "Memory & handoffs",
+          "state": "owner_input_required",
+          "reason": "Profile, positioning, offers and brand rules must be supplied by owner."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DdCF5u-hGKk",
+      "variant": "user_stack",
+      "category": "Memory & handoffs",
+      "path": "workflows/instagram-reconstruction/user_stack/DdCF5u-hGKk-ai-os-scaffold.json",
+      "source_url": "https://www.instagram.com/wesbookland/reel/DdCF5u-hGKk/",
+      "workflow_name": "USER-STACK | Business AI operating-system folder and connector scaffold | DdCF5u-hGKk",
+      "software": [
+        {
+          "name": "Claude Code files/workspace",
+          "category": "Memory & handoffs",
+          "state": "local_path_unconfigured",
+          "reason": "Source scaffold requires cloud.md/context/skills/connectors folders and user-selected workspace."
+        },
+        {
+          "name": "Business context inputs",
+          "category": "Memory & handoffs",
+          "state": "owner_input_required",
+          "reason": "Profile, positioning, offers and brand rules must be supplied by owner."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DaebyH0xIDQ",
+      "variant": "video",
+      "category": "Research & planning",
+      "path": "workflows/instagram-reconstruction/video/DaebyH0xIDQ-marvin-daily-brief.json",
+      "source_url": "https://www.instagram.com/chandlerintelligence/reel/DaebyH0xIDQ/",
+      "workflow_name": "VIDEO | MARVIN daily metrics brief and review draft | DaebyH0xIDQ",
+      "software": [
+        {
+          "name": "RevenueCat",
+          "category": "Research & planning",
+          "state": "credential_missing",
+          "reason": "Source daily report references app analytics."
+        },
+        {
+          "name": "Buffer",
+          "category": "Research & planning",
+          "state": "credential_missing",
+          "reason": "Source references scheduled organic posts; publishing remains disabled."
+        },
+        {
+          "name": "Meta Ads",
+          "category": "Commerce & offers",
+          "state": "credential_and_approval_missing",
+          "reason": "Source references spend/ROAS; new paid usage requires exact MARVIN approval."
+        },
+        {
+          "name": "Gmail",
+          "category": "Research & planning",
+          "state": "credential_missing",
+          "reason": "Source daily report includes customer email summaries."
+        },
+        {
+          "name": "Claude subagents",
+          "category": "Research & planning",
+          "state": "interactive_manual_only",
+          "reason": "Source asks for custom subagents; no delegated agents are created here."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        },
+        {
+          "type": "gmailOAuth2",
+          "name": "Gmail account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DaebyH0xIDQ",
+      "variant": "user_stack",
+      "category": "Research & planning",
+      "path": "workflows/instagram-reconstruction/user_stack/DaebyH0xIDQ-marvin-daily-brief.json",
+      "source_url": "https://www.instagram.com/chandlerintelligence/reel/DaebyH0xIDQ/",
+      "workflow_name": "USER-STACK | MARVIN daily metrics brief and review draft | DaebyH0xIDQ",
+      "software": [
+        {
+          "name": "RevenueCat",
+          "category": "Research & planning",
+          "state": "credential_missing",
+          "reason": "Source daily report references app analytics."
+        },
+        {
+          "name": "Buffer",
+          "category": "Research & planning",
+          "state": "credential_missing",
+          "reason": "Source references scheduled organic posts; publishing remains disabled."
+        },
+        {
+          "name": "Meta Ads",
+          "category": "Commerce & offers",
+          "state": "credential_and_approval_missing",
+          "reason": "Source references spend/ROAS; new paid usage requires exact MARVIN approval."
+        },
+        {
+          "name": "Gmail",
+          "category": "Research & planning",
+          "state": "credential_missing",
+          "reason": "Source daily report includes customer email summaries."
+        },
+        {
+          "name": "Claude subagents",
+          "category": "Research & planning",
+          "state": "interactive_manual_only",
+          "reason": "Source asks for custom subagents; no delegated agents are created here."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        },
+        {
+          "type": "gmailOAuth2",
+          "name": "Gmail account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DdOIy0DsPCK",
+      "variant": "video",
+      "category": "AI characters",
+      "path": "workflows/instagram-reconstruction/video/DdOIy0DsPCK-ai-character-factory.json",
+      "source_url": "https://www.instagram.com/alexhustleshard/reel/DdOIy0DsPCK/",
+      "workflow_name": "VIDEO | High-volume fictional AI-character advertising production | DdOIy0DsPCK",
+      "software": [
+        {
+          "name": "Unnamed custom connector",
+          "category": "AI characters",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source connector URL/server was never supplied."
+        },
+        {
+          "name": "Configured media generation worker",
+          "category": "AI characters",
+          "state": "not_implemented",
+          "reason": "No render is claimed; stable character references, original prompts and asset QA needed."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "Custom media connector",
+          "name": "Unresolved connector",
+          "reason": "The source never supplies its URL/server identity."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DdOIy0DsPCK",
+      "variant": "user_stack",
+      "category": "AI characters",
+      "path": "workflows/instagram-reconstruction/user_stack/DdOIy0DsPCK-ai-character-factory.json",
+      "source_url": "https://www.instagram.com/alexhustleshard/reel/DdOIy0DsPCK/",
+      "workflow_name": "USER_STACK | High-volume fictional AI-character advertising production | DdOIy0DsPCK",
+      "software": [
+        {
+          "name": "Unnamed custom connector",
+          "category": "AI characters",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source connector URL/server was never supplied."
+        },
+        {
+          "name": "Configured media generation worker",
+          "category": "AI characters",
+          "state": "not_implemented",
+          "reason": "No render is claimed; stable character references, original prompts and asset QA needed."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "Custom media connector",
+          "name": "Unresolved connector",
+          "reason": "The source never supplies its URL/server identity."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DdNVrqzuc4l",
+      "variant": "video",
+      "category": "Children’s education",
+      "path": "workflows/instagram-reconstruction/video/DdNVrqzuc4l-kids-education-video.json",
+      "source_url": "https://www.instagram.com/adri_builds222/reel/DdNVrqzuc4l/",
+      "workflow_name": "VIDEO | Children’s educational video production | DdNVrqzuc4l",
+      "software": [
+        {
+          "name": "ChatGPT",
+          "category": "Children’s education",
+          "state": "account_and_connector_unverified",
+          "reason": "Source uses plugin/connector UI; exact MCP contract unavailable."
+        },
+        {
+          "name": "Higgsfield",
+          "category": "Children’s education",
+          "state": "connector_unverified",
+          "reason": "Generation endpoint is unavailable; source workflow remains manual handoff."
+        },
+        {
+          "name": "Adult content reviewer",
+          "category": "Children’s education",
+          "state": "manual_required",
+          "reason": "Required before child-directed material is eligible for publication."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DdNVrqzuc4l",
+      "variant": "user_stack",
+      "category": "Children’s education",
+      "path": "workflows/instagram-reconstruction/user_stack/DdNVrqzuc4l-kids-education-video.json",
+      "source_url": "https://www.instagram.com/adri_builds222/reel/DdNVrqzuc4l/",
+      "workflow_name": "USER_STACK | Children’s educational video production | DdNVrqzuc4l",
+      "software": [
+        {
+          "name": "ChatGPT",
+          "category": "Children’s education",
+          "state": "account_and_connector_unverified",
+          "reason": "Source uses plugin/connector UI; exact MCP contract unavailable."
+        },
+        {
+          "name": "Higgsfield",
+          "category": "Children’s education",
+          "state": "connector_unverified",
+          "reason": "Generation endpoint is unavailable; source workflow remains manual handoff."
+        },
+        {
+          "name": "Adult content reviewer",
+          "category": "Children’s education",
+          "state": "manual_required",
+          "reason": "Required before child-directed material is eligible for publication."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DY3KmLzt88t",
+      "variant": "video",
+      "category": "Video & clips",
+      "path": "workflows/instagram-reconstruction/video/DY3KmLzt88t-avatar-pipeline.json",
+      "source_url": "https://www.instagram.com/sina.growthtech/reel/DY3KmLzt88t/",
+      "workflow_name": "VIDEO | Talking-avatar short-form video pipeline | DY3KmLzt88t",
+      "software": [
+        {
+          "name": "AI for Savages create-agent skill",
+          "category": "Video & clips",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Skill folder/source URL not supplied."
+        },
+        {
+          "name": "Talking-avatar renderer",
+          "category": "Video & clips",
+          "state": "not_implemented",
+          "reason": "Avatar video render is a required production stage, currently manual/pending."
+        },
+        {
+          "name": "FFmpeg + ffprobe",
+          "category": "Video & clips",
+          "state": "installed_not_connected",
+          "reason": "Required to compose/export/inspect rendered output; no worker adapter configured."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DY3KmLzt88t",
+      "variant": "user_stack",
+      "category": "Video & clips",
+      "path": "workflows/instagram-reconstruction/user_stack/DY3KmLzt88t-avatar-pipeline.json",
+      "source_url": "https://www.instagram.com/sina.growthtech/reel/DY3KmLzt88t/",
+      "workflow_name": "USER_STACK | Talking-avatar short-form video pipeline | DY3KmLzt88t",
+      "software": [
+        {
+          "name": "AI for Savages create-agent skill",
+          "category": "Video & clips",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Skill folder/source URL not supplied."
+        },
+        {
+          "name": "Talking-avatar renderer",
+          "category": "Video & clips",
+          "state": "not_implemented",
+          "reason": "Avatar video render is a required production stage, currently manual/pending."
+        },
+        {
+          "name": "FFmpeg + ffprobe",
+          "category": "Video & clips",
+          "state": "installed_not_connected",
+          "reason": "Required to compose/export/inspect rendered output; no worker adapter configured."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DcwceVKGxlY",
+      "variant": "video",
+      "category": "AI characters",
+      "path": "workflows/instagram-reconstruction/video/DcwceVKGxlY-character-publishing.json",
+      "source_url": "https://www.instagram.com/coltonhavens6/reel/DcwceVKGxlY/",
+      "workflow_name": "VIDEO | AI-character production cadence and scheduled publishing | DcwceVKGxlY",
+      "software": [
+        {
+          "name": "Claude",
+          "category": "AI characters",
+          "state": "subscription_not_connected",
+          "reason": "No programmatic credential is assumed."
+        },
+        {
+          "name": "Higgsfield",
+          "category": "AI characters",
+          "state": "account_or_api_unverified",
+          "reason": "Source claims an MCP; contract not verified."
+        },
+        {
+          "name": "GoHighLevel",
+          "category": "AI characters",
+          "state": "account_or_api_unverified",
+          "reason": "Source connector/API not verified; no posting node is implemented."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DcwceVKGxlY",
+      "variant": "user_stack",
+      "category": "AI characters",
+      "path": "workflows/instagram-reconstruction/user_stack/DcwceVKGxlY-character-publishing.json",
+      "source_url": "https://www.instagram.com/coltonhavens6/reel/DcwceVKGxlY/",
+      "workflow_name": "USER_STACK | AI-character production cadence and scheduled publishing | DcwceVKGxlY",
+      "software": [
+        {
+          "name": "Claude",
+          "category": "AI characters",
+          "state": "subscription_not_connected",
+          "reason": "No programmatic credential is assumed."
+        },
+        {
+          "name": "Higgsfield",
+          "category": "AI characters",
+          "state": "account_or_api_unverified",
+          "reason": "Source claims an MCP; contract not verified."
+        },
+        {
+          "name": "GoHighLevel",
+          "category": "AI characters",
+          "state": "account_or_api_unverified",
+          "reason": "Source connector/API not verified; no posting node is implemented."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DbEGkS9B26F",
+      "variant": "video",
+      "category": "AI characters",
+      "path": "workflows/instagram-reconstruction/video/DbEGkS9B26F-character-shorts.json",
+      "source_url": "https://www.instagram.com/petervibecoder/reel/DbEGkS9B26F/",
+      "workflow_name": "VIDEO | AI fictional-character Shorts generation | DbEGkS9B26F",
+      "software": [
+        {
+          "name": "brainrot.ovid / brainrot.mauve",
+          "category": "AI characters",
+          "state": "identity_unresolved",
+          "reason": "Name is uncertain in machine transcript; endpoint not verified."
+        },
+        {
+          "name": "Versioned character media worker",
+          "category": "AI characters",
+          "state": "not_implemented",
+          "reason": "Requires persistent character reference and safe render/QA adapter."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DbEGkS9B26F",
+      "variant": "user_stack",
+      "category": "AI characters",
+      "path": "workflows/instagram-reconstruction/user_stack/DbEGkS9B26F-character-shorts.json",
+      "source_url": "https://www.instagram.com/petervibecoder/reel/DbEGkS9B26F/",
+      "workflow_name": "USER_STACK | AI fictional-character Shorts generation | DbEGkS9B26F",
+      "software": [
+        {
+          "name": "brainrot.ovid / brainrot.mauve",
+          "category": "AI characters",
+          "state": "identity_unresolved",
+          "reason": "Name is uncertain in machine transcript; endpoint not verified."
+        },
+        {
+          "name": "Versioned character media worker",
+          "category": "AI characters",
+          "state": "not_implemented",
+          "reason": "Requires persistent character reference and safe render/QA adapter."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "Dc4E_FTNloZ",
+      "variant": "video",
+      "category": "Commerce & offers",
+      "path": "workflows/instagram-reconstruction/video/Dc4E_FTNloZ-product-store.json",
+      "source_url": "https://www.instagram.com/ty.buildssites/reel/Dc4E_FTNloZ/",
+      "workflow_name": "VIDEO | Single-product ecommerce store and product-page draft | Dc4E_FTNloZ",
+      "software": [
+        {
+          "name": "Claude-assisted store builder",
+          "category": "Commerce & offers",
+          "state": "product_identity_unresolved",
+          "reason": "No store builder name or API contract supplied."
+        },
+        {
+          "name": "AliExpress product data",
+          "category": "Commerce & offers",
+          "state": "manual_review_required",
+          "reason": "Verify supplier, product claims, shipping and image rights."
+        },
+        {
+          "name": "Ecommerce platform",
+          "category": "Commerce & offers",
+          "state": "not_selected",
+          "reason": "No store write or publish action is implemented."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "Dc4E_FTNloZ",
+      "variant": "user_stack",
+      "category": "Commerce & offers",
+      "path": "workflows/instagram-reconstruction/user_stack/Dc4E_FTNloZ-product-store.json",
+      "source_url": "https://www.instagram.com/ty.buildssites/reel/Dc4E_FTNloZ/",
+      "workflow_name": "USER_STACK | Single-product ecommerce store and product-page draft | Dc4E_FTNloZ",
+      "software": [
+        {
+          "name": "Claude-assisted store builder",
+          "category": "Commerce & offers",
+          "state": "product_identity_unresolved",
+          "reason": "No store builder name or API contract supplied."
+        },
+        {
+          "name": "AliExpress product data",
+          "category": "Commerce & offers",
+          "state": "manual_review_required",
+          "reason": "Verify supplier, product claims, shipping and image rights."
+        },
+        {
+          "name": "Ecommerce platform",
+          "category": "Commerce & offers",
+          "state": "not_selected",
+          "reason": "No store write or publish action is implemented."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "Dc4WJsjp5e2",
+      "variant": "video",
+      "category": "YouTube production",
+      "path": "workflows/instagram-reconstruction/video/Dc4WJsjp5e2-outsourced-youtube.json",
+      "source_url": "https://www.instagram.com/jet_zhong/reel/Dc4WJsjp5e2/",
+      "workflow_name": "VIDEO | Outsourced, rights-cleared faceless YouTube production | Dc4WJsjp5e2",
+      "software": [
+        {
+          "name": "Freelancer/vendor",
+          "category": "YouTube production",
+          "state": "manual_handoff",
+          "reason": "No marketplace/API, vendor, budget or brief contract supplied."
+        },
+        {
+          "name": "YouTube account/upload",
+          "category": "YouTube production",
+          "state": "not_connected",
+          "reason": "Owner upload is a manual source stage; no external publish node is implemented."
+        },
+        {
+          "name": "Rights-cleared footage",
+          "category": "YouTube production",
+          "state": "owner_input_required",
+          "reason": "Footage license and source provenance required."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "Dc4WJsjp5e2",
+      "variant": "user_stack",
+      "category": "YouTube production",
+      "path": "workflows/instagram-reconstruction/user_stack/Dc4WJsjp5e2-outsourced-youtube.json",
+      "source_url": "https://www.instagram.com/jet_zhong/reel/Dc4WJsjp5e2/",
+      "workflow_name": "USER_STACK | Outsourced, rights-cleared faceless YouTube production | Dc4WJsjp5e2",
+      "software": [
+        {
+          "name": "Freelancer/vendor",
+          "category": "YouTube production",
+          "state": "manual_handoff",
+          "reason": "No marketplace/API, vendor, budget or brief contract supplied."
+        },
+        {
+          "name": "YouTube account/upload",
+          "category": "YouTube production",
+          "state": "not_connected",
+          "reason": "Owner upload is a manual source stage; no external publish node is implemented."
+        },
+        {
+          "name": "Rights-cleared footage",
+          "category": "YouTube production",
+          "state": "owner_input_required",
+          "reason": "Footage license and source provenance required."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DMqllvAKzG6",
+      "variant": "video",
+      "category": "Research & planning",
+      "path": "workflows/instagram-reconstruction/video/DMqllvAKzG6-workflow-prompt-chain.json",
+      "source_url": "https://www.instagram.com/bennett.spooner/reel/DMqllvAKzG6/",
+      "workflow_name": "VIDEO | Video analysis -> prompt packet -> Claude implementation -> n8n review | DMqllvAKzG6",
+      "software": [
+        {
+          "name": "Gemini AI Studio",
+          "category": "Research & planning",
+          "state": "website_manual_only",
+          "reason": "Use for evidence analysis and Claude prompt preparation only; no JSON/scripts from Gemini."
+        },
+        {
+          "name": "Claude Code / subscription",
+          "category": "Research & planning",
+          "state": "interactive_manual_only",
+          "reason": "User supplies exact source-level Claude prompt; no CLI or provider access assumed."
+        },
+        {
+          "name": "n8n import and review",
+          "category": "N8N launch & credentials",
+          "state": "not_imported",
+          "reason": "Workflow ID and launch adapter are not configured."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DMqllvAKzG6",
+      "variant": "user_stack",
+      "category": "Research & planning",
+      "path": "workflows/instagram-reconstruction/user_stack/DMqllvAKzG6-workflow-prompt-chain.json",
+      "source_url": "https://www.instagram.com/bennett.spooner/reel/DMqllvAKzG6/",
+      "workflow_name": "USER_STACK | Video analysis -> prompt packet -> Claude implementation -> n8n review | DMqllvAKzG6",
+      "software": [
+        {
+          "name": "Gemini AI Studio",
+          "category": "Research & planning",
+          "state": "website_manual_only",
+          "reason": "Use for evidence analysis and Claude prompt preparation only; no JSON/scripts from Gemini."
+        },
+        {
+          "name": "Claude Code / subscription",
+          "category": "Research & planning",
+          "state": "interactive_manual_only",
+          "reason": "User supplies exact source-level Claude prompt; no CLI or provider access assumed."
+        },
+        {
+          "name": "n8n import and review",
+          "category": "N8N launch & credentials",
+          "state": "not_imported",
+          "reason": "Workflow ID and launch adapter are not configured."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DcfasvOtmmC",
+      "variant": "video",
+      "category": "Campaign review",
+      "path": "workflows/instagram-reconstruction/video/DcfasvOtmmC-campaign-review.json",
+      "source_url": "https://www.instagram.com/aj.promotes/reel/DcfasvOtmmC/",
+      "workflow_name": "VIDEO | Promote.fun manual campaign review and participation UI | DcfasvOtmmC",
+      "software": [
+        {
+          "name": "Promote.fun UI",
+          "category": "Campaign review",
+          "state": "manual_browser_only",
+          "reason": "Gemini analysis only. No official API/endpoint/auth contract was found."
+        },
+        {
+          "name": "Campaign browser login",
+          "category": "Campaign review",
+          "state": "owner_session_required",
+          "reason": "Join/submission actions stay manual. Never collect credentials in NEXEN registry."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "Promote.fun account",
+          "name": "Manual browser session",
+          "reason": "UI authentication is manual; this package has no supported API credential."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DcfasvOtmmC",
+      "variant": "user_stack",
+      "category": "Campaign review",
+      "path": "workflows/instagram-reconstruction/user_stack/DcfasvOtmmC-campaign-review.json",
+      "source_url": "https://www.instagram.com/aj.promotes/reel/DcfasvOtmmC/",
+      "workflow_name": "USER_STACK | Promote.fun manual campaign review and participation UI | DcfasvOtmmC",
+      "software": [
+        {
+          "name": "Promote.fun UI",
+          "category": "Campaign review",
+          "state": "manual_browser_only",
+          "reason": "Gemini analysis only. No official API/endpoint/auth contract was found."
+        },
+        {
+          "name": "Campaign browser login",
+          "category": "Campaign review",
+          "state": "owner_session_required",
+          "reason": "Join/submission actions stay manual. Never collect credentials in NEXEN registry."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [
+        {
+          "type": "Promote.fun account",
+          "name": "Manual browser session",
+          "reason": "UI authentication is manual; this package has no supported API credential."
+        }
+      ],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DcrEsU6KyPb",
+      "variant": "video",
+      "category": "Commerce & offers",
+      "path": "workflows/instagram-reconstruction/video/01-curviana-source-method.json",
+      "source_url": "https://www.instagram.com/bymaximade/reel/DcrEsU6KyPb/",
+      "workflow_name": "Curviana — BBL jeans affiliate UGC | Source method",
+      "software": [
+        {
+          "name": "Claude / image generation",
+          "category": "Commerce & offers",
+          "state": "interactive_manual_only",
+          "reason": "Commerce drafts depend on user-supplied product/brand facts."
+        },
+        {
+          "name": "Make UGC / avatar renderer",
+          "category": "Commerce & offers",
+          "state": "service_unverified",
+          "reason": "Rendered video is a separate manual handoff; no renderer API is configured."
+        },
+        {
+          "name": "Product evidence and rights",
+          "category": "Commerce & offers",
+          "state": "owner_input_required",
+          "reason": "No unsupported performance, body or earnings claims."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DcrEsU6KyPb",
+      "variant": "user_stack",
+      "category": "Commerce & offers",
+      "path": "workflows/instagram-reconstruction/user_stack/01-curviana-your-tools.json",
+      "source_url": "https://www.instagram.com/bymaximade/reel/DcrEsU6KyPb/",
+      "workflow_name": "Curviana — BBL jeans affiliate UGC | Your tools · Supercool first",
+      "software": [
+        {
+          "name": "Claude / image generation",
+          "category": "Commerce & offers",
+          "state": "interactive_manual_only",
+          "reason": "Commerce drafts depend on user-supplied product/brand facts."
+        },
+        {
+          "name": "Make UGC / avatar renderer",
+          "category": "Commerce & offers",
+          "state": "service_unverified",
+          "reason": "Rendered video is a separate manual handoff; no renderer API is configured."
+        },
+        {
+          "name": "Product evidence and rights",
+          "category": "Commerce & offers",
+          "state": "owner_input_required",
+          "reason": "No unsupported performance, body or earnings claims."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DcrEsU6KyPb",
+      "variant": "video",
+      "category": "Commerce & offers",
+      "path": "workflows/instagram-reconstruction/video/02-lumipaw-source-method.json",
+      "source_url": "https://www.instagram.com/bymaximade/reel/DcrEsU6KyPb/",
+      "workflow_name": "LumiPaw — pet-product UGC ads | Source method",
+      "software": [
+        {
+          "name": "Claude / image generation",
+          "category": "Commerce & offers",
+          "state": "interactive_manual_only",
+          "reason": "Commerce drafts depend on user-supplied product/brand facts."
+        },
+        {
+          "name": "Make UGC / avatar renderer",
+          "category": "Commerce & offers",
+          "state": "service_unverified",
+          "reason": "Rendered video is a separate manual handoff; no renderer API is configured."
+        },
+        {
+          "name": "Product evidence and rights",
+          "category": "Commerce & offers",
+          "state": "owner_input_required",
+          "reason": "No unsupported performance, body or earnings claims."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DcrEsU6KyPb",
+      "variant": "user_stack",
+      "category": "Commerce & offers",
+      "path": "workflows/instagram-reconstruction/user_stack/02-lumipaw-your-tools.json",
+      "source_url": "https://www.instagram.com/bymaximade/reel/DcrEsU6KyPb/",
+      "workflow_name": "LumiPaw — pet-product UGC ads | Your tools · Supercool first",
+      "software": [
+        {
+          "name": "Claude / image generation",
+          "category": "Commerce & offers",
+          "state": "interactive_manual_only",
+          "reason": "Commerce drafts depend on user-supplied product/brand facts."
+        },
+        {
+          "name": "Make UGC / avatar renderer",
+          "category": "Commerce & offers",
+          "state": "service_unverified",
+          "reason": "Rendered video is a separate manual handoff; no renderer API is configured."
+        },
+        {
+          "name": "Product evidence and rights",
+          "category": "Commerce & offers",
+          "state": "owner_input_required",
+          "reason": "No unsupported performance, body or earnings claims."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DYWFQKAPgmF",
+      "variant": "video",
+      "category": "YouTube production",
+      "path": "workflows/instagram-reconstruction/video/03-three-products-source-method.json",
+      "source_url": "https://www.instagram.com/raycfu/reel/DYWFQKAPgmF/",
+      "workflow_name": "TikTok — three-product affiliate roundup | Source-derived adaptation",
+      "software": [
+        {
+          "name": "Claude subscription",
+          "category": "YouTube production",
+          "state": "interactive_manual_only",
+          "reason": "Source prompt uses Claude; no API billing or provider entitlement assumed."
+        },
+        {
+          "name": "ElevenLabs",
+          "category": "YouTube production",
+          "state": "credential_missing",
+          "reason": "Source uses voice-over; bind a named credential only after setup."
+        },
+        {
+          "name": "CapCut",
+          "category": "YouTube production",
+          "state": "manual_handoff",
+          "reason": "Editing app remains a human production stage."
+        },
+        {
+          "name": "Pexels media",
+          "category": "YouTube production",
+          "state": "license_and_access_unverified",
+          "reason": "Stock asset use requires license/provenance per asset."
+        },
+        {
+          "name": "Nano Banana Pro",
+          "category": "YouTube production",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Exact model access/contract is not configured."
+        },
+        {
+          "name": "TubeBuddy or VidIQ",
+          "category": "YouTube production",
+          "state": "optional_manual_research",
+          "reason": "Keyword check is an optional source stage; no API integrated."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DYWFQKAPgmF",
+      "variant": "user_stack",
+      "category": "YouTube production",
+      "path": "workflows/instagram-reconstruction/user_stack/03-three-products-your-tools.json",
+      "source_url": "https://www.instagram.com/raycfu/reel/DYWFQKAPgmF/",
+      "workflow_name": "TikTok — three-product affiliate roundup | Your tools · Supercool first",
+      "software": [
+        {
+          "name": "Claude subscription",
+          "category": "YouTube production",
+          "state": "interactive_manual_only",
+          "reason": "Source prompt uses Claude; no API billing or provider entitlement assumed."
+        },
+        {
+          "name": "ElevenLabs",
+          "category": "YouTube production",
+          "state": "credential_missing",
+          "reason": "Source uses voice-over; bind a named credential only after setup."
+        },
+        {
+          "name": "CapCut",
+          "category": "YouTube production",
+          "state": "manual_handoff",
+          "reason": "Editing app remains a human production stage."
+        },
+        {
+          "name": "Pexels media",
+          "category": "YouTube production",
+          "state": "license_and_access_unverified",
+          "reason": "Stock asset use requires license/provenance per asset."
+        },
+        {
+          "name": "Nano Banana Pro",
+          "category": "YouTube production",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Exact model access/contract is not configured."
+        },
+        {
+          "name": "TubeBuddy or VidIQ",
+          "category": "YouTube production",
+          "state": "optional_manual_research",
+          "reason": "Keyword check is an optional source stage; no API integrated."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DagnDGKhiNl",
+      "variant": "video",
+      "category": "Research & planning",
+      "path": "workflows/instagram-reconstruction/video/04-organic-source-method.json",
+      "source_url": "https://www.instagram.com/adley/reel/DagnDGKhiNl/",
+      "workflow_name": "Organic promotion — reference to original product video | Source method",
+      "software": [
+        {
+          "name": "Sort Feed browser extension",
+          "category": "Research & planning",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source names Sort Feed; no official export/API contract supplied."
+        },
+        {
+          "name": "Content production queue",
+          "category": "YouTube production",
+          "state": "local_draft_only",
+          "reason": "Research-to-original-video planning is represented; video generation is a separate workflow."
+        },
+        {
+          "name": "Retargeting ads account",
+          "category": "Commerce & offers",
+          "state": "owner_approval_required",
+          "reason": "Source describes retargeting but supplies no ad account/API; keep drafts and approval."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    },
+    {
+      "sourceId": "DagnDGKhiNl",
+      "variant": "user_stack",
+      "category": "Research & planning",
+      "path": "workflows/instagram-reconstruction/user_stack/04-organic-your-tools.json",
+      "source_url": "https://www.instagram.com/adley/reel/DagnDGKhiNl/",
+      "workflow_name": "Organic promotion — reference to original product video | Your tools · Supercool first",
+      "software": [
+        {
+          "name": "Sort Feed browser extension",
+          "category": "Research & planning",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source names Sort Feed; no official export/API contract supplied."
+        },
+        {
+          "name": "Content production queue",
+          "category": "YouTube production",
+          "state": "local_draft_only",
+          "reason": "Research-to-original-video planning is represented; video generation is a separate workflow."
+        },
+        {
+          "name": "Retargeting ads account",
+          "category": "Commerce & offers",
+          "state": "owner_approval_required",
+          "reason": "Source describes retargeting but supplies no ad account/API; keep drafts and approval."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "credentials": [],
+      "launch_state": "blocked_setup"
+    }
+  ]
+}

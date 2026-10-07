@@ -1,0 +1,123 @@
+{
+  "name": "VIDEO | AI-character production cadence and scheduled publishing | DcwceVKGxlY",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "VIDEO VERSION\nSource: https://www.instagram.com/coltonhavens6/reel/DcwceVKGxlY/\nEvidence: [0.16s - 11.94s] [Speaker 1] You could never over saturate the market even if you made 90 pieces of content a day. You can actually use cloud code to post 20 times a day or more for you. So what I did is I took my cloud account,\n[12.49s - 14.84s] [Speaker 1] I then hooked it up to my Hicksfield account.\n[15.21s - 25.77s] [Speaker 1] Then I hooked it up to my go high level to post across all my social media accounts 10 20 times a day. That's got me 80,000 views in the last twenty eight days and 1,300\n[25.77s - 28.04s] [Speaker 1] DM. This is what the post look like,\n[28.44s - 31.56s] [Speaker 1] image and text. This one's getting 13,000\n[31.56s - 35.08s] [Speaker 1] views, but more importantly, it's got me a 157\n[35.08s - 50.17s] [Speaker 1] people commenting the word system. You can set this up in about three total hours creating the brain content and start posting your first seven days worth of content. Just type the word content on this video and I'll send you the guide in our live workshop. I'll see you on the next video.\nFaithful sequence; unavailable prompts/contracts stay unresolved.\nExternal media generation/publishing is not marked complete.",
+        "height": 360,
+        "width": 440
+      },
+      "id": "9f57bc3b-8c22-4838-87b4-db42b323b8b1",
+      "name": "Evidence and boundaries",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "7409e57a-e17c-4459-b8d0-090685e773ce",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$input.first().json;\nif(!Array.isArray(j.posts)||!j.posts.length) throw new Error('posts required');\nconst quota=Number(j.daily_posts); if(!Number.isInteger(quota)||quota<1||quota>20) throw new Error('daily_posts must be 1..20');\nif(j.posts.length>quota) throw new Error('posts exceed source cadence setting');\nreturn j.posts.map((p,i)=>{if(!p.character_id||!p.content_brief)throw new Error('each post needs character_id/content_brief');return {json:{character_id:p.character_id,content_brief:p.content_brief,day_slot:i+1,source_tools:['Claude','Higgsfield','GoHighLevel (identity/contracts unresolved)'],status:'manual_generation_and_schedule_handoff',publish:'not_enabled'}}});"
+      },
+      "id": "490ae93a-72b8-4ff7-9ace-25f9e69fad61",
+      "name": "Reconstruct source method",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Expected input fixture is paired in fixtures/source-method-fixtures.json. This export prepares records/handoffs only when a required vendor API/worker is unresolved. Import inactive; run manually after reviewing its inputs.",
+        "height": 170,
+        "width": 420
+      },
+      "id": "9688b739-2626-45b5-9bc1-106ae50c0228",
+      "name": "Run status",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Reconstruct source method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "nexen": {
+      "catalog_id": "instagram:DcwceVKGxlY:video:DcwceVKGxlY-character-publishing",
+      "source_id": "DcwceVKGxlY",
+      "source_shortcode": "DcwceVKGxlY",
+      "source_numbers": [
+        31
+      ],
+      "source_url": "https://www.instagram.com/coltonhavens6/reel/DcwceVKGxlY/",
+      "method": "AI-character production and scheduled publishing cadence (20/day source claim)",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "AI characters",
+      "required_software": [
+        {
+          "name": "Claude",
+          "category": "AI characters",
+          "state": "subscription_not_connected",
+          "reason": "No programmatic credential is assumed."
+        },
+        {
+          "name": "Higgsfield",
+          "category": "AI characters",
+          "state": "account_or_api_unverified",
+          "reason": "Source claims an MCP; contract not verified."
+        },
+        {
+          "name": "GoHighLevel",
+          "category": "AI characters",
+          "state": "account_or_api_unverified",
+          "reason": "Source connector/API not verified; no posting node is implemented."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  },
+  "pinData": {}
+}

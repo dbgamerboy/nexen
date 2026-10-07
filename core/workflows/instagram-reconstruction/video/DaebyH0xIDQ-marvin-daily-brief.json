@@ -1,0 +1,269 @@
+﻿{
+  "name": "VIDEO | MARVIN daily metrics brief and review draft | DaebyH0xIDQ",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "VIDEO VERSION â€” faithful reconstruction from the source evidence.\nSource: https://www.instagram.com/chandlerintelligence/reel/DaebyH0xIDQ/\nEvidence: [0.88s - 15.30s] [Speaker 1] Hey Marvin, wake up. Nattie's home. How's the app doing? For that dashboard, give Claude a reference image of what you want and it'll pretty much one shot it. Like this took me five minutes to create. Good evening, sir. Voice mode to talk instead of type, which is a huge boost in productivity.\n[15.72s - 26.05s] [Speaker 0] Connect 11 if you really want that British Marvin voice and become Tony Stark. Pulling up our app stats now. Clawing Chrome to give it access to your browser. Over the last seven days, we had 2,459\n[26.05s - 28.61s] [Speaker 0] new downloads and generated $4,289\n[28.61s - 39.54s] [Speaker 0] in revenues. RevenueCat MCP to track your app revenue. For organic content, I'm still posting three short form videos a day. And buffer MCP to publish to all platforms in a single command. On ads, you spend $475\n[39.54s - 82.04s] [Speaker 1] at a 1.5% return on ad spend. Meta launched on official Ads MCP, so you can run more campaigns and give them more of your money. Throughout the week, you'll see 16 customer emails. Gmail MTP. I resolved 13 automatically, mostly common questions and account issues. Organize all of your FAQs and markdown, and Claude will handle 90% of customer service. Since you had already approved that direction, I handed it to Tom, the developer agent. Define custom sub agents and equip them with proper skills and connectors. Then your main agent can hand off work to the proper sub agent. My recommendation today, review the back end PR, keep leaning into the screeches if you add angle, and have Scout research the next set of organic content angles to test. What would you like me to handle first, sir? Set this entire daily brief as a routine, and Claude will have this ready for you by the time you sit down to work. Comment Marvin for a compiled list of everything that was mentioned.\nSource-vs-engineering boundary: MARVIN naming, timestamped metric provenance, stale/missing-source flags and approval-only draft output. RevenueCat/Meta/Buffer APIs are not configured in this export.\nNo external side effects are enabled on import.",
+        "height": 420,
+        "width": 580
+      },
+      "id": "10000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -480
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "10000000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Populate these from your own dashboards/MCP exports (manual). Numbers are examples only.\nreturn [{ json: {\n  date: '2026-09-23',\n  downloads_7d: 2459,\n  revenue_7d_usd: 4289,\n  ad_spend_usd: 475,\n  roas: 1.5,\n  posts_per_day: 3,\n  support_emails: 16,\n  support_resolved: 13,\n  open_prs: 1\n} }];"
+      },
+      "id": "10000000-0000-4000-8000-000000000003",
+      "name": "Metrics Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -300,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst e = [];\nif (!/^\\d{4}-\\d{2}-\\d{2}$/.test(j.date||'')) e.push('date must be YYYY-MM-DD');\nfor (const k of ['downloads_7d','revenue_7d_usd','ad_spend_usd','roas','support_emails','support_resolved']) if (!Number.isFinite(j[k])) e.push(k + ' must be a number');\nif (Number.isFinite(j.support_resolved) && Number.isFinite(j.support_emails) && j.support_resolved > j.support_emails) e.push('support_resolved cannot exceed support_emails');\nif (e.length) throw new Error('Invalid metrics: ' + e.join('; '));\nreturn [{ json: j }];"
+      },
+      "id": "10000000-0000-4000-8000-000000000004",
+      "name": "Validate Metrics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-sonnet-5', max_tokens: 700, system: 'You are a concise business analyst. Write a short morning brief (max 180 words) from the metrics JSON: highlight downloads, revenue, ad efficiency (ROAS), support load, and give 2-3 prioritised recommendations. Plain text. Do not invent numbers not present.', messages: [ { role: 'user', content: JSON.stringify($json) } ] }) }}",
+        "options": {}
+      },
+      "id": "10000000-0000-4000-8000-000000000005",
+      "name": "Compose Brief",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        140,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json && $json.content && $json.content[0] && $json.content[0].text;\nif (!raw || !raw.trim()) throw new Error('Anthropic returned empty brief');\nconst date = $('Validate Metrics').first().json.date;\nreturn [{ json: { subject: 'Daily brief - ' + date, body: raw.trim() } }];"
+      },
+      "id": "10000000-0000-4000-8000-000000000006",
+      "name": "Prepare Draft",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "operation": "create",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.body }}",
+        "options": {}
+      },
+      "id": "10000000-0000-4000-8000-000000000007",
+      "name": "Create Gmail Draft",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        580,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": null,
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Metrics Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Metrics Input": {
+      "main": [
+        [
+          {
+            "node": "Validate Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Metrics": {
+      "main": [
+        [
+          {
+            "node": "Compose Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compose Brief": {
+      "main": [
+        [
+          {
+            "node": "Prepare Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Draft": {
+      "main": [
+        [
+          {
+            "node": "Create Gmail Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:DaebyH0xIDQ:video:DaebyH0xIDQ-marvin-daily-brief",
+      "source_id": "DaebyH0xIDQ",
+      "source_shortcode": "DaebyH0xIDQ",
+      "source_numbers": [
+        50
+      ],
+      "source_url": "https://www.instagram.com/chandlerintelligence/reel/DaebyH0xIDQ/",
+      "method": "MARVIN daily metrics brief and review draft",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "Research & planning",
+      "required_software": [
+        {
+          "name": "RevenueCat",
+          "category": "Research & planning",
+          "state": "credential_missing",
+          "reason": "Source daily report references app analytics."
+        },
+        {
+          "name": "Buffer",
+          "category": "Research & planning",
+          "state": "credential_missing",
+          "reason": "Source references scheduled organic posts; publishing remains disabled."
+        },
+        {
+          "name": "Meta Ads",
+          "category": "Commerce & offers",
+          "state": "credential_and_approval_missing",
+          "reason": "Source references spend/ROAS; new paid usage requires exact MARVIN approval."
+        },
+        {
+          "name": "Gmail",
+          "category": "Research & planning",
+          "state": "credential_missing",
+          "reason": "Source daily report includes customer email summaries."
+        },
+        {
+          "name": "Claude subagents",
+          "category": "Research & planning",
+          "state": "interactive_manual_only",
+          "reason": "Source asks for custom subagents; no delegated agents are created here."
+        },
+        {
+          "name": "NEXEN â†’ n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        },
+        {
+          "type": "gmailOAuth2",
+          "name": "Gmail account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}
+

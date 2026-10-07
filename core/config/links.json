@@ -1,0 +1,13 @@
+{
+  "services": [
+    {"name": "NEXEN Core", "url": "http://127.0.0.1:8788", "note": "this HUD"},
+    {"name": "n8n Live", "url": "http://127.0.0.1:5678", "note": "main instance (F: data)"},
+    {"name": "n8n Clean", "url": "http://127.0.0.1:5680", "note": "H: instance, pending owner login"},
+    {"name": "n8n 5695", "url": "http://127.0.0.1:5695", "note": "preview"},
+    {"name": "Ollama", "url": "http://127.0.0.1:11434", "note": "local models"},
+    {"name": "Postiz", "url": "http://127.0.0.1:4007", "note": "scheduler"},
+    {"name": "Temporal UI", "url": "http://127.0.0.1:8080", "note": "workflow engine"},
+    {"name": "Supermemory", "url": "http://127.0.0.1:6767", "note": "memory API (not up yet)"},
+    {"name": "Vault", "url": "obsidian://open?vault=NEXEN_MEMORY", "note": "Obsidian notes", "static": true}
+  ]
+}

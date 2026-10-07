@@ -1,0 +1,124 @@
+{
+  "name": "USER_STACK | High-volume fictional AI-character advertising production | DdOIy0DsPCK",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER_STACK VERSION\nSource: https://www.instagram.com/alexhustleshard/reel/DdOIy0DsPCK/\nEvidence: [0.96s - 35.60s] [Speaker 0] Sorry. I was taking a nap. How's AI content farm? How are the girls? We've generated 500 AI baddies, posting 20 videos a day each. Better than yesterday. If you don't wanna show your face, but you still wanna blow up on social media, and you want an AI content farm to do the work for you, you've probably already used it. It'll take like two minutes to set up. Go to cloud, go to settings, go to connectors, and press add connector. Then go to this website, and press copy link. Then paste the link here and call it content slave. Cause that's exactly what it is. You just go to cloud and say, make me 500 ads with pretty girls. Just sit back while it generates and the girls will get you views without you having to show your face.\nSource connector URL is missing; manual connector setup only. User-stack adds bounded batch planning, character identity ledger, per-channel quotas and originality review.\nThis describes added USER-STACK controls, not source instructions.\nExternal media generation/publishing is not marked complete.",
+        "height": 360,
+        "width": 440
+      },
+      "id": "dd524e88-219b-4355-a11d-ab74646764ec",
+      "name": "Evidence and boundaries",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "5e0345e7-659f-4513-8068-376a385fcd37",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$input.first().json;\nconst hash=s=>{let h=2166136261;for(const c of s)h=Math.imul(h^c.charCodeAt(0),16777619);return (h>>>0).toString(16).padStart(8,'0')+'-'+s.length;};\nif(!Array.isArray(j.characters)||!j.characters.length) throw new Error('characters must be a non-empty array');\nconst channel=String(j.channel_id||''); if(!channel) throw new Error('channel_id required for quota enforcement');\nconst daily=Number(j.account_daily_quota); if(!Number.isInteger(daily)||daily<1||daily>20) throw new Error('account_daily_quota must be a verified integer in 1..20');\nconst count=Number(j.ads_per_character); if(!Number.isInteger(count)||count<1) throw new Error('ads_per_character must be positive');\nconst max=Math.min(daily,Number(j.run_cap||daily)); if(count*j.characters.length>max) throw new Error('Requested batch exceeds run/account quota');\nconst seen=new Set(),out=[]; for(const c of j.characters){ if(!c.character_id||!c.ad_concept||c.fictional_adult!==true) throw new Error('Require stable character_id, ad_concept, fictional_adult=true'); const identity=String(c.character_id); for(let i=0;i<count;i++){ const key=identity+'|'+String(c.ad_concept).trim().toLowerCase()+'|'+i; if(seen.has(key)) continue; seen.add(key); out.push({json:{asset_id:hash(key),character_id:identity,channel_id:channel,concept:c.ad_concept,variation:i+1,provenance:{source_id:'DdOIy0DsPCK',source_url:'https://www.instagram.com/alexhustleshard/reel/DdOIy0DsPCK/'},generation:'PENDING_CONFIGURED_MEDIA_WORKER',quality_gate:['identity_consistency','originality','claims','platform_quota'],review_status:'needs_human_review',publish_status:'disabled'}}); } }\nreturn out;"
+      },
+      "id": "6de82d74-c01b-4dc1-9b7c-c4863a51cdcc",
+      "name": "Apply user-stack method",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Expected input fixture is paired in fixtures/source-method-fixtures.json. This export prepares records/handoffs only when a required vendor API/worker is unresolved. Import inactive; run manually after reviewing its inputs.",
+        "height": 170,
+        "width": 420
+      },
+      "id": "f5d9f4f2-f92b-4329-86e2-adac9652fefb",
+      "name": "Run status",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Apply user-stack method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "nexen": {
+      "catalog_id": "instagram:DdOIy0DsPCK:user_stack:DdOIy0DsPCK-ai-character-factory",
+      "source_id": "DdOIy0DsPCK",
+      "source_shortcode": "DdOIy0DsPCK",
+      "source_numbers": [
+        2,
+        57
+      ],
+      "source_url": "https://www.instagram.com/alexhustleshard/reel/DdOIy0DsPCK/",
+      "method": "High-volume fictional AI-character ad production (duplicate of source 57)",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "AI characters",
+      "required_software": [
+        {
+          "name": "Unnamed custom connector",
+          "category": "AI characters",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source connector URL/server was never supplied."
+        },
+        {
+          "name": "Configured media generation worker",
+          "category": "AI characters",
+          "state": "not_implemented",
+          "reason": "No render is claimed; stable character references, original prompts and asset QA needed."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [
+        {
+          "type": "Custom media connector",
+          "name": "Unresolved connector",
+          "reason": "The source never supplies its URL/server identity."
+        }
+      ],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  },
+  "pinData": {}
+}

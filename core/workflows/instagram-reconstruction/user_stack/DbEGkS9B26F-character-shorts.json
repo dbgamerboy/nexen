@@ -1,0 +1,117 @@
+{
+  "name": "USER_STACK | AI fictional-character Shorts generation | DbEGkS9B26F",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER_STACK VERSION\nSource: https://www.instagram.com/petervibecoder/reel/DbEGkS9B26F/\nEvidence: [0.16s - 4.08s] [Speaker 0] YouTube just changed their shorts payment model and people are making $3,000\n[4.08s - 17.14s] [Speaker 0] a month uploading AI Slop. I'm about to show you the cheat code. Wait. YouTube pays for shorts now? I thought you needed like a million subscribers and a sponsorship deal. Not anymore. YouTube rolled out ad revenue sharing for shorts in 2023.\n[17.14s - 22.66s] [Speaker 0] Now they pay based on views alone. A million views can net you $200 to $500,\n[22.66s - 32.34s] [Speaker 2] and people are cranking out 10 videos a day using AI. So you're telling me I could pump out videos without filming anything. How does that even work? Simple. Go to brainrot.ovid.\n[32.56s - 33.86s] [Speaker 0] Click AI scriptwriter.\n[34.24s - 45.39s] [Speaker 0] Pick your niche like finance or tech or whatever. Then select your characters, your video idea, your caption style, and hit generate. The AI spits out a full video in sixty seconds.\n[45.70s - 56.35s] [Speaker 2] Hold on. If it's this easy, won't YouTube just ban AI content? This sounds too good to be true. YouTube doesn't care if it's AI as long as it's not spam. And channels using brainrot.mauve\n[56.35s - 69.03s] [Speaker 0] are hitting millions of views because the content is actually watchable. It's not some robot v\nRetains niche, characters, idea, caption style, generate. User-stack adds character continuity, original script evidence, per-channel quota and disclosure review; product API stays unresolved.\nThis describes added USER-STACK controls, not source instructions.\nExternal media generation/publishing is not marked complete.",
+        "height": 360,
+        "width": 440
+      },
+      "id": "4e87bf7d-4518-4a1d-9850-92afa29ea059",
+      "name": "Evidence and boundaries",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "d1fb3f39-afaf-4029-b065-57fd55ed2cef",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$input.first().json;\nfor(const k of ['niche','character_id','video_idea','caption_style','channel_id']) if(!j[k]) throw new Error(k+' required');\nif(j.fictional_adult!==true) throw new Error('character must be explicitly fictional adult for this template');\nconst key=[j.character_id,j.niche,j.video_idea,j.caption_style].join('|');let h=2166136261;for(const ch of key)h=Math.imul(h^ch.charCodeAt(0),16777619);const asset_id=(h>>>0).toString(16).padStart(8,'0')+key.length.toString(16).padStart(8,'0');\nreturn [{json:{asset_id,character_id:j.character_id,niche:j.niche,video_idea:j.video_idea,caption_style:j.caption_style,channel_id:j.channel_id,character_reference:j.character_reference||'REQUIRED_BEFORE_RENDER',generation_status:'pending_versioned_media_adapter',continuity_checks:['face_or_design_reference','voice_profile','character_bible'],rights_review:'required',human_review:true,publish_enabled:false}}];"
+      },
+      "id": "f2b01a5d-4f13-4ce8-8a79-778aa85a4d35",
+      "name": "Apply user-stack method",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Expected input fixture is paired in fixtures/source-method-fixtures.json. This export prepares records/handoffs only when a required vendor API/worker is unresolved. Import inactive; run manually after reviewing its inputs.",
+        "height": 170,
+        "width": 420
+      },
+      "id": "425acdb4-aa19-45af-b690-6260b93fe437",
+      "name": "Run status",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Apply user-stack method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "nexen": {
+      "catalog_id": "instagram:DbEGkS9B26F:user_stack:DbEGkS9B26F-character-shorts",
+      "source_id": "DbEGkS9B26F",
+      "source_shortcode": "DbEGkS9B26F",
+      "source_numbers": [
+        9
+      ],
+      "source_url": "https://www.instagram.com/petervibecoder/reel/DbEGkS9B26F/",
+      "method": "AI fictional-character Shorts generation",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "AI characters",
+      "required_software": [
+        {
+          "name": "brainrot.ovid / brainrot.mauve",
+          "category": "AI characters",
+          "state": "identity_unresolved",
+          "reason": "Name is uncertain in machine transcript; endpoint not verified."
+        },
+        {
+          "name": "Versioned character media worker",
+          "category": "AI characters",
+          "state": "not_implemented",
+          "reason": "Requires persistent character reference and safe render/QA adapter."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  },
+  "pinData": {}
+}

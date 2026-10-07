@@ -1,0 +1,255 @@
+{
+  "name": "USER-STACK | Faceless YouTube niche criteria -> source-style script system | DYWFQKAPgmF",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER-STACK VERSION — same source method with the user's practical stack.\nSource: https://www.instagram.com/raycfu/reel/DYWFQKAPgmF/\nEnhancement: NEXEN local content queue, source/claim ledger, scene-level validation, original-media rights checklist and FFmpeg/Whisper stage handoff. Whisper package was absent in the checked Python environment; no render is claimed.\n\nOperational state: this is a proposed architecture. Required external credentials, models, worker or API are called out in the pair comparison and README. Nothing is activated by import.",
+        "height": 440,
+        "width": 580
+      },
+      "id": "06000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -520
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "06000000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: {\n  niche: 'personal finance for new grads',\n  topic: 'What to do with your first paycheck',\n  target_length_min: 6,\n  audience: 'US early-career, 22-28'\n} }];"
+      },
+      "id": "06000000-0000-4000-8000-000000000003",
+      "name": "Sample Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -300,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst e = [];\nif (!j.niche || !j.topic) e.push('niche and topic are required');\nif (!Number.isFinite(j.target_length_min) || j.target_length_min < 1 || j.target_length_min > 30) e.push('target_length_min must be 1-30');\nif (e.length) throw new Error('Invalid input: ' + e.join('; '));\nreturn [{ json: j }];"
+      },
+      "id": "06000000-0000-4000-8000-000000000004",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-sonnet-5', max_tokens: 2500, system: 'You write faceless YouTube scripts. Reply ONLY with JSON: {\"hook\":\"pattern-interrupt hook, deliverable in the first 30 seconds\",\"open_loops\":[\"...\"],\"scenes\":[{\"spoken\":\"spoken-English narration, not essay English\",\"visual_text\":\"on-screen text\",\"pause_markers\":\"[pause] positions\"}],\"soft_cta\":\"...\",\"titles\":[\"3 options\"],\"description\":\"...\",\"tags\":[\"...\"],\"chapters\":[{\"time\":\"00:00\",\"label\":\"...\"}]}. Requirements: hook is a pattern interrupt; use open loops; spoken English; include pause markers and visual_text for every scene; end with a soft CTA.', messages: [ { role: 'user', content: 'Niche: ' + $json.niche + '\\nTopic: ' + $json.topic + '\\nAudience: ' + ($json.audience||'') + '\\nTarget length (min): ' + $json.target_length_min } ] }) }}",
+        "options": {}
+      },
+      "id": "06000000-0000-4000-8000-000000000005",
+      "name": "Generate Script",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        140,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json && $json.content && $json.content[0] && $json.content[0].text;\nif (!raw) throw new Error('Anthropic response missing content[0].text');\nlet s;\ntry { s = JSON.parse(raw); } catch (e) { throw new Error('Model did not return valid JSON: ' + raw.slice(0,200)); }\nconst missing = [];\nif (!s.hook || !s.hook.trim()) missing.push('hook');\nif (!Array.isArray(s.open_loops) || !s.open_loops.length) missing.push('open_loops');\nif (!Array.isArray(s.scenes) || !s.scenes.length) missing.push('scenes');\nelse s.scenes.forEach((sc, i) => { if (!sc.spoken) missing.push('scenes['+i+'].spoken'); if (!sc.visual_text) missing.push('scenes['+i+'].visual_text'); if (!sc.pause_markers) missing.push('scenes['+i+'].pause_markers'); });\nif (!s.soft_cta) missing.push('soft_cta');\nif (!Array.isArray(s.titles) || !s.titles.length) missing.push('titles');\nif (missing.length) throw new Error('Script missing required taught elements: ' + missing.join(', '));\nreturn [{ json: { script: s, next: 'MANUAL_HANDOFF: 11 Labs voiceover -> CapCut edit + Pexels stock -> upload to YouTube (all require human/tools; not automated here)' } }];"
+      },
+      "id": "06000000-0000-4000-8000-000000000006",
+      "name": "Validate Script",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const sourceId=\"DYWFQKAPgmF\";\nconst sourceUrl=\"https://www.instagram.com/raycfu/reel/DYWFQKAPgmF/\";\nconst variant='USER_STACK';\nconst seen=new Set();\nconst hash=s=>{let h=2166136261;for(const c of s)h=Math.imul(h^c.charCodeAt(0),16777619);return (h>>>0).toString(16).padStart(8,'0');};\nreturn $input.all().map(({json:j},i)=>{\n  const recordKey=String(j.row_id||j.clip_id||j.note_id||j.fileName||j.output_path||j.title||i);\n  const idempotencyKey=hash(sourceId+'|'+recordKey);\n  if(seen.has(idempotencyKey)) throw new Error('Duplicate output in one execution: '+idempotencyKey);\n  seen.add(idempotencyKey);\n  return {json:{...j,source_provenance:{source_id:sourceId,source_url:sourceUrl,variant},idempotency_key:idempotencyKey,review_status:'needs_human_review',review_notes:Array.isArray(j.review_notes)?j.review_notes:[],external_actions_enabled:false}};\n});"
+      },
+      "id": "18294d1c-e21b-4d42-a923-511dacea5397",
+      "name": "Attach Provenance + Review Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        150,
+        180
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sample Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sample Input": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Generate Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Script": {
+      "main": [
+        [
+          {
+            "node": "Attach Provenance + Review Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach Provenance + Review Gate": {
+      "main": [
+        [
+          {
+            "node": "Validate Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:DYWFQKAPgmF:user_stack:DYWFQKAPgmF-youtube-script",
+      "source_id": "DYWFQKAPgmF",
+      "source_shortcode": "DYWFQKAPgmF",
+      "source_numbers": [
+        49
+      ],
+      "source_url": "https://www.instagram.com/raycfu/reel/DYWFQKAPgmF/",
+      "method": "Faceless YouTube niche criteria -> source-style script system",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "YouTube production",
+      "required_software": [
+        {
+          "name": "Claude subscription",
+          "category": "YouTube production",
+          "state": "interactive_manual_only",
+          "reason": "Source prompt uses Claude; no API billing or provider entitlement assumed."
+        },
+        {
+          "name": "ElevenLabs",
+          "category": "YouTube production",
+          "state": "credential_missing",
+          "reason": "Source uses voice-over; bind a named credential only after setup."
+        },
+        {
+          "name": "CapCut",
+          "category": "YouTube production",
+          "state": "manual_handoff",
+          "reason": "Editing app remains a human production stage."
+        },
+        {
+          "name": "Pexels media",
+          "category": "YouTube production",
+          "state": "license_and_access_unverified",
+          "reason": "Stock asset use requires license/provenance per asset."
+        },
+        {
+          "name": "Nano Banana Pro",
+          "category": "YouTube production",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Exact model access/contract is not configured."
+        },
+        {
+          "name": "TubeBuddy or VidIQ",
+          "category": "YouTube production",
+          "state": "optional_manual_research",
+          "reason": "Keyword check is an optional source stage; no API integrated."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

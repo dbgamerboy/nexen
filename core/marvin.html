@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>NEXEN V3 · MARVIN</title>
+<style>
+:root{
+  --bg:#070506;--bg2:#0e0809;--panel:rgba(26,10,12,.72);--panel2:rgba(40,12,15,.62);
+  --line:rgba(255,58,64,.28);--line-hi:rgba(255,72,80,.7);--red:#ff3b43;--red-hi:#ff6b71;--red-deep:#8e0f16;
+  --text:#f6eeee;--soft:#c9b7b8;--muted:#8f7a7c;--ok:#39d98a;--warn:#ffb13b;--bad:#ff4d57;
+  --blue:#3b8bff;--teal:#19c6c0;--purple:#9b5cff;--pink:#ff4fa3;--r:12px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 "Segoe UI",Inter,system-ui,sans-serif}
+body{min-height:100vh;background:
+  radial-gradient(1200px 600px at 50% -10%,rgba(255,40,50,.18),transparent 60%),
+  radial-gradient(900px 500px at 50% 110%,rgba(255,40,50,.10),transparent 60%),
+  repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px),var(--bg)}
+a{color:var(--red-hi)}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--red-hi);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+header.top{display:flex;align-items:center;gap:18px;padding:12px 22px;border-bottom:1px solid var(--line);background:rgba(10,4,5,.8);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.brand{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:15px}
+.brand b{color:var(--red)}
+nav.links{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+nav.links a{color:var(--soft);text-decoration:none;font-size:12px;padding:6px 10px;border:1px solid transparent;border-radius:8px;min-height:32px;display:inline-flex;align-items:center}
+nav.links a:hover{border-color:var(--line);color:var(--text)}
+nav.links a.everything-link{background:var(--red);border-color:var(--red-hi);color:#210407;font-weight:850;letter-spacing:.06em}
+nav.links a.everything-link:hover{background:var(--red-hi);color:#170305}
+.clock{font:600 12px ui-monospace,Consolas,monospace;color:var(--soft)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--muted);box-shadow:0 0 10px currentColor;display:inline-block}
+.dot.ok{background:var(--ok);color:var(--ok)}.dot.bad{background:var(--bad);color:var(--bad)}
+
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:18px 22px 6px;flex-wrap:wrap}
+.hero h1{margin:0;font-size:clamp(22px,2.6vw,34px);font-weight:300;letter-spacing:-.02em}
+.hero h1 span{color:var(--red);font-weight:700}
+.hero .sub{color:var(--soft);font-size:13px}
+
+main.grid{display:grid;grid-template-columns:minmax(280px,1fr) minmax(420px,1.45fr) minmax(280px,1fr);gap:16px;padding:12px 22px 26px}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.panel{position:relative;background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:var(--r);padding:14px 14px 12px;box-shadow:0 0 0 1px rgba(255,60,70,.05) inset,0 12px 40px rgba(0,0,0,.45),0 0 24px rgba(255,40,50,.08)}
+.panel::before{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,70,80,.55),transparent) top/100% 1px no-repeat}
+.panel h2{margin:0 0 10px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--red-hi);font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.panel h2 small{color:var(--muted);letter-spacing:.04em;text-transform:none;font-weight:500}
+.empty{color:var(--muted);font-size:13px}
+
+.lane{display:grid;grid-template-columns:26px 1fr;gap:8px;padding:9px 0;border-top:1px solid rgba(255,70,80,.12)}
+.lane:first-of-type{border-top:0}
+.lane .n{font:700 13px ui-monospace,Consolas,monospace;color:var(--red)}
+.lane .t{font-weight:600}
+.lane .meta{font-size:12px;color:var(--soft)}
+.lane .gate{font-size:12px;color:var(--muted)}
+.badge{display:inline-block;font:700 10px/1 ui-monospace,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:6px;border:1px solid;vertical-align:1px;margin-left:6px}
+.b-verified,.b-paid,.b-running,.b-published{color:var(--ok);border-color:rgba(57,217,138,.5);background:rgba(57,217,138,.08)}
+.b-tested,.b-connected{color:var(--teal);border-color:rgba(25,198,192,.5);background:rgba(25,198,192,.08)}
+.b-prepared,.b-queued{color:var(--warn);border-color:rgba(255,177,59,.5);background:rgba(255,177,59,.07)}
+.b-blocked{color:var(--bad);border-color:rgba(255,77,87,.55);background:rgba(255,77,87,.09)}
+
+.needs li{margin:0 0 9px}
+.needs ol,.needs ul{padding-left:18px;margin:0}
+.needs .w{font-weight:600}
+.needs .u{font-size:12px;color:var(--soft)}
+.critical{border-color:rgba(255,77,87,.65)!important}
+
+.pipe{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px}
+.pipe .st{flex:1;min-width:70px;text-align:center;padding:9px 6px;border:1px solid var(--line);border-radius:10px;background:rgba(255,50,60,.06)}
+.pipe .st b{display:block;font-size:18px;color:var(--text)}
+.pipe .ar{color:var(--red)}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi{border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,.08);min-height:84px}
+.kpi .l{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.kpi .v{font-size:26px;font-weight:700;line-height:1.2}
+.kpi .s{font-size:11px;color:rgba(255,255,255,.7)}
+.k1{background:linear-gradient(135deg,rgba(59,139,255,.35),rgba(59,139,255,.08))}
+.k2{background:linear-gradient(135deg,rgba(25,198,192,.35),rgba(25,198,192,.08))}
+.k3{background:linear-gradient(135deg,rgba(155,92,255,.35),rgba(155,92,255,.08))}
+.k4{background:linear-gradient(135deg,rgba(255,79,163,.35),rgba(255,79,163,.08))}
+
+.core-wrap{position:relative;height:300px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:radial-gradient(circle at 50% 50%,rgba(255,40,50,.18),rgba(0,0,0,0) 60%)}
+#core{width:100%;height:100%;display:block}
+.core-fallback{position:absolute;inset:0;display:grid;place-items:center}
+.core-fallback i{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#ff6b71,#8e0f16 60%,transparent 70%);box-shadow:0 0 60px #ff3b43;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.08);opacity:.85}}
+.core-label{position:absolute;left:14px;top:12px;font:700 11px ui-monospace,Consolas,monospace;letter-spacing:.18em;color:var(--red-hi)}
+.core-state{position:absolute;right:14px;top:12px;font:600 11px ui-monospace,Consolas,monospace;color:var(--soft)}
+
+/* Owner's model box, re-themed red */
+.quick{display:flex;justify-content:space-around;gap:10px;flex-wrap:wrap;margin:4px 0 10px}
+.quick button{border:0;background:transparent;color:var(--soft);cursor:pointer;font-size:12px;min-height:36px;padding:0 8px;border-radius:8px}
+.quick button:hover{color:var(--text);background:rgba(255,60,70,.08)}
+.messages{display:none;max-height:260px;overflow:auto;margin:0 0 10px;padding-right:2px}
+.messages.has{display:block}
+.msg{margin:7px 0;padding:10px 13px;border:1px solid rgba(255,70,80,.18);border-radius:10px;background:rgba(20,8,9,.85);white-space:pre-wrap;word-wrap:break-word;font-size:13.5px}
+.msg.user{margin-left:auto;width:fit-content;max-width:85%;background:rgba(60,14,18,.8)}
+.msg.note{color:var(--muted);border-style:dashed;background:transparent}
+.msg .who{display:block;font:700 10px ui-monospace,Consolas,monospace;letter-spacing:.12em;color:var(--red-hi);margin-bottom:2px}
+.composer{display:flex;align-items:center;border:1px solid var(--line-hi);border-radius:13px;background:rgba(18,7,8,.9);box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 22px rgba(255,40,50,.15);padding:6px 8px 6px 12px}
+.attach,.mic{width:44px;height:44px;border:0;background:transparent;color:var(--soft);cursor:pointer;font-size:22px;border-radius:10px}
+.attach:hover,.mic:hover{color:var(--text)}
+#prompt{flex:1;resize:none;border:0;outline:0;background:transparent;min-height:40px;max-height:154px;padding:10px 6px;font-size:14px;line-height:19px}
+#prompt::placeholder{color:#8a7072}
+.send{width:44px;height:44px;border:0;border-radius:10px;background:var(--red);color:#1a0406;font-size:20px;font-weight:700;cursor:pointer;transition:transform .15s ease,background .15s ease}
+.send:hover{background:var(--red-hi);transform:translateY(-1px)}
+.send:disabled{opacity:.45;cursor:default;transform:none}
+.meta{margin-top:8px;display:flex;justify-content:space-between;color:#7b6264;font:10px ui-monospace,Consolas,monospace;letter-spacing:.12em}
+.caps{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;justify-content:center}
+.caps a{flex:1 1 auto;min-width:0;justify-content:center;font-size:12px;color:var(--soft);text-decoration:none;border:1px solid rgba(255,70,80,.18);border-radius:999px;padding:6px 11px;min-height:32px;display:inline-flex;align-items:center}
+.caps a:hover{color:var(--text);border-color:var(--line-hi)}
+
+.trace{max-height:260px;overflow:auto;font-size:12.5px}
+.trace div{padding:7px 0;border-top:1px solid rgba(255,70,80,.1)}
+.trace div:first-child{border-top:0}
+.trace .when{font:11px ui-monospace,Consolas,monospace;color:var(--red-hi)}
+.sugg li{margin-bottom:6px}
+.sugg ul{padding-left:18px;margin:0}
+
+.gauges{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gauge{border:1px solid var(--line);border-radius:10px;padding:10px}
+.gauge .l{font-size:11px;color:var(--soft);letter-spacing:.08em;text-transform:uppercase}
+.bar{height:8px;border-radius:5px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--red-deep),var(--red));width:0;transition:width .6s ease}
+.disks{margin-top:8px;font-size:12px}
+.disks div{display:flex;justify-content:space-between;gap:8px;padding:3px 0}
+.disks .warn{color:var(--bad);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 10px;display:inline-flex;align-items:center;gap:6px}
+.pc2{margin-top:8px;font-size:12.5px;color:var(--soft)}
+
+.ars-counts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;margin-bottom:10px}
+.linkgrid{display:flex;flex-wrap:wrap;gap:8px}
+.link-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border:1px solid var(--line);border-radius:999px;background:var(--panel2);color:var(--fore);font-size:12px;text-decoration:none;transition:.15s}
+.link-btn:hover{border-color:var(--red-hi);transform:translateY(-1px)}
+.link-btn::before{content:"";width:7px;height:7px;border-radius:50%;background:#e5484d;flex:none}
+.link-btn.up::before{background:#30a46c}
+.ars-counts div{border:1px solid var(--line);border-radius:10px;padding:8px 4px}
+.ars-counts b{display:block;font-size:20px}
+.ars-counts span{font-size:11px;color:var(--soft)}
+.search{display:flex;gap:6px}
+.search input{flex:1;min-height:40px;border:1px solid var(--line);border-radius:9px;background:rgba(10,4,5,.8);padding:0 10px}
+.search button{min-height:40px;border:1px solid var(--line-hi);background:rgba(255,50,60,.12);border-radius:9px;padding:0 12px;cursor:pointer}
+.results{margin-top:8px;font-size:12.5px;max-height:190px;overflow:auto}
+.results div{padding:6px 0;border-top:1px solid rgba(255,70,80,.1)}
+.results .k{font:700 10px ui-monospace,Consolas,monospace;color:var(--red-hi);letter-spacing:.1em;text-transform:uppercase}
+#graph{width:100%;height:220px;display:block}
+.err{color:var(--bad);font-size:12.5px;margin:0 22px}
+
+@media (max-width:1180px){main.grid{grid-template-columns:1fr 1fr}.col.center{grid-column:1 / -1;order:-1}}
+@media (max-width:760px){
+  header.top{flex-wrap:wrap;padding:10px 14px}nav.links{order:3;width:100%;overflow-x:auto;flex-wrap:nowrap}
+  .hero,main.grid{padding-left:14px;padding-right:14px}main.grid{grid-template-columns:1fr}
+  .kpis{grid-template-columns:1fr 1fr}.core-wrap{height:230px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* V3 report panel (fed by the NEXEN loop via state.v3) */
+#v3 .next{border:1px solid var(--red-hi);border-radius:10px;padding:10px 12px;margin-bottom:10px;background:rgba(255,59,67,.08)}
+#v3 .next .k{font:700 10px ui-monospace,Consolas,monospace;letter-spacing:.12em;color:var(--red-hi);text-transform:uppercase}
+#v3 .next a,#v3 .next b{display:block;font-size:15px;margin:2px 0;color:inherit}
+#v3 .alert{border-left:3px solid #7a8591;padding:4px 8px;margin:6px 0;font-size:12.5px}
+#v3 .alert.red{border-color:#ff3b43}#v3 .alert.amber{border-color:#ffb13b}
+#v3 .alert .f{opacity:.75}
+#v3 .row{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;margin:8px 0;opacity:.9}
+#v3 table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+#v3 td{padding:3px 4px;border-top:1px solid rgba(255,70,80,.12);vertical-align:top}
+/* Swarm: derived executor progress and SHA-bound task screenshots. */
+#swarm-body{display:grid;gap:10px;max-height:640px;overflow:auto}
+.swarm-role{border:1px solid var(--line);border-radius:10px;padding:10px;overflow-wrap:anywhere}
+.swarm-heading{font-weight:700}.swarm-meta{font-size:11px;color:var(--soft)}
+.swarm-summary{font-size:12.5px;white-space:pre-wrap;margin:6px 0}
+.swarm-role progress{width:100%;accent-color:var(--red)}.swarm-progress-text{font-size:11px;color:var(--soft)}
+.swarm-screenshot{display:block;margin-top:8px;text-decoration:none}.swarm-screenshot img{display:block;width:100%;max-height:200px;object-fit:contain;border:1px solid var(--line);border-radius:8px}
+.swarm-role details{margin-top:7px;font-size:11px}.b-held,.b-failed{color:var(--warn);border-color:var(--warn)}.b-completed{color:var(--ok);border-color:var(--ok)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">NEXEN <b>V3</b> · MARVIN</div>
+  <nav class="links" aria-label="NEXEN pages">
+    <a class="everything-link" href="/everything" aria-label="View everything in NEXEN">◈ EVERYTHING</a><a href="/money">💰 Money</a><a href="/benefits">🧭 Benefits</a><a href="/workflows">▦ Workflows</a><a href="/next">⏭️ Next</a><a href="/day">📅 Day</a><a href="/tasks">✅ Tasks</a>
+    <a href="/agents">🤖 Agents</a><a href="/music-render">🎵 Music</a><a href="/game">🎮 Game</a><a href="/youtube-memory">📺 YouTube</a>
+    <a href="/voice">🎙️ Voice</a><a href="/hub">🧭 V2 Hub</a>
+  </nav>
+  <span class="dot" id="live-dot" aria-hidden="true"></span><span class="clock" id="clock">--:--</span>
+</header>
+
+<section class="hero">
+  <div>
+    <h1>Welcome to <span>NEXEN V3</span></h1>
+    <div class="sub" id="hero-sub">Loading live status…</div>
+  </div>
+  <div class="sub" id="updated"></div>
+</section>
+<p class="err" id="err" role="alert"></p>
+
+<main class="grid">
+  <!-- LEFT -->
+  <div class="col">
+    <!-- Owner blockers first (owner request 2026-09-27): fed live by the NEXEN loop, money first. -->
+    <section class="panel needs critical" aria-labelledby="h-needs">
+      <h2 id="h-needs">⛔ Needs You: money first</h2>
+      <div id="needs"><p class="empty">Loading…</p></div>
+    </section>
+    <section class="panel" aria-labelledby="h-lanes">
+      <h2 id="h-lanes">💰 Money Arsenal: Ranked Workflows <small id="lanes-src"></small></h2>
+      <div id="lanes"><p class="empty">Loading…</p></div>
+    </section>
+    <section class="panel" aria-labelledby="h-pipe">
+      <h2 id="h-pipe">🔀 Deal Flow Pipeline</h2>
+      <div class="pipe" id="pipe"></div>
+      <p class="empty" style="margin:8px 0 0">Counts are money lanes by status. No deal is closed until a payment is verified.</p>
+    </section>
+  </div>
+
+  <!-- CENTER -->
+  <div class="col center">
+    <section class="panel" aria-labelledby="h-engine">
+      <h2 id="h-engine">📈 Money Engine: Balance &amp; Strategy</h2>
+      <div class="kpis">
+        <div class="kpi k1"><div class="l">Verified revenue</div><div class="v" id="k-rev">$—</div><div class="s" id="k-rev-s">no sale yet</div></div>
+        <div class="kpi k2"><div class="l">Lanes tested</div><div class="v" id="k-lanes">—</div><div class="s" id="k-lanes-s"></div></div>
+        <div class="kpi k3"><div class="l">Posts ready</div><div class="v" id="k-posts">—</div><div class="s" id="k-posts-s"></div></div>
+        <div class="kpi k4"><div class="l">Approvals</div><div class="v" id="k-appr">—</div><div class="s">waiting on you</div></div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="h-core">
+      <h2 id="h-core" class="sr">MARVIN core</h2>
+      <div class="core-wrap">
+        <canvas id="core" aria-label="MARVIN animated core" role="img"></canvas>
+        <div class="core-fallback" id="core-fallback" hidden><i></i></div>
+        <div class="core-label">PROJECT MARVIN</div>
+        <div class="core-state" id="core-state">IDLE</div>
+      </div>
+      <div class="quick" role="group" aria-label="Quick actions">
+        <button type="button" data-q="What's the fastest money move I can make today?">◉ &nbsp;Money move today</button>
+        <button type="button" data-q="What's blocking me right now and what do I do first?">✧ &nbsp;What's blocking me</button>
+        <button type="button" data-q="Which of my downloaded repos or skills helps with clipping videos for money?">▣ &nbsp;Best repo for this ↗</button>
+      </div>
+      <div id="messages" class="messages" aria-live="polite"></div>
+      <form class="composer" id="composer">
+        <button type="button" id="attachBtn" class="attach" aria-label="Attach file">＋</button>
+        <label for="prompt" class="sr">Message MARVIN</label>
+        <textarea id="prompt" rows="1" maxlength="4000" placeholder="Talk to MARVIN. Or hand something over." autocomplete="off"></textarea>
+        <button type="button" id="micBtn" class="mic" aria-label="Voice">♩</button>
+        <button type="submit" id="sendBtn" class="send" aria-label="Send">↑</button>
+      </form>
+      <div class="meta"><span>YOUR INTENT IS THE INTERFACE</span><span id="model-used">LOCAL MODEL</span></div>
+      <nav class="caps" aria-label="Explore">
+        <a href="/marvin/training">✦ Practice + Research</a><a href="/memory-pools">◉ Memory</a><a href="/agents">⑂ Agents</a><a href="/desktop">▣ Computer</a>
+        <a id="content-tab" href="https://docs.google.com/spreadsheets/d/1a0OWr2M2RHJ26guhN8OR4UuhHQ_HoJeffeAQCZYG550/edit" target="_blank" rel="noopener noreferrer" title="Open the native content planning sheet. Newer sheet edits may not yet be in MARVIN's local mirror.">▤ CONTENT</a>
+        <a href="/lab">◇ Tools</a><a href="/lookbook">◎ World</a><a href="/code-review">⚒ Build</a><a href="/reel-assets">✧ Creative</a>
+      </nav>
+    </section>
+    <section class="panel" id="swarm" aria-labelledby="h-swarm">
+      <h2 id="h-swarm">Swarm tasks and screenshots <small id="swarm-count">12 defined roles</small></h2>
+      <div id="swarm-body" aria-live="polite"><p class="empty">Loading current executor reports...</p></div>
+      <p id="swarm-note" class="empty">Declared roles are not proof of running model workers.</p>
+    </section>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="col">
+    <!-- V3 report (owner request 2026-09-27): next action, alerts, loop + memory, goals. Data: state.v3 from the NEXEN loop. -->
+    <section class="panel" id="v3" aria-labelledby="h-v3">
+      <h2 id="h-v3">📋 V3 Report <small id="v3-upd"></small></h2>
+      <div id="v3-body"><p class="empty">Loading…</p></div>
+    </section>
+    <section class="panel" aria-labelledby="h-trace">
+      <h2 id="h-trace">🧠 AI Thought Trace <small>session log</small></h2>
+      <div class="trace" id="trace"><p class="empty">Loading…</p></div>
+    </section>
+    <section class="panel sugg" aria-labelledby="h-sugg">
+      <h2 id="h-sugg">💡 Strategic Suggestions</h2>
+      <div id="sugg"><p class="empty">Loading…</p></div>
+    </section>
+    <section class="panel" aria-labelledby="h-infra">
+      <h2 id="h-infra">🖥️ Infrastructure</h2>
+      <div class="gauges">
+        <div class="gauge"><div class="l">PC1 CPU</div><b id="cpu">—</b><div class="bar"><i id="cpu-bar"></i></div></div>
+        <div class="gauge"><div class="l">PC1 RAM</div><b id="ram">—</b><div class="bar"><i id="ram-bar"></i></div></div>
+      </div>
+      <div class="disks" id="disks"></div>
+      <div class="chips" id="systems"></div>
+      <div class="pc2" id="pc2"></div>
+    </section>
+    <section class="panel" aria-labelledby="h-links">
+      <h2 id="h-links">🔗 Links <small>every port, one click</small></h2>
+      <div class="linkgrid" id="links"><p class="empty">Loading…</p></div>
+    </section>
+    <section class="panel" aria-labelledby="h-ars">
+      <h2 id="h-ars">🧰 Arsenal <small>repos + skills MARVIN can use</small></h2>
+      <div class="ars-counts">
+        <div><b id="a-repos">—</b><span>repos</span></div>
+        <div><b id="a-skills">—</b><span>skills</span></div>
+        <div><b id="a-cards">—</b><span>cards</span></div>
+      </div>
+      <form class="search" id="ars-form" role="search">
+        <label for="ars-q" class="sr">Search repos and skills</label>
+        <input id="ars-q" placeholder="clip videos, dropshipping, beats…" autocomplete="off">
+        <button type="submit">Search</button>
+      </form>
+      <div class="results" id="ars-results"></div>
+    </section>
+    <section class="panel" aria-labelledby="h-graph">
+      <h2 id="h-graph">🕸️ Knowledge Graph</h2>
+      <svg id="graph" role="img" aria-label="Teams, money lanes and systems"></svg>
+    </section>
+  </div>
+</main>
+
+<script>
+(() => {
+  "use strict";
+  const $ = s => document.querySelector(s);
+  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  const badge = s => { const b = el('span', 'badge b-' + String(s || 'queued').toLowerCase().replace(/[^a-z]/g, ''), s || '—'); return b; };
+  let thinking = false, state = null;
+
+  // ---------- clock ----------
+  const tick = () => { $('#clock').textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}); };
+  tick(); setInterval(tick, 15000);
+
+  // ---------- API ----------
+  async function api(path, options = {}) {
+    const r = await fetch(path, {...options, headers: {'Content-Type': 'application/json', 'X-Nexen-Action': 'launch'}});
+    if (r.status === 401) { location.href = '/login?next=/'; throw Error('Please sign in.'); }
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw Error(typeof data.detail === 'string' ? data.detail : 'Request failed (' + r.status + ').');
+    return data;
+  }
+
+  // ---------- links (every port as a button) ----------
+  const linkGrid = $('#links');
+  async function renderLinks() {
+    try {
+      const d = await api('/api/links');
+      linkGrid.textContent = '';
+      for (const l of d.links || []) {
+        const a = el('a', 'link-btn' + (l.up ? ' up' : ' down'), l.name);
+        a.href = l.url; a.target = '_blank'; a.rel = 'noopener';
+        a.title = (l.up ? 'UP' : 'down') + ' · ' + (l.note || '');
+        linkGrid.appendChild(a);
+      }
+    } catch (e) {
+      if (linkGrid.children.length === 0) linkGrid.textContent = 'Links offline: ' + e.message;
+    }
+  }
+  renderLinks(); setInterval(renderLinks, 30000);
+
+  // ---------- render ----------
+  function render(s) {
+    state = s;
+    const money = s.money || {}, lanes = money.lanes || [];
+    const rev = money.revenue_verified_usd;
+    $('#k-rev').textContent = rev == null ? '$?' : '$' + Number(rev).toLocaleString();
+    $('#k-rev-s').textContent = rev ? 'verified' : 'verified, no sale yet';
+    $('#hero-sub').textContent = (rev ? `$${rev} verified.` : '$0 verified, no sale yet.') + ' Every number here is real or marked.';
+    $('#updated').textContent = s.generated_at ? 'Updated ' + new Date(s.generated_at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '';
+    const tested = lanes.filter(l => /tested|verified|running|paid/i.test(l.status || '')).length;
+    $('#k-lanes').textContent = tested + '/' + lanes.length; $('#k-lanes-s').textContent = 'money lanes';
+    const posts = s.posts || {};
+    $('#k-posts').textContent = posts.ready ?? '—'; $('#k-posts-s').textContent = posts.scheduled ? posts.scheduled + ' scheduled' : 'none scheduled yet';
+    $('#k-appr').textContent = (s.approvals || []).length;
+
+    const L = $('#lanes'); L.replaceChildren();
+    if (!lanes.length) L.append(el('p', 'empty', 'No money lanes loaded.'));
+    lanes.forEach(l => {
+      const row = el('div', 'lane'); row.append(el('div', 'n', String(l.rank ?? '•')));
+      const body = el('div'); const t = el('div', 't', `${l.emoji || ''} ${l.name || ''}`); t.append(badge(l.status)); body.append(t);
+      if (l.next) body.append(el('div', 'meta', '→ ' + l.next));
+      if (l.gate) body.append(el('div', 'gate', 'Gate: ' + l.gate));
+      row.append(body); L.append(row);
+    });
+    $('#lanes-src').textContent = money.updated ? 'as of ' + money.updated.slice(0, 10) : '';
+
+    const N = $('#needs'); N.replaceChildren();
+    const t = s.tonight || {}, ol = el('ol');
+    (t.logins_before_sleep || []).forEach(x => { const li = el('li'); const w = el('div', 'w');
+      if (/^https?:\/\//.test(x.where || '')) { const a = el('a', null, x.what || ''); a.href = x.where; a.target = '_blank'; a.rel = 'noopener'; w.append(a); } else { w.textContent = x.what || ''; }
+      li.append(w); li.append(el('div', 'u', (x.unlocks ? 'Unlocks: ' + x.unlocks : '') + (x.minutes ? ` · ~${x.minutes} min` : ''))); ol.append(li); });
+    if (ol.children.length) N.append(ol);
+    const bl = el('ul'); (t.blockers || []).slice(0, 6).forEach(b => { const li = el('li'); li.append(el('div', 'w', b.title || '')); if (b.owner_action) li.append(el('div', 'u', b.owner_action)); bl.append(li); });
+    if (bl.children.length) { N.append(el('div', 'u', 'Blockers')); N.append(bl); }
+    if (!N.children.length) N.append(el('p', 'empty', 'Nothing blocked. Go get it.'));
+
+    const P = $('#pipe'); P.replaceChildren();
+    const count = re => lanes.filter(l => re.test(l.status || '')).length;
+    [['Outreach', count(/prepared|queued/i)], ['Negotiation', count(/tested/i)], ['Closing', count(/running|connected/i)], ['Fulfillment', count(/paid|published|verified/i)]]
+      .forEach(([name, n], i) => { if (i) P.append(el('span', 'ar', '→')); const st = el('div', 'st'); st.append(el('b', null, String(n))); st.append(document.createTextNode(name)); P.append(st); });
+
+    const T = $('#trace'); T.replaceChildren();
+    (s.log || []).slice(0, 12).forEach(x => { const d = el('div'); d.append(el('div', 'when', `${x.when || ''} · ${x.agent || ''}`)); d.append(el('div', null, x.did || x.title || '')); T.append(d); });
+    if (!T.children.length) T.append(el('p', 'empty', 'No session log entries yet.'));
+
+    const S = $('#sugg'); S.replaceChildren(); const ul = el('ul'); (s.suggestions || []).slice(0, 6).forEach(x => ul.append(el('li', null, String(x))));
+    S.append(ul.children.length ? ul : el('p', 'empty', 'No suggestions right now.'));
+
+    const pc1 = s.pc1 || {};
+    const cpu = pc1.cpu_pct, ram = pc1.ram_used_gb, ramT = pc1.ram_total_gb;
+    $('#cpu').textContent = cpu == null ? '—' : Math.round(cpu) + '%'; $('#cpu-bar').style.width = (cpu || 0) + '%';
+    $('#ram').textContent = ram == null ? '—' : `${ram} / ${ramT} GB`; $('#ram-bar').style.width = ramT ? (100 * ram / ramT) + '%' : '0';
+    const D = $('#disks'); D.replaceChildren();
+    (pc1.disks || []).forEach(d => { const row = el('div', d.warning ? 'warn' : null); row.append(el('span', null, d.drive + (d.warning ? ' ⚠ ' + d.warning : ''))); row.append(el('span', null, `${d.free_gb} GB free`)); D.append(row); });
+    const Y = $('#systems'); Y.replaceChildren(); let allUp = true;
+    Object.entries(s.systems || {}).forEach(([k, v]) => { const up = !!(v && v.up); allUp = allUp && (up || k === 'n8n_clean'); const c = el('span', 'chip'); const dot = el('span', 'dot ' + (up ? 'ok' : 'bad')); c.append(dot, document.createTextNode(k.replace('_', ' '))); c.title = (v && v.note) || ''; Y.append(c); });
+    $('#live-dot').className = 'dot ' + (allUp ? 'ok' : 'bad');
+    const pc2 = s.pc2 || {}; $('#pc2').textContent = 'PC2: ' + (pc2.state || 'unknown') + (pc2.note ? ' · ' + pc2.note : '');
+
+    const a = s.arsenal || {};
+    $('#a-repos').textContent = a.repos ?? '—'; $('#a-skills').textContent = a.skills_installed ?? '—'; $('#a-cards').textContent = a.cards ?? '—';
+    drawGraph(s.graph || {});
+  }
+
+  function drawGraph(g) {
+    const svg = $('#graph'), W = svg.clientWidth || 320, H = svg.clientHeight || 220, NS = 'http://www.w3.org/2000/svg';
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.replaceChildren();
+    const nodes = (g.nodes || []).slice(0, 28); if (!nodes.length) return;
+    const groups = [...new Set(nodes.map(n => n.group))], pos = {};
+    nodes.forEach((n, i) => { const gi = groups.indexOf(n.group), ring = 30 + gi * 30, per = nodes.filter(m => m.group === n.group), k = per.indexOf(n);
+      const ang = (k / per.length) * Math.PI * 2 + gi; pos[n.id] = [W / 2 + Math.cos(ang) * Math.min(ring, W / 2 - 20), H / 2 + Math.sin(ang) * Math.min(ring * .8, H / 2 - 14)]; });
+    (g.edges || []).forEach(e => { if (!pos[e.from] || !pos[e.to]) return; const l = document.createElementNS(NS, 'line');
+      l.setAttribute('x1', pos[e.from][0]); l.setAttribute('y1', pos[e.from][1]); l.setAttribute('x2', pos[e.to][0]); l.setAttribute('y2', pos[e.to][1]);
+      l.setAttribute('stroke', 'rgba(255,70,80,.35)'); svg.append(l); });
+    nodes.forEach(n => { const [x, y] = pos[n.id]; const c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 4.5);
+      c.setAttribute('fill', ['#ff3b43', '#19c6c0', '#9b5cff', '#ffb13b', '#3b8bff'][groups.indexOf(n.group) % 5]); const t = document.createElementNS(NS, 'title'); t.textContent = n.label; c.append(t); svg.append(c); });
+  }
+
+  // V3 report: every value goes in through textContent (no HTML injection); links must be http(s).
+  function renderV3(v) {
+    const B = $('#v3-body'); B.replaceChildren();
+    if (!v || !v.loop) { B.append(el('p', 'empty', (v && v.note) || 'V3 report not available yet.')); return; }
+    $('#v3-upd').textContent = v.updated ? 'as of ' + v.updated.slice(11, 16) : '';
+    if (v.next_action) {
+      const n = el('div', 'next'); n.append(el('div', 'k', 'Next action · ' + (v.next_action.id || '')));
+      if (/^https?:\/\//.test(v.next_action.link || '')) { const a = el('a', null, v.next_action.title); a.href = v.next_action.link; a.target = '_blank'; a.rel = 'noopener'; n.append(a); }
+      else n.append(el('b', null, v.next_action.title));
+      n.append(el('div', 'u', v.next_action.step || '')); if (v.next_action.value) n.append(el('div', 'u', v.next_action.value)); B.append(n);
+    }
+    (v.alerts || []).forEach(a => { const d = el('div', 'alert ' + a.level); d.append(el('div', null, a.title + (a.ticket ? ' (' + a.ticket + ')' : ''))); if (a.fix) d.append(el('div', 'f', a.fix)); B.append(d); });
+    const L = v.loop, t = L.tickets || {}, r = el('div', 'row');
+    [['Loop', L.mode], ['Memory', (L.commit_pct ?? '—') + '% committed'], ['RAM free', (L.ram_free_gb ?? '—') + ' GB'],
+     ['Tickets', Object.entries(t).map(([k, n]) => n + ' ' + k).join(' · ')], ['Done this week', L.done_this_week ?? 0], ['PC2', L.pc2 || '—'],
+     ['Revenue', '$' + (v.revenue_verified_usd ?? 0) + ' verified']].forEach(([k, val]) => r.append(el('span', null, k + ': ' + val)));
+    B.append(r);
+    if ((v.goals || []).length) { const tb = el('table'); v.goals.forEach(g => { const tr = el('tr'); [g.n + '. ' + g.goal, g.by, g.now].forEach(x => tr.append(el('td', null, String(x ?? '')))); tb.append(tr); }); B.append(tb); }
+  }
+
+  // Owner progress is executor-reported; completion is receipt-backed.
+  let lastSwarmStamp = '';
+  function renderSwarm(value) {
+    const target = $('#swarm-body');
+    if (!target) return;
+    const stamp = typeof value?.updated_at === 'string' ? value.updated_at : '';
+    if (stamp && lastSwarmStamp && stamp < lastSwarmStamp) return;
+    if (stamp) lastSwarmStamp = stamp;
+    target.replaceChildren();
+    const roles = Array.isArray(value?.roles) ? value.roles.slice(0, 12) : [];
+    $('#swarm-count').textContent = roles.length + ' defined roles';
+    const validDate = text => {
+      const date = new Date(text);
+      return text && Number.isFinite(date.getTime()) ? date.toLocaleTimeString() : 'No reported timestamp';
+    };
+    const priority = {running: 0, failed: 1, held: 2, queued: 3, prepared: 4, completed: 5};
+    roles.sort((a, b) => (priority[a.state] ?? 9) - (priority[b.state] ?? 9));
+    for (const role of roles) {
+      const card = el('article', 'swarm-role');
+      const heading = el('div', 'swarm-heading', String(role.name || role.id || 'Declared role'));
+      heading.append(badge(role.state || 'held')); card.append(heading);
+      const task = Number.isInteger(role.task_id) ? 'Task #' + role.task_id : 'No current task reported';
+      card.append(el('div', 'swarm-meta', task + ' · ' + validDate(role.reported_at)));
+      card.append(el('div', 'swarm-summary', String(role.summary || 'Defined; no current executor report.')));
+      if (typeof role.progress === 'number' && Number.isFinite(role.progress) && role.progress >= 0 && role.progress <= 100) {
+        const progress = el('progress'); progress.max = 100; progress.value = role.progress;
+        progress.setAttribute('aria-label', task + ' reported progress');
+        card.append(progress, el('span', 'swarm-progress-text', role.progress.toFixed(1) + '% reported'));
+      } else card.append(el('div', 'empty', 'Progress unreported'));
+      if (Array.isArray(role.warnings) && role.warnings.length) card.append(el('div', 'empty', role.warnings.join(' · ')));
+      const screenshot = role.screenshot;
+      if (screenshot && typeof screenshot.url === 'string' && /^\/api\/marvin\/swarm\/image\/[a-f0-9]{64}$/.test(screenshot.url) && screenshot.url.endsWith(screenshot.sha256)) {
+        const link = el('a', 'swarm-screenshot'); link.href = screenshot.url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+        const image = el('img'); image.src = screenshot.url; image.alt = task + ' screenshot evidence'; image.loading = 'lazy';
+        image.addEventListener('error', () => { image.hidden = true; link.textContent = 'Screenshot changed or unavailable; refresh evidence.'; }, {once: true});
+        link.append(image, el('span', 'empty', 'Open verified task screenshot · SHA ' + screenshot.sha256.slice(0, 12)));
+        card.append(link);
+      }
+      if (Array.isArray(role.evidence) && role.evidence.length) {
+        const details = el('details'); details.append(el('summary', null, role.evidence.length + ' verified evidence file(s)'));
+        for (const evidence of role.evidence.slice(0, 8)) details.append(el('div', 'empty', String(evidence.path || '') + ' · SHA ' + String(evidence.sha256 || '').slice(0, 12)));
+        card.append(details);
+      }
+      target.append(card);
+    }
+    if (!roles.length) target.append(el('p', 'empty', 'The current swarm feed is unavailable.'));
+    $('#swarm-note').textContent = String(value?.note || 'Declared roles are not proof of running model workers.') + (stamp ? ' Updated ' + validDate(stamp) + '.' : '');
+  }
+
+  async function refreshSwarm() {
+    try { renderSwarm(await api('/api/marvin/swarm')); }
+    catch (error) { $('#swarm-note').textContent = 'Swarm updates unavailable: ' + error.message; }
+  }
+  refreshSwarm(); setInterval(refreshSwarm, 5000);
+
+  async function refresh() {
+    try { const s = await api('/api/marvin/state'); render(s); try { renderV3(s.v3); renderSwarm(s.swarm); } catch (e) { console.warn('V3 report panel:', e); } $('#err').textContent = ''; }
+    catch (e) { $('#err').textContent = 'Live status unavailable: ' + e.message; }
+  }
+  refresh(); setInterval(refresh, 15000);
+
+  // ---------- Arsenal search ----------
+  $('#ars-form').addEventListener('submit', async e => {
+    e.preventDefault(); const q = $('#ars-q').value.trim(); const R = $('#ars-results'); if (!q) return;
+    R.replaceChildren(el('p', 'empty', 'Searching…'));
+    try { const rows = await api('/api/arsenal/search?k=8&q=' + encodeURIComponent(q)); R.replaceChildren();
+      (rows || []).forEach(r => { const d = el('div'); d.append(el('div', 'k', r.kind + (r.money_lane ? ' · ' + r.money_lane : ''))); d.append(el('div', null, r.name)); if (r.description) d.append(el('div', 'empty', String(r.description).slice(0, 140))); R.append(d); });
+      if (!R.children.length) R.append(el('p', 'empty', 'No matches.'));
+    } catch (err) { R.replaceChildren(el('p', 'empty', err.message)); }
+  });
+
+  // ---------- chat (owner's model box) ----------
+  const prompt = $('#prompt'), messages = $('#messages'), sendBtn = $('#sendBtn'), history = [];
+  const grow = () => { prompt.style.height = 'auto'; prompt.style.height = Math.min(prompt.scrollHeight, 154) + 'px'; };
+  const add = (text, cls, who, tooltip) => { const m = el('div', 'msg ' + cls); if (who) m.append(el('span', 'who', who)); m.append(document.createTextNode(text)); if (tooltip) m.title = tooltip; messages.append(m); messages.classList.add('has'); messages.scrollTop = messages.scrollHeight; };
+  const provenance = r => { const u = r.used || {}, m = u.memory || {}; const rows = [`Model: ${r.model || 'unknown'}`, `Tools: ${(u.tools || []).join(', ') || 'none reported'}`, `Knowledge: ${(u.sources || []).join('; ') || 'none reported'}`, `Memory: ${m.pool || 'not retrieved'} · ${m.citation_count || 0} citations · ${m.data_sufficiency || 'unknown'}`, `Memory sources: ${(m.citations || []).map(x => `${x.kind}:${x.source_id}`).join(', ') || 'none'}`, `Memory warnings: ${(m.warnings || []).join('; ') || 'none'}`, `Retrieved skills: ${(u.skills || []).join(', ') || 'none'}`, `Retrieved repos: ${(u.repos || []).join(', ') || 'none'}`, `Input: ${u.modality || 'text only; no image/video payload received'}`, `Independent review: ${u.independent_review || 'not connected'}`, `Policy: ${(u.policies || []).join(', ') || 'none reported'}`]; return rows.join('\n').slice(0, 1800); };
+  async function send(text) {
+    text = (text || '').trim(); if (!text || thinking) return;
+    add(text, 'user', 'YOU'); prompt.value = ''; grow(); thinking = true; sendBtn.disabled = true; $('#core-state').textContent = 'THINKING…';
+    try { const r = await api('/api/marvin/chat', {method: 'POST', body: JSON.stringify({message: text, history: history.slice(-10)})});
+      const trace = provenance(r);
+      add(r.reply || '(no reply)', r.fallback ? 'note' : 'assistant', 'MARVIN', trace);
+      history.push({role: 'user', content: text}, {role: 'assistant', content: r.reply || ''});
+      const used = [...(r.used?.repos || []), ...(r.used?.skills || [])];
+      $('#model-used').textContent = (r.model || 'model').toUpperCase() + (used.length ? ' · USED ' + used.slice(0, 3).join(', ') : '');
+      $('#model-used').title = trace;
+    } catch (e) { add('MARVIN could not answer: ' + e.message, 'note'); }
+    finally { thinking = false; sendBtn.disabled = false; $('#core-state').textContent = 'IDLE'; prompt.focus(); }
+  }
+  $('#composer').addEventListener('submit', e => { e.preventDefault(); send(prompt.value); });
+  prompt.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(prompt.value); } });
+  prompt.addEventListener('input', grow);
+  document.querySelectorAll('.quick button').forEach(b => b.addEventListener('click', () => send(b.dataset.q)));
+  $('#attachBtn').addEventListener('click', () => add('Attachments: drop files in H:\\NEXEN\\intake for now. Direct upload is coming.', 'note'));
+  $('#micBtn').addEventListener('click', () => add('Voice: talk to MARVIN with TALK-TO-MARVIN.cmd (Gemini voice). In-page mic is coming.', 'note'));
+
+  // ---------- 3D core ----------
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  import('/vendor/three.module.js').then(THREE => {
+    const canvas = $('#core'); const renderer = new THREE.WebGLRenderer({canvas, antialias: true, alpha: true});
+    const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(45, 1, .1, 100); camera.position.z = 6.2;
+    const red = new THREE.Color('#ff3b43');
+    const core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.25, 1), new THREE.MeshBasicMaterial({color: red, wireframe: true, transparent: true, opacity: .85}));
+    const inner = new THREE.Mesh(new THREE.IcosahedronGeometry(.8, 3), new THREE.MeshBasicMaterial({color: '#8e0f16', transparent: true, opacity: .55}));
+    const ring1 = new THREE.Mesh(new THREE.TorusGeometry(2.0, .012, 8, 160), new THREE.MeshBasicMaterial({color: '#ff6b71', transparent: true, opacity: .7}));
+    const ring2 = ring1.clone(); ring2.scale.setScalar(1.18); ring2.rotation.x = Math.PI / 2.6;
+    ring1.rotation.x = Math.PI / 2.2;
+    const pts = new THREE.BufferGeometry(), N = 900, arr = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) { const r = 2.4 + Math.random() * 2.2, th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
+      arr[i * 3] = r * Math.sin(ph) * Math.cos(th); arr[i * 3 + 1] = r * Math.sin(ph) * Math.sin(th); arr[i * 3 + 2] = r * Math.cos(ph); }
+    pts.setAttribute('position', new THREE.BufferAttribute(arr, 3));
+    const field = new THREE.Points(pts, new THREE.PointsMaterial({color: '#ff4d57', size: .03, transparent: true, opacity: .75, blending: THREE.AdditiveBlending}));
+    const glowTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d'); const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+      gr.addColorStop(0, 'rgba(255,90,100,.9)'); gr.addColorStop(.35, 'rgba(255,40,50,.35)'); gr.addColorStop(1, 'rgba(255,40,50,0)'); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); })();
+    const glow = new THREE.Sprite(new THREE.SpriteMaterial({map: glowTex, blending: THREE.AdditiveBlending, transparent: true})); glow.scale.set(5.5, 5.5, 1);
+    scene.add(glow, inner, core, ring1, ring2, field);
+    const size = () => { const w = canvas.clientWidth, h = canvas.clientHeight; renderer.setSize(w, h, false); renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); camera.aspect = w / h; camera.updateProjectionMatrix(); };
+    size(); addEventListener('resize', size);
+    let t0 = performance.now();
+    const loop = now => { const dt = (now - t0) / 1000; t0 = now; const speed = thinking ? 3.2 : 1;
+      core.rotation.y += .35 * dt * speed; core.rotation.x += .12 * dt * speed; inner.rotation.y -= .2 * dt * speed;
+      ring1.rotation.z += .25 * dt * speed; ring2.rotation.z -= .18 * dt * speed; field.rotation.y += .03 * dt * speed;
+      const p = 1 + Math.sin(now / (thinking ? 160 : 700)) * (thinking ? .06 : .03); core.scale.setScalar(p); glow.material.opacity = .7 + (p - 1) * 4;
+      renderer.render(scene, camera); if (!reduce) requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  }).catch(() => { $('#core').hidden = true; $('#core-fallback').hidden = false; });
+})();
+</script>
+</body>
+</html>

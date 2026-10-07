@@ -1,0 +1,212 @@
+{
+  "name": "VIDEO | Streamer live -> clip -> wake/pre-live/bedtime schedule | DbzL_FByZ6t",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "VIDEO VERSION — faithful reconstruction from the source evidence.\nSource: https://www.instagram.com/billsabertv/reel/DbzL_FByZ6t/\nEvidence: [0.08s - 3.70s] [Speaker 0] To where I'm at, I can give you the fucking blueprint. Right? Do\n[4.00s - 5.30s] [Speaker 0] what you gonna do, gang.\n[5.76s - 7.14s] [Speaker 0] Do what you gonna do.\n[7.44s - 7.94s] [Speaker 0] Alright?\n[8.48s - 14.50s] [Speaker 0] You gonna go live. You gonna be yourself. Y'all can see? Alright. You gonna go live. You gonna be yourself.\n[14.81s - 18.36s] [Speaker 0] You're gonna clip that ass everything that makes you you. You dying.\n[19.38s - 27.47s] [Speaker 0] If you say fuck, shit, whatever the fuck, you yell at your teammates. If that's what you do, you're gonna be your absolute self. Then you're gonna go to this website right here. Alright?\n[28.00s - 41.54s] [Speaker 0] You're gonna chop your clips up, and you're gonna put them all in here. You're gonna go right here, so you're gonna schedule them bitches. You're gonna schedule some for when people wake up because you know people wake up and scroll. You're gonna schedule one right before you go live. I go live, like,\n[42.19s - 43.01s] [Speaker 0] at noon.\n[43.38s - 51.56s] [Speaker 0] So you do a couple at noon, and then you're gonna do something when people go down go lay down in they bed. Alright? You're gonna do that shit over and over and over and over.\n[52.27s - 54.05s] [Speaker 0] But the biggest thing is being yourself.\n[54.50s - 56.45s] [Speaker 0] Alright? That's what you're gonna do.\n[57.77s - 66.11s] [Speaker 0] If you stream for eight hours and you ain't get no clips, you did not stream. Schedule your shit. Go live at the same time, man. Treat it like it's like like a\n[66.57s - 70.75s] [Speaker 0] like a muscle, bro, that you're trying to grow because it's it's real thing, bro.\n[71.41s - 75.50s] [Speaker 0] If you was trying to grow your chest, bro, you would do push ups every day at the same time, bro.\n[76.12s - 78.14s] [Speaker 0] You do chest every every Monday.\n[78.69s - 80.06s] [Speaker 0] Treat it like the same, bro.\n[81.72s - 85.57s] [Speaker 0] Stream ladders. I'm not sponsored, guys. I'm not sponsored, so y'all know it's some real sauce.\n[86.37s - 89.67s] [Speaker 0] It's real sauce. Bro, bitch, who the fuck's sauce, man?\n[90.45s - 93.03s] [Speaker 0] Bro has some pretty eyes for real. Okay.\nSource-vs-engineering boundary: NEXEN baseline_clipper.py behind clip_gate.py/run_clipper.py; source media must be owned/licensed or an eligible paid job. Renderer execution stays a worker handoff until an approved local worker is connected.\nNo external side effects are enabled on import.",
+        "height": 420,
+        "width": 560
+      },
+      "id": "02000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        -460
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "02000000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Sample input. Replace source_url with your own long-form video URL and adjust config.\nreturn [{ json: {\n  source_url: 'https://www.youtube.com/watch?v=EXAMPLE1234',\n  clip_count: 6,\n  clip_length_sec: 45,\n  first_slot_iso: '2026-10-01T08:00:00Z',\n  platforms: ['tiktok', 'instagram_reels', 'youtube_shorts'],\n  captions_style: 'karaoke-bold',\n  branding: 'lower-third @yourhandle',\n  background_music: 'subtle-lofi',\n  slot_offsets_hours: [0, 4, 11]\n} }];"
+      },
+      "id": "02000000-0000-4000-8000-000000000003",
+      "name": "Sample Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -200,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nif (!items.length) throw new Error('No input items');\nreturn items.map(({ json: j }) => {\n  const e = [];\n  try { const u = new URL(j.source_url); if (!/^https?:$/.test(u.protocol)) e.push('source_url must be http(s)'); } catch { e.push('source_url must be a valid URL'); }\n  if (!Number.isInteger(j.clip_count) || j.clip_count < 1 || j.clip_count > 50) e.push('clip_count must be an integer 1-50');\n  if (!Number.isFinite(j.clip_length_sec) || j.clip_length_sec < 5 || j.clip_length_sec > 180) e.push('clip_length_sec must be 5-180');\n  if (isNaN(Date.parse(j.first_slot_iso || ''))) e.push('first_slot_iso must be an ISO datetime');\n  if (!Array.isArray(j.platforms) || !j.platforms.length) e.push('platforms must be a non-empty array');\n  if (!Array.isArray(j.slot_offsets_hours) || !j.slot_offsets_hours.every(n => Number.isFinite(n))) e.push('slot_offsets_hours must be an array of numbers');\n  if (e.length) throw new Error('Invalid input: ' + e.join('; '));\n  return { json: j };\n});"
+      },
+      "id": "02000000-0000-4000-8000-000000000004",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        20,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const out = [];\nconst hash = s => { let x = 5381; for (const c of s) x = ((x << 5) + x + c.charCodeAt(0)) >>> 0; return x.toString(16); };\nfor (const { json: j } of $input.all()) {\n  const base = new Date(j.first_slot_iso).getTime();\n  const offsets = j.slot_offsets_hours;\n  const seen = new Set();\n  for (let i = 0; i < j.clip_count; i++) {\n    for (const platform of j.platforms) {\n      const dayIndex = Math.floor(i / offsets.length);\n      const offsetHours = offsets[i % offsets.length] + dayIndex * 24;\n      const scheduled = new Date(base + offsetHours * 3600 * 1000).toISOString();\n      const clip_id = hash(j.source_url + '|' + i + '|' + platform);\n      if (seen.has(clip_id)) continue; // idempotent within run\n      seen.add(clip_id);\n      out.push({ json: {\n        clip_id,\n        source_url: j.source_url,\n        clip_index: i + 1,\n        platform,\n        target_length_sec: j.clip_length_sec,\n        captions_style: j.captions_style || '',\n        branding: j.branding || '',\n        background_music: j.background_music || '',\n        scheduled_at: scheduled,\n        status: 'planned',\n        clip_render: 'MANUAL_HANDOFF: render this clip with your self-hosted/third-party clipper, then attach the file',\n        publish: 'DRAFT: upload requires human approval; no auto-post implemented'\n      } });\n    }\n  }\n}\nif (!out.length) throw new Error('No clip tasks produced');\nreturn out;"
+      },
+      "id": "02000000-0000-4000-8000-000000000005",
+      "name": "Expand Clip Tasks",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "REPLACE_WITH_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "clip_plan"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "clip_id"
+          ],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "02000000-0000-4000-8000-000000000006",
+      "name": "Upsert Clip Plan",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        460,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": null,
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sample Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sample Input": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Expand Clip Tasks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expand Clip Tasks": {
+      "main": [
+        [
+          {
+            "node": "Upsert Clip Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:DbzL_FByZ6t:video:DbzL_FByZ6t-streamer-clips",
+      "source_id": "DbzL_FByZ6t",
+      "source_shortcode": "DbzL_FByZ6t",
+      "source_numbers": [
+        58
+      ],
+      "source_url": "https://www.instagram.com/billsabertv/reel/DbzL_FByZ6t/",
+      "method": "Streamer live -> clip -> wake/pre-live/bedtime schedule",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "Video & clips",
+      "required_software": [
+        {
+          "name": "Source live-stream video",
+          "category": "Video & clips",
+          "state": "owner_input_required",
+          "reason": "Input must be owned/licensed or covered by a paid campaign."
+        },
+        {
+          "name": "NEXEN baseline FFmpeg clipper",
+          "category": "Video & clips",
+          "state": "installed_not_connected",
+          "reason": "Existing worker is available locally; run only under paid-or-research gate."
+        },
+        {
+          "name": "StreamLadders (source spelling)",
+          "category": "Video & clips",
+          "state": "identity_and_contract_unresolved",
+          "reason": "Source names StreamLadders; no official API contract or account binding."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [
+        {
+          "type": "googleSheetsOAuth2Api",
+          "name": "Google Sheets account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

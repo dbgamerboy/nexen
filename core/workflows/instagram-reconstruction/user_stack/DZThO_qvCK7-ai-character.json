@@ -1,0 +1,227 @@
+{
+  "name": "USER-STACK | AI fictional adult influencer character bible and four files | DZThO_qvCK7",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER-STACK VERSION — same source method with the user's practical stack.\nSource: https://www.instagram.com/raycfu/reel/DZThO_qvCK7/\nEnhancement: ComfyUI API for user-supplied API-format graphs plus stable character ID/reference metadata and disclosure. ComfyUI is installed as a repository, but server/model readiness is unverified.\n\nOperational state: this is a proposed architecture. Required external credentials, models, worker or API are called out in the pair comparison and README. Nothing is activated by import.",
+        "height": 460,
+        "width": 580
+      },
+      "id": "05000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        -520
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "05000000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Sample input for a clearly-fictional, disclosed synthetic character.\nreturn [{ json: {\n  character_name: 'Nova Vale (fictional)',\n  niche: 'indie sci-fi book recommendations',\n  disclosure: true,\n  voice_consent: false,\n  backstory: 'A fictional archivist character created for a book-review channel.',\n  personality: ['curious', 'dry humor', 'warm'],\n  topics_avoided: ['real politics', 'medical advice'],\n  physical_descriptors: ['teal eyes', 'silver undercut', 'freckles', 'angular jaw'],\n  output_dir: './synthetic-character'\n} }];"
+      },
+      "id": "05000000-0000-4000-8000-000000000003",
+      "name": "Sample Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst e = [];\nif (typeof j.character_name !== 'string' || !j.character_name.trim()) e.push('character_name required');\nif (j.disclosure !== true) e.push('disclosure must be true: synthetic characters must be labelled as AI');\nif (!Array.isArray(j.physical_descriptors) || j.physical_descriptors.length < 6 || j.physical_descriptors.length > 8) e.push('physical_descriptors must lock 6-8 traits (per source)');\nif (e.length) throw new Error('Blocked: ' + e.join('; '));\nreturn [{ json: j }];"
+      },
+      "id": "05000000-0000-4000-8000-000000000004",
+      "name": "Guardrail Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst dir = (j.output_dir || './synthetic-character').replace(/\\/+$/, '');\nconst disc = '> SYNTHETIC / AI-GENERATED CHARACTER. Not a real person. Must be disclosed on every platform.';\nconst persona = ['# persona.md', '', disc, '', '## Name', j.character_name, '', '## Niche', j.niche || '', '', '## Backstory', j.backstory || '(write full backstory)', '', '## Personality', (j.personality||[]).map(x=>'- '+x).join('\\n')||'- (add traits)', '', '## Topics never discussed', (j.topics_avoided||[]).map(x=>'- '+x).join('\\n')||'- (add)', '', '## Done when', 'You can answer 20 questions about this character without thinking.'].join('\\n');\nconst voice = ['# voice.md', '', disc, '', '## Consent gate', 'voice_consent = ' + (j.voice_consent === true), '', j.voice_consent === true ? 'Proceed with a LICENSED/CONSENTED voice sample only.' : 'BLOCKED: no cloning until you have a licensed/consented voice sample.', '', '## MANUAL HANDOFF', '- Obtain a consented voice sample.', '- Clone via a provider you are authorised to use.', '- Document cadence, filler words, how she sounds on voice notes.'].join('\\n');\nconst flux = ['# flux.md', '', disc, '', '## Locked physical descriptors (6-8)', (j.physical_descriptors||[]).map(x=>'- '+x).join('\\n'), '', '## MANUAL HANDOFF', '- Pick one base face (not a real identifiable person).', '- Generate ~50 variations, fine-tune a LoRA on rented GPU.', '- Define 3 lighting setups for variety without changing the face.'].join('\\n');\nconst brain = ['# brain.md', '', disc, '', '## Memory store', 'Append-only log of brand/follower/conversation context so the character stays consistent.', '', '## Schema', '- date', '- entity (brand/follower)', '- summary', '- engaged_content', '', '## MANUAL HANDOFF', 'Wire a scheduled job to read all four files before each interaction. Keep a human in the loop for outreach.'].join('\\n');\nreturn [\n  { json: { fileName: dir + '/persona.md', content: persona } },\n  { json: { fileName: dir + '/voice.md', content: voice } },\n  { json: { fileName: dir + '/flux.md', content: flux } },\n  { json: { fileName: dir + '/brain.md', content: brain } }\n];"
+      },
+      "id": "05000000-0000-4000-8000-000000000005",
+      "name": "Render Four Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        180,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "content",
+        "options": {
+          "fileName": "={{ $json.fileName.split('/').pop() }}"
+        }
+      },
+      "id": "05000000-0000-4000-8000-000000000006",
+      "name": "To Binary",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.fileName }}",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "05000000-0000-4000-8000-000000000007",
+      "name": "Write Files",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        620,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const sourceId=\"DZThO_qvCK7\";\nconst sourceUrl=\"https://www.instagram.com/raycfu/reel/DZThO_qvCK7/\";\nconst variant='USER_STACK';\nconst seen=new Set();\nconst hash=s=>{let h=2166136261;for(const c of s)h=Math.imul(h^c.charCodeAt(0),16777619);return (h>>>0).toString(16).padStart(8,'0');};\nreturn $input.all().map(({json:j},i)=>{\n  const recordKey=String(j.row_id||j.clip_id||j.note_id||j.fileName||j.output_path||j.title||i);\n  const idempotencyKey=hash(sourceId+'|'+recordKey);\n  if(seen.has(idempotencyKey)) throw new Error('Duplicate output in one execution: '+idempotencyKey);\n  seen.add(idempotencyKey);\n  return {json:{...j,source_provenance:{source_id:sourceId,source_url:sourceUrl,variant},idempotency_key:idempotencyKey,review_status:'needs_human_review',review_notes:Array.isArray(j.review_notes)?j.review_notes:[],external_actions_enabled:false}};\n});"
+      },
+      "id": "f0f18c2f-54d6-41f1-aa22-57fd1630d9cc",
+      "name": "Attach Provenance + Review Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        410,
+        180
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sample Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sample Input": {
+      "main": [
+        [
+          {
+            "node": "Guardrail Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardrail Check": {
+      "main": [
+        [
+          {
+            "node": "Render Four Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Render Four Files": {
+      "main": [
+        [
+          {
+            "node": "To Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "To Binary": {
+      "main": [
+        [
+          {
+            "node": "Attach Provenance + Review Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach Provenance + Review Gate": {
+      "main": [
+        [
+          {
+            "node": "Write Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:DZThO_qvCK7:user_stack:DZThO_qvCK7-ai-character",
+      "source_id": "DZThO_qvCK7",
+      "source_shortcode": "DZThO_qvCK7",
+      "source_numbers": [
+        22
+      ],
+      "source_url": "https://www.instagram.com/raycfu/reel/DZThO_qvCK7/",
+      "method": "AI fictional adult influencer character bible and four files",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "AI characters",
+      "required_software": [
+        {
+          "name": "AI image/model generator",
+          "category": "AI characters",
+          "state": "provider_unresolved",
+          "reason": "Source describes a fictional adult influencer and character bible; exact generation tool/model remains incomplete in evidence."
+        },
+        {
+          "name": "Character-reference asset store",
+          "category": "AI characters",
+          "state": "not_implemented",
+          "reason": "Persistent reference identity and generated asset production remain to be wired."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

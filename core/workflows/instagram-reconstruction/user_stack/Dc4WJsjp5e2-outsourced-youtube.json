@@ -1,0 +1,123 @@
+{
+  "name": "USER_STACK | Outsourced, rights-cleared faceless YouTube production | Dc4WJsjp5e2",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER_STACK VERSION\nSource: https://www.instagram.com/jet_zhong/reel/Dc4WJsjp5e2/\nEvidence: [0.08s - 2.56s] [Speaker 0] This faceless YouTube channel makes over a $100,000\n[2.56s - 16.18s] [Speaker 0] a month, and if you haven't thought about making these videos, then you are missing out. These body cam videos get millions of views every single day, and if you know what you're doing, it's not that hard to make $10,000 a month. And I would know because this is how much I've made in the last twenty eight days, over $8,400.\n[16.18s - 20.76s] [Speaker 0] And just to show y'all this is real, I could change it from US to, let's see, Canadian dollars.\n[22.41s - 24.34s] [Speaker 0] And then boom. Over $11,000\n[24.34s - 41.54s] [Speaker 0] a month with Canadian dollars. And I don't even make these videos myself. I've hired a freelance team that will take care of all the video production. I just upload it and make the revenue. I've been able to replace my nine to five income with this, and now I work on this about two to three hours a week at most. If you want to learn how, I made a YouTube video going through the entire process step by step, so comment down ASAP, and I'll send that over to you.\nKeeps source model: commission production team, owner uploads. User-stack adds asset provenance, license clearance, deliverable acceptance, dated fact review and upload draft; no freelancer API.\nThis describes added USER-STACK controls, not source instructions.\nExternal media generation/publishing is not marked complete.",
+        "height": 360,
+        "width": 440
+      },
+      "id": "3a57dc25-ccc3-4d83-85a3-033037c70cfd",
+      "name": "Evidence and boundaries",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "45b50839-1ea8-4cff-a03b-79be4daf3ad3",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$input.first().json;\nfor(const k of ['job_id','working_title','production_brief','asset_manifest','footage_license','channel_id']) if(!j[k]) throw new Error(k+' required');\nif(j.footage_license!=='owned_or_licensed'||!Array.isArray(j.asset_manifest)||!j.asset_manifest.length) throw new Error('rights-cleared asset manifest required');\nreturn [{json:{job_id:j.job_id,idempotency_key:'youtube-outsourced:'+j.job_id,channel_id:j.channel_id,working_title:j.working_title,production_brief:j.production_brief,asset_manifest:j.asset_manifest.map(a=>({asset:a.asset,license:a.license,attribution:a.attribution||''})),freelancer_brief_status:'draft',acceptance_checks:['source rights','script fact check','audio intelligibility','visual QA','thumbnail rights','metadata originality'],delivery_status:'awaiting_human_vendor',upload_status:'draft_only',publish_enabled:false}}];"
+      },
+      "id": "9d99c0c3-8b10-438a-8fe8-ad3aa8f48d3e",
+      "name": "Apply user-stack method",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Expected input fixture is paired in fixtures/source-method-fixtures.json. This export prepares records/handoffs only when a required vendor API/worker is unresolved. Import inactive; run manually after reviewing its inputs.",
+        "height": 170,
+        "width": 420
+      },
+      "id": "689d1b68-cca6-454c-9764-69b6e71d5b3a",
+      "name": "Run status",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        300,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Apply user-stack method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "nexen": {
+      "catalog_id": "instagram:Dc4WJsjp5e2:user_stack:Dc4WJsjp5e2-outsourced-youtube",
+      "source_id": "Dc4WJsjp5e2",
+      "source_shortcode": "Dc4WJsjp5e2",
+      "source_numbers": [
+        19
+      ],
+      "source_url": "https://www.instagram.com/jet_zhong/reel/Dc4WJsjp5e2/",
+      "method": "Outsourced, rights-cleared faceless YouTube production",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "YouTube production",
+      "required_software": [
+        {
+          "name": "Freelancer/vendor",
+          "category": "YouTube production",
+          "state": "manual_handoff",
+          "reason": "No marketplace/API, vendor, budget or brief contract supplied."
+        },
+        {
+          "name": "YouTube account/upload",
+          "category": "YouTube production",
+          "state": "not_connected",
+          "reason": "Owner upload is a manual source stage; no external publish node is implemented."
+        },
+        {
+          "name": "Rights-cleared footage",
+          "category": "YouTube production",
+          "state": "owner_input_required",
+          "reason": "Footage license and source provenance required."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  },
+  "pinData": {}
+}

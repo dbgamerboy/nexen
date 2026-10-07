@@ -1,0 +1,300 @@
+{
+  "name": "Clip method (USER-STACK / OpenShorts clipper integration) - Dc6Dxn5k2Ft",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## User-stack variant - OpenShorts clipper integration\nVerified from official source (github.com/mutonby/openshorts, 2026-09-23):\n  POST {base}/api/process  Authorization: Bearer osk_...  body { url, acknowledged, webhook_url, webhook_secret }  -> returns job_id.\n  On completion OpenShorts POSTs the callback: { event:'job.completed', job_id, clips:[{ index, title, video_url, download_url }] } with header X-OpenShorts-Signature: sha256=<hmac-sha256(body, webhook_secret)>.\n  CLI equivalents: openshorts process/clips/publish; MCP :8000/mcp.\n\nThis workflow WIRES that contract; it does not itself render clips and is NOT runtime-tested (no OpenShorts instance/keys here). It is an integration to configure, not a proven working clipper.\n\nSource correlation: the callback URL carries ?src=<base64(source_url)> so the callback recovers the original source without a datastore. Auth: HMAC verified fail-closed when OPENSHORTS_WEBHOOK_SECRET is set. Enable the webhook 'Raw Body' option for byte-exact HMAC (set here); if your gateway alters the body, verification will (correctly) fail.\n\nSetup state (PENDING): running OpenShorts (hosted osk_ key OR self-host Docker+FFmpeg on :8000), reachable callback URL, Bearer + webhook_secret bound. No auto-publish.",
+        "height": 560,
+        "width": 660
+      },
+      "id": "0c6e0000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -780,
+        -600
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "0c6e0000-0000-4000-8000-000000000002",
+      "name": "Submit Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const src = 'https://www.youtube.com/watch?v=EXAMPLE1234';\nconst base = ($env.N8N_WEBHOOK_BASE || 'https://your-n8n.example.com').replace(/\\/+$/, '');\nconst token = Buffer.from(src, 'utf8').toString('base64');\nconst callback_url = base + '/webhook/openshorts-callback?src=' + encodeURIComponent(token);\nreturn [{ json: { source_url: src, callback_url } }];"
+      },
+      "id": "0c6e0000-0000-4000-8000-000000000003",
+      "name": "Submit Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -520,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst e = [];\ntry { const u = new URL(j.source_url); if (!/^https?:$/.test(u.protocol)) e.push('source_url must be http(s)'); } catch { e.push('source_url must be a valid URL'); }\ntry { new URL(j.callback_url); } catch { e.push('callback_url must be a valid URL reachable by OpenShorts'); }\nif (e.length) throw new Error('Invalid input: ' + e.join('; '));\nreturn [{ json: j }];"
+      },
+      "id": "0c6e0000-0000-4000-8000-000000000004",
+      "name": "Validate Submit",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -300,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.OPENSHORTS_BASE_URL || 'https://api.openshorts.app').replace(/\\/+$/, '') }}/api/process",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ url: $json.source_url, acknowledged: true, webhook_url: $json.callback_url, webhook_secret: ($env.OPENSHORTS_WEBHOOK_SECRET || '') }) }}",
+        "options": {}
+      },
+      "id": "0c6e0000-0000-4000-8000-000000000005",
+      "name": "OpenShorts Process",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -80,
+        -40
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": null,
+          "name": "OpenShorts API (Bearer osk_)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const r = $json || {};\nconst job_id = r.job_id || r.id || null;\nif (!job_id) throw new Error('OpenShorts /api/process did not return job_id; verify API version before trusting this run');\nreturn [{ json: { job_id, status: 'submitted', source_url: $('Validate Submit').item.json.source_url, submitted_at: new Date().toISOString() } }];"
+      },
+      "id": "0c6e0000-0000-4000-8000-000000000006",
+      "name": "Record Job",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        140,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "openshorts-callback",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "0c6e0000-0000-4000-8000-000000000007",
+      "name": "OpenShorts Callback",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -520,
+        240
+      ],
+      "webhookId": "openshorts-callback-hook"
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nconst item = $input.first().json || {};\nconst headers = item.headers || {};\nconst secret = $env.OPENSHORTS_WEBHOOK_SECRET || '';\nconst sigHeader = headers['x-openshorts-signature'] || headers['X-OpenShorts-Signature'] || '';\n// Raw body: with webhook option rawBody:true, n8n exposes the raw payload string.\nconst raw = (typeof item.rawBody === 'string' && item.rawBody) || (item.body && typeof item.body === 'string' ? item.body : JSON.stringify(item.body || {}));\nif (secret) {\n  if (!sigHeader) throw new Error('Callback missing X-OpenShorts-Signature but a webhook_secret is configured (fail closed)');\n  const expected = 'sha256=' + crypto.createHmac('sha256', secret).update(raw, 'utf8').digest('hex');\n  const a = Buffer.from(sigHeader); const b = Buffer.from(expected);\n  const okLen = a.length === b.length;\n  if (!okLen || !crypto.timingSafeEqual(a, b)) throw new Error('Callback HMAC signature mismatch (rejected). If bodies differ byte-wise, ensure the webhook Raw Body option is on and no proxy rewrites the payload.');\n}\n// Source correlation from the ?src= token we set at submit time.\nconst query = item.query || {};\nlet source_url = '';\ntry { source_url = query.src ? Buffer.from(decodeURIComponent(query.src), 'base64').toString('utf8') : ''; } catch (e) { source_url = ''; }\nconst body = (typeof item.body === 'object' && item.body) ? item.body : JSON.parse(raw || '{}');\nreturn [{ json: { verified: !!secret, source_url, event: body.event || '', job_id: body.job_id || null, clips: Array.isArray(body.clips) ? body.clips : [] } }];"
+      },
+      "id": "0c6e0000-0000-4000-8000-000000000008",
+      "name": "Verify + Correlate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -300,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nif (!j.job_id) throw new Error('Callback missing job_id');\nif (j.event && j.event !== 'job.completed') return [{ json: { job_id: j.job_id, ignored_event: j.event } }];\nif (!j.clips.length) throw new Error('Callback for job ' + j.job_id + ' contained no clips');\nconst seen = new Set();\nconst organised = [];\nfor (const c of j.clips) {\n  const key = (c.download_url || c.video_url || (j.job_id + ':' + c.index)).toString();\n  if (seen.has(key)) continue; seen.add(key);\n  organised.push({ clip_id: j.job_id + ':' + (c.index ?? organised.length), index: c.index ?? null, title: c.title || '', video_url: c.video_url || '', download_url: c.download_url || '', status: 'ready_for_review' });\n}\nreturn [{ json: { job_id: j.job_id, source_url: j.source_url, clip_count: organised.length, clips: organised, posting: 'DRAFT/APPROVAL ONLY - review before any upload' } }];"
+      },
+      "id": "0c6e0000-0000-4000-8000-000000000009",
+      "name": "Organise Clips",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: true, job_id: $json.job_id, clip_count: $json.clip_count || 0 }) }}",
+        "options": {}
+      },
+      "id": "0c6e0000-0000-4000-8000-00000000000a",
+      "name": "Ack Callback",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        140,
+        240
+      ]
+    }
+  ],
+  "connections": {
+    "Submit Trigger": {
+      "main": [
+        [
+          {
+            "node": "Submit Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submit Input": {
+      "main": [
+        [
+          {
+            "node": "Validate Submit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Submit": {
+      "main": [
+        [
+          {
+            "node": "OpenShorts Process",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenShorts Process": {
+      "main": [
+        [
+          {
+            "node": "Record Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenShorts Callback": {
+      "main": [
+        [
+          {
+            "node": "Verify + Correlate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify + Correlate": {
+      "main": [
+        [
+          {
+            "node": "Organise Clips",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Organise Clips": {
+      "main": [
+        [
+          {
+            "node": "Ack Callback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:Dc6Dxn5k2Ft:user_stack:Dc6Dxn5k2Ft-clipper",
+      "source_id": "Dc6Dxn5k2Ft",
+      "source_shortcode": "Dc6Dxn5k2Ft",
+      "source_numbers": [],
+      "source_url": "https://www.instagram.com/bty.223/reel/Dc6Dxn5k2Ft/",
+      "method": "Long video -> short clips (grouped: bty.223 snazzo, theharis, keeran Cardio)",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "Video & clips",
+      "required_software": [
+        {
+          "name": "OpenShorts",
+          "category": "Video & clips",
+          "state": "not_installed_or_unverified",
+          "reason": "Needs a deployed, version-pinned service and verified callback reachability."
+        },
+        {
+          "name": "FFmpeg",
+          "category": "Video & clips",
+          "state": "installed_not_proven_for_this_workflow",
+          "reason": "OpenShorts media processing uses FFmpeg; not invoked in this package."
+        },
+        {
+          "name": "OpenShorts callback receiver",
+          "category": "Video & clips",
+          "state": "not_runtime_tested",
+          "reason": "HMAC and correlation contract documented; callback must be exercised in isolated n8n before launch."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [
+        {
+          "type": "httpHeaderAuth",
+          "name": "OpenShorts API (Bearer osk_)",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

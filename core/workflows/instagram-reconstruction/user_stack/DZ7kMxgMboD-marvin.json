@@ -1,0 +1,285 @@
+﻿{
+  "name": "MARVIN turn-handler (USER-STACK / self-hosted TTS) - dhaibuilds DZ7kMxgMboD",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "User naming: this assistant is MARVIN; the source calls it MARVIN. Preserve source evidence separately.\n\n## User-stack variant\nSame method as the VIDEO version, but the paid ElevenLabs TTS call is replaced with self-hosted openai-edge-tts.\n\nVerified tool: https://github.com/travisvn/openai-edge-tts (2026-09-23). OpenAI-compatible POST /v1/audio/speech on port 5050, auth 'Authorization: Bearer <key>', body {model,input,voice,response_format,speed}, returns audio. License GPL-3.0.\n\n### Why it helps (corrected)\nNo per-character billing to ElevenLabs and self-hostable on your own port -> lower cost and simpler high-volume use. IMPORTANT CORRECTION: it is NOT offline. Per its README, edge-tts relies on Microsoft Edge's ONLINE text-to-speech service ('completely free' per README, but internet-dependent, no SLA, and Microsoft may rate-limit/change it). Do not treat it as guaranteed free/unlimited/offline.\n\n### Honest tradeoff\nopenai-edge-tts uses Microsoft Edge neural voices; it does NOT reproduce a cloned 'Marvin' ElevenLabs voice. Choose the VIDEO version when a specific cloned voice identity matters.\n\n### Setup state (PENDING)\nopenai-edge-tts must be running before this produces audio: e.g. `docker run -d -p 5050:5050 -e API_KEY=changeme travisvn/openai-edge-tts`. Requires internet for the Microsoft backend. Bind the Bearer key as an httpHeaderAuth credential. Not runtime-tested here.",
+        "height": 540,
+        "width": 620
+      },
+      "id": "0d7b0000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        -580
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "marvin-userstack",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "0d7b0000-0000-4000-8000-000000000002",
+      "name": "MARVIN Turn Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -680,
+        0
+      ],
+      "webhookId": "marvin-turn-userstack-hook"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = ($input.first().json && $input.first().json.body) || {};\nconst text = (body.text || '').toString().trim();\nif (!text) throw new Error('Missing body.text (recognized speech from the companion app)');\nif (text.length > 2000) throw new Error('text too long (>2000 chars)');\n// voice is a Microsoft Edge / OpenAI-compatible voice name, not an ElevenLabs id\nconst voice = (body.voice || 'onyx').toString().trim();\nreturn [{ json: { text, voice } }];"
+      },
+      "id": "0d7b0000-0000-4000-8000-000000000003",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -460,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-sonnet-5', max_tokens: 300, system: 'You are MARVIN - Just A Rather Very Intelligent System. Calm, precise, quietly confident, subtle dry humor. Address the user as Sir or Boss only when natural. Never use Certainly, Of course, Great question, Absolutely. 1-3 sentences conversational, 4+ only for explanations, never monologue.', messages: [ { role: 'user', content: $json.text } ] }) }}",
+        "options": {}
+      },
+      "id": "0d7b0000-0000-4000-8000-000000000004",
+      "name": "MARVIN LLM (Claude)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -240,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000,
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json && $json.content && $json.content[0] && $json.content[0].text;\nif (!raw || !raw.trim()) throw new Error('LLM returned empty reply');\nreturn [{ json: { reply: raw.trim(), voice: $('Validate Input').item.json.voice } }];"
+      },
+      "id": "0d7b0000-0000-4000-8000-000000000005",
+      "name": "Extract Reply",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EDGE_TTS_BASE_URL || 'http://localhost:5050' }}/v1/audio/speech",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'tts-1', input: $json.reply, voice: $json.voice, response_format: 'mp3', speed: 1.0 }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          }
+        }
+      },
+      "id": "0d7b0000-0000-4000-8000-000000000006",
+      "name": "Edge-TTS (self-hosted)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        200,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": null,
+          "name": "openai-edge-tts (Bearer)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "binary",
+        "responseDataSource": "set",
+        "inputFieldName": "data",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "content-type",
+                "value": "audio/mpeg"
+              }
+            ]
+          }
+        }
+      },
+      "id": "0d7b0000-0000-4000-8000-000000000007",
+      "name": "Return Audio",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        420,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "MARVIN Turn Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "MARVIN LLM (Claude)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MARVIN LLM (Claude)": {
+      "main": [
+        [
+          {
+            "node": "Extract Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Reply": {
+      "main": [
+        [
+          {
+            "node": "Edge-TTS (self-hosted)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edge-TTS (self-hosted)": {
+      "main": [
+        [
+          {
+            "node": "Return Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:DZ7kMxgMboD:user_stack:DZ7kMxgMboD-marvin",
+      "source_id": "DZ7kMxgMboD",
+      "source_shortcode": "DZ7kMxgMboD",
+      "source_numbers": [
+        29
+      ],
+      "source_url": "https://www.instagram.com/dhaibuilds/reel/DZ7kMxgMboD/",
+      "method": "MARVIN voice assistant (source calls it MARVIN) (LLM + TTS turn-handler + companion Electron HUD)",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "Voice & assistant",
+      "required_software": [
+        {
+          "name": "Anthropic Messages API",
+          "category": "Voice & assistant",
+          "state": "pending_configuration",
+          "reason": "Source workflow has an Anthropic credential stub; bind the named n8n credential."
+        },
+        {
+          "name": "ElevenLabs API or edge-tts adapter",
+          "category": "Voice & assistant",
+          "state": "pending_configuration",
+          "reason": "Source TTS requires account API credential. USER-STACK Edge TTS is online and not guaranteed-free/offline."
+        },
+        {
+          "name": "MARVIN companion app",
+          "category": "Voice & assistant",
+          "state": "not_implemented",
+          "reason": "Electron HUD, mic capture and playback are outside the n8n export."
+        },
+        {
+          "name": "NEXEN â†’ n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        },
+        {
+          "type": "httpHeaderAuth",
+          "name": "openai-edge-tts (Bearer)",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}
+

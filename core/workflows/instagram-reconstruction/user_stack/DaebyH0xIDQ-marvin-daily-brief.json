@@ -1,0 +1,292 @@
+{
+  "name": "USER-STACK | MARVIN daily metrics brief and review draft | DaebyH0xIDQ",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "USER-STACK VERSION — same source method with the user's practical stack.\nSource: https://www.instagram.com/chandlerintelligence/reel/DaebyH0xIDQ/\nEnhancement: MARVIN naming, timestamped metric provenance, stale/missing-source flags and approval-only draft output. RevenueCat/Meta/Buffer APIs are not configured in this export.\n\nOperational state: this is a proposed architecture. Required external credentials, models, worker or API are called out in the pair comparison and README. Nothing is activated by import.",
+        "height": 420,
+        "width": 580
+      },
+      "id": "10000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -480
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "10000000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Populate these from your own dashboards/MCP exports (manual). Numbers are examples only.\nreturn [{ json: {\n  date: '2026-09-23',\n  downloads_7d: 2459,\n  revenue_7d_usd: 4289,\n  ad_spend_usd: 475,\n  roas: 1.5,\n  posts_per_day: 3,\n  support_emails: 16,\n  support_resolved: 13,\n  open_prs: 1\n} }];"
+      },
+      "id": "10000000-0000-4000-8000-000000000003",
+      "name": "Metrics Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -300,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst e = [];\nif (!/^\\d{4}-\\d{2}-\\d{2}$/.test(j.date||'')) e.push('date must be YYYY-MM-DD');\nfor (const k of ['downloads_7d','revenue_7d_usd','ad_spend_usd','roas','support_emails','support_resolved']) if (!Number.isFinite(j[k])) e.push(k + ' must be a number');\nif (Number.isFinite(j.support_resolved) && Number.isFinite(j.support_emails) && j.support_resolved > j.support_emails) e.push('support_resolved cannot exceed support_emails');\nif (e.length) throw new Error('Invalid metrics: ' + e.join('; '));\nreturn [{ json: j }];"
+      },
+      "id": "10000000-0000-4000-8000-000000000004",
+      "name": "Validate Metrics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-sonnet-5', max_tokens: 700, system: 'You are a concise business analyst. Write a short morning brief (max 180 words) from the metrics JSON: highlight downloads, revenue, ad efficiency (ROAS), support load, and give 2-3 prioritised recommendations. Plain text. Do not invent numbers not present.', messages: [ { role: 'user', content: JSON.stringify($json) } ] }) }}",
+        "options": {}
+      },
+      "id": "10000000-0000-4000-8000-000000000005",
+      "name": "Compose Brief",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        140,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json && $json.content && $json.content[0] && $json.content[0].text;\nif (!raw || !raw.trim()) throw new Error('Anthropic returned empty brief');\nconst date = $('Validate Metrics').first().json.date;\nreturn [{ json: { subject: 'Daily brief - ' + date, body: raw.trim() } }];"
+      },
+      "id": "10000000-0000-4000-8000-000000000006",
+      "name": "Prepare Draft",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "operation": "create",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.body }}",
+        "options": {}
+      },
+      "id": "10000000-0000-4000-8000-000000000007",
+      "name": "Create Gmail Draft",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        580,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": null,
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const sourceId=\"DaebyH0xIDQ\";\nconst sourceUrl=\"https://www.instagram.com/chandlerintelligence/reel/DaebyH0xIDQ/\";\nconst variant='USER_STACK';\nconst seen=new Set();\nconst hash=s=>{let h=2166136261;for(const c of s)h=Math.imul(h^c.charCodeAt(0),16777619);return (h>>>0).toString(16).padStart(8,'0');};\nreturn $input.all().map(({json:j},i)=>{\n  const recordKey=String(j.row_id||j.clip_id||j.note_id||j.fileName||j.output_path||j.title||i);\n  const idempotencyKey=hash(sourceId+'|'+recordKey);\n  if(seen.has(idempotencyKey)) throw new Error('Duplicate output in one execution: '+idempotencyKey);\n  seen.add(idempotencyKey);\n  return {json:{...j,source_provenance:{source_id:sourceId,source_url:sourceUrl,variant},idempotency_key:idempotencyKey,review_status:'needs_human_review',review_notes:Array.isArray(j.review_notes)?j.review_notes:[],external_actions_enabled:false}};\n});"
+      },
+      "id": "a40c73d4-21a4-4561-8cd9-85ff0665bc39",
+      "name": "Attach Provenance + Review Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        370,
+        180
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Metrics Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Metrics Input": {
+      "main": [
+        [
+          {
+            "node": "Validate Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Metrics": {
+      "main": [
+        [
+          {
+            "node": "Compose Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compose Brief": {
+      "main": [
+        [
+          {
+            "node": "Prepare Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Draft": {
+      "main": [
+        [
+          {
+            "node": "Attach Provenance + Review Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach Provenance + Review Gate": {
+      "main": [
+        [
+          {
+            "node": "Create Gmail Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:DaebyH0xIDQ:user_stack:DaebyH0xIDQ-marvin-daily-brief",
+      "source_id": "DaebyH0xIDQ",
+      "source_shortcode": "DaebyH0xIDQ",
+      "source_numbers": [
+        50
+      ],
+      "source_url": "https://www.instagram.com/chandlerintelligence/reel/DaebyH0xIDQ/",
+      "method": "MARVIN daily metrics brief and review draft",
+      "role": "userstack",
+      "variant": "USER_STACK",
+      "category": "Research & planning",
+      "required_software": [
+        {
+          "name": "RevenueCat",
+          "category": "Research & planning",
+          "state": "credential_missing",
+          "reason": "Source daily report references app analytics."
+        },
+        {
+          "name": "Buffer",
+          "category": "Research & planning",
+          "state": "credential_missing",
+          "reason": "Source references scheduled organic posts; publishing remains disabled."
+        },
+        {
+          "name": "Meta Ads",
+          "category": "Commerce & offers",
+          "state": "credential_and_approval_missing",
+          "reason": "Source references spend/ROAS; new paid usage requires exact MARVIN approval."
+        },
+        {
+          "name": "Gmail",
+          "category": "Research & planning",
+          "state": "credential_missing",
+          "reason": "Source daily report includes customer email summaries."
+        },
+        {
+          "name": "Claude subagents",
+          "category": "Research & planning",
+          "state": "interactive_manual_only",
+          "reason": "Source asks for custom subagents; no delegated agents are created here."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [
+        {
+          "type": "anthropicApi",
+          "name": "Anthropic account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        },
+        {
+          "type": "gmailOAuth2",
+          "name": "Gmail account",
+          "reason": "No usable credential ID is bound in the export; configure only in the n8n credential vault."
+        }
+      ],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

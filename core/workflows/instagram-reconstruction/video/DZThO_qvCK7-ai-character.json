@@ -1,0 +1,203 @@
+{
+  "name": "VIDEO | AI fictional adult influencer character bible and four files | DZThO_qvCK7",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "VIDEO VERSION — faithful reconstruction from the source evidence.\nSource: https://www.instagram.com/raycfu/reel/DZThO_qvCK7/\nEvidence: [0.24s - 70.80s] [Speaker 0] Most people don't realize there's an AI influencer called Aitana Lopez that's making 10 ks a month in brand deals. She doesn't exist and has done brand deals with big companies like Victoria's Secret and Razer. This is the four file system in order to build this out. The first file is persona. Md. This is who your influencer actually is as a person. You write out their full backstory, where they grew up, their personality, interests, opinions, how they type in topics they never talk about. It's done when you can answer 20 questions about this person without even thinking. The second is voice. Md. You buy ninety seconds of clean audio from a voice actress off fiber for about $40 Cloning our 11 labs for about ten minutes, and now your AI influencer has a real sounding voice for reels and stories. Make sure to not use the templates because they all sound too fake. You add a list for how she sounds when she sent voice notes and little details that make it human so she can engage with her audience. The third file is flux. Md and this locks down what your AI influencer looks like. You pick a base face and lock six to eight physical descriptors including eye color, hair, jawline, and any distinguishing features. Then generate 50 variations and fine tune a low rank adaption or LoRa so every future image looks exactly like the same person. You then set up three different lighting setups so you always have variety without the face ever changing. The LoRa costs about $80 on rented GPU. The fourth file is brain dot empty and this is super important because it makes the whole thing scalable. This is a memory file that stores all the information about every brand, follower, conversation, including all the content that they engage with. Cloud code reads all four files before every interaction so the influencer never breaks character or\n[71.95s - 85.49s] [Speaker 0] so the influencer never breaks character or contradicts itself. Set this up with a CronJob checking the messages. Build one AI influencer in a specific niche and consistently post for a few months before starting to drive traffic and getting sponsorships. I built a step by step guide along with detailed prompts in order to build this out. Just like the video and comment build, and\n[86.13s - 88.96s] [Speaker 0] and I'll send it to you. Follow for more advice on making money and running your business with tech and AI.\nSource-vs-engineering boundary: ComfyUI API for user-supplied API-format graphs plus stable character ID/reference metadata and disclosure. ComfyUI is installed as a repository, but server/model readiness is unverified.\nNo external side effects are enabled on import.",
+        "height": 460,
+        "width": 580
+      },
+      "id": "05000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        -520
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "05000000-0000-4000-8000-000000000002",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Sample input for a clearly-fictional, disclosed synthetic character.\nreturn [{ json: {\n  character_name: 'Nova Vale (fictional)',\n  niche: 'indie sci-fi book recommendations',\n  disclosure: true,\n  voice_consent: false,\n  backstory: 'A fictional archivist character created for a book-review channel.',\n  personality: ['curious', 'dry humor', 'warm'],\n  topics_avoided: ['real politics', 'medical advice'],\n  physical_descriptors: ['teal eyes', 'silver undercut', 'freckles', 'angular jaw'],\n  output_dir: './synthetic-character'\n} }];"
+      },
+      "id": "05000000-0000-4000-8000-000000000003",
+      "name": "Sample Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst e = [];\nif (typeof j.character_name !== 'string' || !j.character_name.trim()) e.push('character_name required');\nif (j.disclosure !== true) e.push('disclosure must be true: synthetic characters must be labelled as AI');\nif (!Array.isArray(j.physical_descriptors) || j.physical_descriptors.length < 6 || j.physical_descriptors.length > 8) e.push('physical_descriptors must lock 6-8 traits (per source)');\nif (e.length) throw new Error('Blocked: ' + e.join('; '));\nreturn [{ json: j }];"
+      },
+      "id": "05000000-0000-4000-8000-000000000004",
+      "name": "Guardrail Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst dir = (j.output_dir || './synthetic-character').replace(/\\/+$/, '');\nconst disc = '> SYNTHETIC / AI-GENERATED CHARACTER. Not a real person. Must be disclosed on every platform.';\nconst persona = ['# persona.md', '', disc, '', '## Name', j.character_name, '', '## Niche', j.niche || '', '', '## Backstory', j.backstory || '(write full backstory)', '', '## Personality', (j.personality||[]).map(x=>'- '+x).join('\\n')||'- (add traits)', '', '## Topics never discussed', (j.topics_avoided||[]).map(x=>'- '+x).join('\\n')||'- (add)', '', '## Done when', 'You can answer 20 questions about this character without thinking.'].join('\\n');\nconst voice = ['# voice.md', '', disc, '', '## Consent gate', 'voice_consent = ' + (j.voice_consent === true), '', j.voice_consent === true ? 'Proceed with a LICENSED/CONSENTED voice sample only.' : 'BLOCKED: no cloning until you have a licensed/consented voice sample.', '', '## MANUAL HANDOFF', '- Obtain a consented voice sample.', '- Clone via a provider you are authorised to use.', '- Document cadence, filler words, how she sounds on voice notes.'].join('\\n');\nconst flux = ['# flux.md', '', disc, '', '## Locked physical descriptors (6-8)', (j.physical_descriptors||[]).map(x=>'- '+x).join('\\n'), '', '## MANUAL HANDOFF', '- Pick one base face (not a real identifiable person).', '- Generate ~50 variations, fine-tune a LoRA on rented GPU.', '- Define 3 lighting setups for variety without changing the face.'].join('\\n');\nconst brain = ['# brain.md', '', disc, '', '## Memory store', 'Append-only log of brand/follower/conversation context so the character stays consistent.', '', '## Schema', '- date', '- entity (brand/follower)', '- summary', '- engaged_content', '', '## MANUAL HANDOFF', 'Wire a scheduled job to read all four files before each interaction. Keep a human in the loop for outreach.'].join('\\n');\nreturn [\n  { json: { fileName: dir + '/persona.md', content: persona } },\n  { json: { fileName: dir + '/voice.md', content: voice } },\n  { json: { fileName: dir + '/flux.md', content: flux } },\n  { json: { fileName: dir + '/brain.md', content: brain } }\n];"
+      },
+      "id": "05000000-0000-4000-8000-000000000005",
+      "name": "Render Four Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        180,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "content",
+        "options": {
+          "fileName": "={{ $json.fileName.split('/').pop() }}"
+        }
+      },
+      "id": "05000000-0000-4000-8000-000000000006",
+      "name": "To Binary",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.fileName }}",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "05000000-0000-4000-8000-000000000007",
+      "name": "Write Files",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        620,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sample Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sample Input": {
+      "main": [
+        [
+          {
+            "node": "Guardrail Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardrail Check": {
+      "main": [
+        [
+          {
+            "node": "Render Four Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Render Four Files": {
+      "main": [
+        [
+          {
+            "node": "To Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "To Binary": {
+      "main": [
+        [
+          {
+            "node": "Write Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false,
+  "meta": {
+    "nexen": {
+      "catalog_id": "instagram:DZThO_qvCK7:video:DZThO_qvCK7-ai-character",
+      "source_id": "DZThO_qvCK7",
+      "source_shortcode": "DZThO_qvCK7",
+      "source_numbers": [
+        22
+      ],
+      "source_url": "https://www.instagram.com/raycfu/reel/DZThO_qvCK7/",
+      "method": "AI fictional adult influencer character bible and four files",
+      "role": "video",
+      "variant": "VIDEO",
+      "category": "AI characters",
+      "required_software": [
+        {
+          "name": "AI image/model generator",
+          "category": "AI characters",
+          "state": "provider_unresolved",
+          "reason": "Source describes a fictional adult influencer and character bible; exact generation tool/model remains incomplete in evidence."
+        },
+        {
+          "name": "Character-reference asset store",
+          "category": "AI characters",
+          "state": "not_implemented",
+          "reason": "Persistent reference identity and generated asset production remain to be wired."
+        },
+        {
+          "name": "NEXEN → n8n launch adapter",
+          "category": "N8N launch & credentials",
+          "state": "not_implemented",
+          "reason": "No documented manual-execution API contract or imported n8n workflow ID is verified; Start remains blocked."
+        }
+      ],
+      "required_credentials": [],
+      "launch_ready": false,
+      "launch_state": "blocked_setup"
+    }
+  }
+}

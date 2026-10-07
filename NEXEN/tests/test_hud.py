@@ -49,7 +49,7 @@ class Hud(unittest.TestCase):
     def test_single_file_is_self_contained_1080p_with_chat_and_3d(self):
         t = HUD.read_text(encoding="utf-8")
         self.assertIn("width:1920px;height:1080px", t)
-        for needle in ("id=\"composer\"", "id=\"core\"", "WebGLRenderer", "PROJECT MARVIN", "id=\"t-core\"", "id=\"t-mod\""):
+        for needle in ("Queue a job for MARVIN", "Ask MARVIN", "WebGLRenderer", "Project MARVIN", "data-mod=\"three.module.js\"", "/api/marvin-action"):
             self.assertIn(needle, t)
         self.assertNotIn("src=\"http", t)
         self.assertNotIn("import('/vendor", t)
@@ -58,9 +58,11 @@ class Hud(unittest.TestCase):
     def test_original_hud_is_the_front_page_and_bridge_panel_is_separate(self):
         bridge = (HUD.parent / "bridge.html").read_text(encoding="utf-8")
         self.assertIn("id=\"h-mods\"", bridge)
+        hub = (HUD.parent / "hub-hud.html").read_text(encoding="utf-8")
+        self.assertIn("Swarm tasks and screenshots", hub)
         orig = HUD.read_text(encoding="utf-8")
-        self.assertIn("Swarm tasks and screenshots", orig)
-        self.assertIn("/api/marvin/chat", orig)
+        self.assertIn("Queue a job for MARVIN", orig)
+        self.assertIn("/api/connector/marvin/send", orig)
         self.assertNotIn("id=\"h-mods\"", orig)
 
     def test_front_page_serves_the_hud(self):
@@ -70,7 +72,7 @@ class Hud(unittest.TestCase):
             body = self._get("/").read().decode("utf-8")
         finally:
             paths.UI = saved
-        self.assertIn("PROJECT MARVIN", body)
+        self.assertIn("Project MARVIN", body)
 
     def test_bridge_routes(self):
         mods = json.loads(self._get("/api/bridge/modules").read())

@@ -55,6 +55,14 @@ class Hud(unittest.TestCase):
         self.assertNotIn("import('/vendor", t)
         self.assertNotRegex(t, r"\bV[34]\b")
 
+    def test_original_hud_is_the_front_page_and_bridge_panel_is_separate(self):
+        bridge = (HUD.parent / "bridge.html").read_text(encoding="utf-8")
+        self.assertIn("id=\"h-mods\"", bridge)
+        orig = HUD.read_text(encoding="utf-8")
+        self.assertIn("Swarm tasks and screenshots", orig)
+        self.assertIn("/api/marvin/chat", orig)
+        self.assertNotIn("id=\"h-mods\"", orig)
+
     def test_front_page_serves_the_hud(self):
         saved = paths.UI
         paths.UI = HUD.parent

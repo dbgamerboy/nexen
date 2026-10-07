@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark">
 <title>NEXEN · MARVIN</title>
+<!-- three.js, MIT license, Copyright 2010-2026 Three.js Authors -->
 <style>
 :root{
   --bg:#070506;--bg2:#0e0809;--panel:rgba(26,10,12,.72);--panel2:rgba(40,12,15,.62);
@@ -14,7 +15,7 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 "Segoe UI",Inter,system-ui,sans-serif}
-body{min-height:100vh;background:
+body{background:
   radial-gradient(1200px 600px at 50% -10%,rgba(255,40,50,.18),transparent 60%),
   radial-gradient(900px 500px at 50% 110%,rgba(255,40,50,.10),transparent 60%),
   repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px),var(--bg)}
@@ -149,170 +150,66 @@ main.grid{display:grid;grid-template-columns:minmax(280px,1fr) minmax(420px,1.45
 #graph{width:100%;height:220px;display:block}
 .err{color:var(--bad);font-size:12.5px;margin:0 22px}
 
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-/* report panel (fed by the NEXEN loop via state.v3) */
-#v3 .next{border:1px solid var(--red-hi);border-radius:10px;padding:10px 12px;margin-bottom:10px;background:rgba(255,59,67,.08)}
-#v3 .next .k{font:700 10px ui-monospace,Consolas,monospace;letter-spacing:.12em;color:var(--red-hi);text-transform:uppercase}
-#v3 .next a,#v3 .next b{display:block;font-size:15px;margin:2px 0;color:inherit}
-#v3 .alert{border-left:3px solid #7a8591;padding:4px 8px;margin:6px 0;font-size:12.5px}
-#v3 .alert.red{border-color:#ff3b43}#v3 .alert.amber{border-color:#ffb13b}
-#v3 .alert .f{opacity:.75}
-#v3 .row{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;margin:8px 0;opacity:.9}
-#v3 table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
-#v3 td{padding:3px 4px;border-top:1px solid rgba(255,70,80,.12);vertical-align:top}
-/* Swarm: derived executor progress and SHA-bound task screenshots. */
-#swarm-body{display:grid;gap:10px;max-height:640px;overflow:auto}
-.swarm-role{border:1px solid var(--line);border-radius:10px;padding:10px;overflow-wrap:anywhere}
-.swarm-heading{font-weight:700}.swarm-meta{font-size:11px;color:var(--soft)}
-.swarm-summary{font-size:12.5px;white-space:pre-wrap;margin:6px 0}
-.swarm-role progress{width:100%;accent-color:var(--red)}.swarm-progress-text{font-size:11px;color:var(--soft)}
-.swarm-screenshot{display:block;margin-top:8px;text-decoration:none}.swarm-screenshot img{display:block;width:100%;max-height:200px;object-fit:contain;border:1px solid var(--line);border-radius:8px}
-.swarm-role details{margin-top:7px;font-size:11px}.b-held,.b-failed{color:var(--warn);border-color:var(--warn)}.b-completed{color:var(--ok);border-color:var(--ok)}
 
 html,body{width:100%;height:100%;overflow:hidden;background:#000}
-body{min-height:0}
-#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow-x:hidden;overflow-y:auto;transform-origin:0 0;background:var(--bg)}
-#stage::-webkit-scrollbar{width:8px}#stage::-webkit-scrollbar-thumb{background:rgba(255,60,70,.35);border-radius:4px}
-main.grid{grid-template-columns:520px 1fr 520px}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
+header.top{position:static}
+main.grid{flex:1;min-height:0;grid-template-columns:520px 1fr 520px;padding:10px 22px 16px}
+.col{overflow:auto;min-height:0}
+.col::-webkit-scrollbar{width:6px}.col::-webkit-scrollbar-thumb{background:rgba(255,60,70,.35);border-radius:3px}
+.core-wrap{height:330px}
+.messages{max-height:200px}
+table.rank{width:100%;border-collapse:collapse;font-size:12px}
+table.rank td,table.rank th{padding:4px 5px;border-top:1px solid rgba(255,70,80,.12);text-align:left}
+table.rank th{color:var(--red-hi);font-weight:700;border-top:0}
+.mod{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid rgba(255,70,80,.12);font-size:12.5px}
+.mod:first-child{border-top:0}
+.mod button,.appr button{border:1px solid var(--line-hi);background:rgba(255,50,60,.12);border-radius:8px;padding:5px 10px;cursor:pointer;min-height:30px}
+.mod button:hover,.appr button:hover{background:rgba(255,50,60,.28)}
+.mod pre{margin:4px 0 0;white-space:pre-wrap;color:var(--soft);font-size:11px;max-height:90px;overflow:auto}
+.appr{padding:7px 0;border-top:1px solid rgba(255,70,80,.12);font-size:12.5px}
+.appr:first-child{border-top:0}
 </style>
 </head>
 <body>
 <div id="stage">
 <header class="top">
   <div class="brand">NEXEN <b>·</b> MARVIN</div>
-  <nav class="links" aria-label="NEXEN pages">
-    <a class="everything-link" href="/everything" aria-label="View everything in NEXEN">◈ EVERYTHING</a><a href="/money">💰 Money</a><a href="/benefits">🧭 Benefits</a><a href="/workflows">▦ Workflows</a><a href="/next">⏭️ Next</a><a href="/day">📅 Day</a><a href="/tasks">✅ Tasks</a>
-    <a href="/agents">🤖 Agents</a><a href="/music-render">🎵 Music</a><a href="/game">🎮 Game</a><a href="/youtube-memory">📺 YouTube</a>
-    <a href="/voice">🎙️ Voice</a><a href="/hub">🧭 Hub</a>
-  </nav>
+  <nav class="links" aria-label="Panels"><a href="#h-appr">Approvals</a><a href="#h-mods">Modules</a><a href="#h-rank">Ranking</a><a href="#h-sys">Systems</a></nav>
   <span class="dot" id="live-dot" aria-hidden="true"></span><span class="clock" id="clock">--:--</span>
 </header>
-
-<section class="hero">
-  <div>
-    <h1>Welcome to <span>NEXEN </span></h1>
-    <div class="sub" id="hero-sub">Loading live status…</div>
-  </div>
-  <div class="sub" id="updated"></div>
-</section>
+<section class="hero"><div><h1>Welcome to <span>NEXEN</span></h1><div class="sub" id="hero-sub">Connecting...</div></div><div class="sub" id="updated"></div></section>
 <p class="err" id="err" role="alert"></p>
-
 <main class="grid">
-  <!-- LEFT -->
   <div class="col">
-    <!-- Owner blockers first (owner request 2026-09-27): fed live by the NEXEN loop, money first. -->
-    <section class="panel needs critical" aria-labelledby="h-needs">
-      <h2 id="h-needs">⛔ Needs You: money first</h2>
-      <div id="needs"><p class="empty">Loading…</p></div>
-    </section>
-    <section class="panel" aria-labelledby="h-lanes">
-      <h2 id="h-lanes">💰 Money Arsenal: Ranked Workflows <small id="lanes-src"></small></h2>
-      <div id="lanes"><p class="empty">Loading…</p></div>
-    </section>
-    <section class="panel" aria-labelledby="h-pipe">
-      <h2 id="h-pipe">🔀 Deal Flow Pipeline</h2>
-      <div class="pipe" id="pipe"></div>
-      <p class="empty" style="margin:8px 0 0">Counts are money lanes by status. No deal is closed until a payment is verified.</p>
-    </section>
+    <section class="panel needs critical"><h2 id="h-appr">Approvals <small id="appr-n"></small></h2><div id="appr"><p class="empty">Loading...</p></div></section>
+    <section class="panel"><h2 id="h-rank">Best code ranking <small>static scan, 2026-10-06</small></h2>
+      <table class="rank" id="rank"><tr><th>Root</th><th>Files</th><th>Funcs</th><th>Tests</th><th>Run</th></tr></table>
+      <p class="empty" style="margin:8px 0 0">Score = functions + 3 per test - 5 per stub. F: versions are not ranked yet.</p></section>
   </div>
-
-  <!-- CENTER -->
   <div class="col center">
-    <section class="panel" aria-labelledby="h-engine">
-      <h2 id="h-engine">📈 Money Engine: Balance &amp; Strategy</h2>
-      <div class="kpis">
-        <div class="kpi k1"><div class="l">Verified revenue</div><div class="v" id="k-rev">$—</div><div class="s" id="k-rev-s">no sale yet</div></div>
-        <div class="kpi k2"><div class="l">Lanes tested</div><div class="v" id="k-lanes">—</div><div class="s" id="k-lanes-s"></div></div>
-        <div class="kpi k3"><div class="l">Posts ready</div><div class="v" id="k-posts">—</div><div class="s" id="k-posts-s"></div></div>
-        <div class="kpi k4"><div class="l">Approvals</div><div class="v" id="k-appr">—</div><div class="s">waiting on you</div></div>
-      </div>
-    </section>
-
-    <section class="panel" aria-labelledby="h-core">
-      <h2 id="h-core" class="sr">MARVIN core</h2>
-      <div class="core-wrap">
-        <canvas id="core" aria-label="MARVIN animated core" role="img"></canvas>
+    <section class="panel"><h2 class="sr">MARVIN core</h2>
+      <div class="core-wrap"><canvas id="core" aria-label="MARVIN animated core" role="img"></canvas>
         <div class="core-fallback" id="core-fallback" hidden><i></i></div>
-        <div class="core-label">PROJECT MARVIN</div>
-        <div class="core-state" id="core-state">IDLE</div>
-      </div>
+        <div class="core-label">PROJECT MARVIN</div><div class="core-state" id="core-state">IDLE</div></div>
       <div class="quick" role="group" aria-label="Quick actions">
-        <button type="button" data-q="What's the fastest money move I can make today?">◉ &nbsp;Money move today</button>
-        <button type="button" data-q="What's blocking me right now and what do I do first?">✧ &nbsp;What's blocking me</button>
-        <button type="button" data-q="Which of my downloaded repos or skills helps with clipping videos for money?">▣ &nbsp;Best repo for this ↗</button>
-      </div>
+        <button type="button" data-q="What is the fastest money move I can make today?">Money move today</button>
+        <button type="button" data-q="What is blocking me right now and what do I do first?">What is blocking me</button>
+        <button type="button" data-q="Which approvals are waiting and what do they do?">Approvals waiting</button></div>
       <div id="messages" class="messages" aria-live="polite"></div>
       <form class="composer" id="composer">
-        <button type="button" id="attachBtn" class="attach" aria-label="Attach file">＋</button>
         <label for="prompt" class="sr">Message MARVIN</label>
         <textarea id="prompt" rows="1" maxlength="4000" placeholder="Talk to MARVIN. Or hand something over." autocomplete="off"></textarea>
-        <button type="button" id="micBtn" class="mic" aria-label="Voice">♩</button>
-        <button type="submit" id="sendBtn" class="send" aria-label="Send">↑</button>
-      </form>
-      <div class="meta"><span>YOUR INTENT IS THE INTERFACE</span><span id="model-used">LOCAL MODEL</span></div>
-      <nav class="caps" aria-label="Explore">
-        <a href="/marvin/training">✦ Practice + Research</a><a href="/memory-pools">◉ Memory</a><a href="/agents">⑂ Agents</a><a href="/desktop">▣ Computer</a>
-        <a id="content-tab" href="https://docs.google.com/spreadsheets/d/1a0OWr2M2RHJ26guhN8OR4UuhHQ_HoJeffeAQCZYG550/edit" target="_blank" rel="noopener noreferrer" title="Open the native content planning sheet. Newer sheet edits may not yet be in MARVIN's local mirror.">▤ CONTENT</a>
-        <a href="/lab">◇ Tools</a><a href="/lookbook">◎ World</a><a href="/code-review">⚒ Build</a><a href="/reel-assets">✧ Creative</a>
-      </nav>
-    </section>
-    <section class="panel" id="swarm" aria-labelledby="h-swarm">
-      <h2 id="h-swarm">Swarm tasks and screenshots <small id="swarm-count">12 defined roles</small></h2>
-      <div id="swarm-body" aria-live="polite"><p class="empty">Loading current executor reports...</p></div>
-      <p id="swarm-note" class="empty">Declared roles are not proof of running model workers.</p>
-    </section>
+        <button type="submit" id="sendBtn" class="send" aria-label="Send">&uarr;</button></form>
+      <div class="meta"><span>YOUR INTENT IS THE INTERFACE</span><span id="model-used">LOCAL MODEL</span></div></section>
+    <section class="panel"><h2 id="h-mods">Modules <small id="mod-n"></small></h2><div id="mods"><p class="empty">Loading...</p></div>
+      <p class="empty" style="margin:8px 0 0">Modules with outbound code are queued for your approval and never run from here.</p></section>
   </div>
-
-  <!-- RIGHT -->
   <div class="col">
-    <!-- report (owner request 2026-09-27): next action, alerts, loop + memory, goals. Data: state.v3 from the NEXEN loop. -->
-    <section class="panel" id="v3" aria-labelledby="h-v3">
-      <h2 id="h-v3">📋 Report <small id="v3-upd"></small></h2>
-      <div id="v3-body"><p class="empty">Loading…</p></div>
-    </section>
-    <section class="panel" aria-labelledby="h-trace">
-      <h2 id="h-trace">🧠 AI Thought Trace <small>session log</small></h2>
-      <div class="trace" id="trace"><p class="empty">Loading…</p></div>
-    </section>
-    <section class="panel sugg" aria-labelledby="h-sugg">
-      <h2 id="h-sugg">💡 Strategic Suggestions</h2>
-      <div id="sugg"><p class="empty">Loading…</p></div>
-    </section>
-    <section class="panel" aria-labelledby="h-infra">
-      <h2 id="h-infra">🖥️ Infrastructure</h2>
-      <div class="gauges">
-        <div class="gauge"><div class="l">PC1 CPU</div><b id="cpu">—</b><div class="bar"><i id="cpu-bar"></i></div></div>
-        <div class="gauge"><div class="l">PC1 RAM</div><b id="ram">—</b><div class="bar"><i id="ram-bar"></i></div></div>
-      </div>
-      <div class="disks" id="disks"></div>
-      <div class="chips" id="systems"></div>
-      <div class="pc2" id="pc2"></div>
-    </section>
-    <section class="panel" aria-labelledby="h-links">
-      <h2 id="h-links">🔗 Links <small>every port, one click</small></h2>
-      <div class="linkgrid" id="links"><p class="empty">Loading…</p></div>
-    </section>
-    <section class="panel" aria-labelledby="h-ars">
-      <h2 id="h-ars">🧰 Arsenal <small>repos + skills MARVIN can use</small></h2>
-      <div class="ars-counts">
-        <div><b id="a-repos">—</b><span>repos</span></div>
-        <div><b id="a-skills">—</b><span>skills</span></div>
-        <div><b id="a-cards">—</b><span>cards</span></div>
-      </div>
-      <form class="search" id="ars-form" role="search">
-        <label for="ars-q" class="sr">Search repos and skills</label>
-        <input id="ars-q" placeholder="clip videos, dropshipping, beats…" autocomplete="off">
-        <button type="submit">Search</button>
-      </form>
-      <div class="results" id="ars-results"></div>
-    </section>
-    <section class="panel" aria-labelledby="h-graph">
-      <h2 id="h-graph">🕸️ Knowledge Graph</h2>
-      <svg id="graph" role="img" aria-label="Teams, money lanes and systems"></svg>
-    </section>
+    <section class="panel"><h2 id="h-sys">Systems <small id="stop-state"></small></h2><div class="chips" id="systems"></div><div class="disks" id="learn"></div></section>
+    <section class="panel"><h2>Autopilot loop</h2><div class="disks" id="loop"><p class="empty">Loading...</p></div></section>
   </div>
 </main>
-
 </div>
 <script type="text/plain" id="t-core">/**
  * @license
@@ -80621,272 +80518,100 @@ class WebGLRenderer {
 
 export { ACESFilmicToneMapping, AddEquation, AddOperation, AdditiveBlending, AgXToneMapping, AlphaFormat, AlwaysCompare, AlwaysDepth, ArrayCamera, BackSide, BoxGeometry, BufferAttribute, BufferGeometry, ByteType, CineonToneMapping, ClampToEdgeWrapping, Color, ColorManagement, ConstantAlphaFactor, ConstantColorFactor, CubeCamera, CubeDepthTexture, CubeReflectionMapping, CubeRefractionMapping, CubeTexture, CubeUVReflectionMapping, CullFaceBack, CullFaceFront, CullFaceNone, CustomBlending, CustomToneMapping, Data3DTexture, DataArrayTexture, DataTexture, DepthFormat, DepthStencilFormat, DepthTexture, DoubleSide, DstAlphaFactor, DstColorFactor, EqualCompare, EqualDepth, EquirectangularReflectionMapping, EquirectangularRefractionMapping, EventDispatcher, ExternalTexture, Float32BufferAttribute, FloatType, FrontSide, Frustum, GLSL3, GreaterCompare, GreaterDepth, GreaterEqualCompare, GreaterEqualDepth, HalfFloatType, IntType, Layers, LessCompare, LessDepth, LessEqualCompare, LessEqualDepth, LinearFilter, LinearMipmapLinearFilter, LinearMipmapNearestFilter, LinearSRGBColorSpace, LinearToneMapping, LinearTransfer, Matrix3, Matrix4, MaxEquation, Mesh, MeshBasicMaterial, MeshDepthMaterial, MeshDistanceMaterial, MinEquation, MirroredRepeatWrapping, MixOperation, MultiplyBlending, MultiplyOperation, NearestFilter, NearestMipmapLinearFilter, NearestMipmapNearestFilter, NeutralToneMapping, NeverCompare, NeverDepth, NoBlending, NoColorSpace, NoToneMapping, NormalBlending, NotEqualCompare, NotEqualDepth, ObjectSpaceNormalMap, OneFactor, OneMinusConstantAlphaFactor, OneMinusConstantColorFactor, OneMinusDstAlphaFactor, OneMinusDstColorFactor, OneMinusSrcAlphaFactor, OneMinusSrcColorFactor, OrthographicCamera, PCFShadowMap, PCFSoftShadowMap, PMREMGenerator, PerspectiveCamera, Plane, PlaneGeometry, R11_EAC_Format, RED_GREEN_RGTC2_Format, RED_RGTC1_Format, REVISION, RG11_EAC_Format, RGBAFormat, RGBAIntegerFormat, RGBA_ASTC_10x10_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_BPTC_Format, RGBA_ETC2_EAC_Format, RGBA_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGBFormat, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RGB_ETC1_Format, RGB_ETC2_Format, RGB_PVRTC_2BPPV1_Format, RGB_PVRTC_4BPPV1_Format, RGB_S3TC_DXT1_Format, RGFormat, RGIntegerFormat, RawShaderMaterial, RedFormat, RedIntegerFormat, ReinhardToneMapping, RepeatWrapping, ReverseSubtractEquation, SIGNED_R11_EAC_Format, SIGNED_RED_GREEN_RGTC2_Format, SIGNED_RED_RGTC1_Format, SIGNED_RG11_EAC_Format, SRGBColorSpace, SRGBTransfer, ShaderChunk, ShaderLib, ShaderMaterial, ShortType, SrcAlphaFactor, SrcAlphaSaturateFactor, SrcColorFactor, SubtractEquation, SubtractiveBlending, TangentSpaceNormalMap, Texture, Uint16BufferAttribute, Uint32BufferAttribute, UniformsLib, UniformsUtils, UnsignedByteType, UnsignedInt101111Type, UnsignedInt248Type, UnsignedInt5999Type, UnsignedIntType, UnsignedShort4444Type, UnsignedShort5551Type, UnsignedShortType, VSMShadowMap, Vector2, Vector3, Vector4, WebGLCoordinateSystem, WebGLCubeRenderTarget, WebGLRenderTarget, WebGLRenderer, WebGLUtils, WebXRController, ZeroFactor, createCanvasElement, error, log, warn, warnOnce };
 </script>
-<!-- three.js, MIT license, Copyright 2010-2026 Three.js Authors -->
 <script>
 (() => {
   "use strict";
-  // fixed 1920x1080 stage scaled to the window
-  const fit = () => { const s = Math.min(innerWidth / 1920, innerHeight / 1080), st = document.getElementById('stage'); st.style.transform = 'scale(' + s + ')'; st.style.left = ((innerWidth - 1920 * s) / 2) + 'px'; st.style.top = ((innerHeight - 1080 * s) / 2) + 'px'; };
-  fit(); addEventListener('resize', fit);
-
   const $ = s => document.querySelector(s);
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
-  const badge = s => { const b = el('span', 'badge b-' + String(s || 'queued').toLowerCase().replace(/[^a-z]/g, ''), s || '—'); return b; };
-  let thinking = false, state = null;
+  const RANK = [["Enterprise Source (preserved cores)", 173, 2886, 663, "not run"], ["V1 app (marvin_brain, decide, memory)", 160, 2558, 606, "not run"], ["NEXEN application", 81, 931, 180, "173/173 pass"], ["integrations", 36, 464, 180, "not run"], ["Business Operations", 26, 478, 95, "not run"], ["marvin", 32, 363, 111, "not run"], ["loop", 18, 290, 81, "not run"], ["tools", 40, 243, 46, "not run"], ["apps (script shortcuts)", 126, 230, 10, "26 stubs"]];
+  let thinking = false;
+  // fixed 1920x1080 stage scaled to the window
+  const fit = () => { const s = Math.min(innerWidth / 1920, innerHeight / 1080); const st = $('#stage'); st.style.transform = 'scale(' + s + ')'; st.style.left = ((innerWidth - 1920 * s) / 2) + 'px'; st.style.top = ((innerHeight - 1080 * s) / 2) + 'px'; };
+  fit(); addEventListener('resize', fit);
+  const tick = () => { $('#clock').textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}); }; tick(); setInterval(tick, 15000);
+  const T = $('#rank'); RANK.forEach(r => { const tr = el('tr'); r.forEach(x => tr.append(el('td', null, String(x)))); T.append(tr); });
 
-  // ---------- clock ----------
-  const tick = () => { $('#clock').textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}); };
-  tick(); setInterval(tick, 15000);
-
-  // ---------- API ----------
-  async function api(path, options = {}) {
-    const r = await fetch(path, {...options, headers: {'Content-Type': 'application/json', 'X-Nexen-Action': 'launch'}});
-    if (r.status === 401) { location.href = '/login?next=/'; throw Error('Please sign in.'); }
-    const data = await r.json().catch(() => ({}));
-    if (!r.ok) throw Error(typeof data.detail === 'string' ? data.detail : 'Request failed (' + r.status + ').');
-    return data;
+  async function api(path, body) {
+    const opt = body === undefined ? {} : {method: 'POST', headers: {'Content-Type': 'application/json', 'X-Nexen-Action': 'v4'}, body: JSON.stringify(body)};
+    const r = await fetch(path, opt); const d = await r.json().catch(() => ({}));
+    if (!r.ok) throw Error(d.error || ('Request failed (' + r.status + ')')); return d;
   }
+  const offline = e => { $('#err').textContent = 'Live data unavailable: ' + e.message + '. Open this page from the NEXEN server (http://127.0.0.1:8794/).'; $('#live-dot').className = 'dot bad'; };
 
-  // ---------- links (every port as a button) ----------
-  const linkGrid = $('#links');
-  async function renderLinks() {
+  async function status() {
     try {
-      const d = await api('/api/links');
-      linkGrid.textContent = '';
-      for (const l of d.links || []) {
-        const a = el('a', 'link-btn' + (l.up ? ' up' : ' down'), l.name);
-        a.href = l.url; a.target = '_blank'; a.rel = 'noopener';
-        a.title = (l.up ? 'UP' : 'down') + ' · ' + (l.note || '');
-        linkGrid.appendChild(a);
-      }
-    } catch (e) {
-      if (linkGrid.children.length === 0) linkGrid.textContent = 'Links offline: ' + e.message;
-    }
+      const s = await api('/api/status'); $('#err').textContent = ''; $('#live-dot').className = 'dot ok';
+      const L = s.learning || {}, it = L.items || {};
+      $('#hero-sub').textContent = (s.approvals_pending ?? 0) + ' approvals waiting. ' + (it.admitted ?? 0) + ' facts learned. Every number here is read live.';
+      $('#updated').textContent = 'Updated ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+      $('#stop-state').textContent = s.stop_active ? 'STOP ACTIVE' : 'no STOP';
+      const Y = $('#systems'); Y.replaceChildren();
+      Object.entries(s.connectors || {}).forEach(([k, v]) => { const c = el('span', 'chip'); c.append(el('span', 'dot ' + (v && v.ok ? 'ok' : 'bad')), document.createTextNode(k)); Y.append(c); });
+      const D = $('#learn'); D.replaceChildren();
+      Object.entries(it).forEach(([k, v]) => { const d = el('div'); d.append(el('span', null, 'facts ' + k), el('span', null, String(v))); D.append(d); });
+      const lp = s.loop || {}, P = $('#loop'); P.replaceChildren();
+      [['running', lp.running], ['cycles', lp.cycles], ['paused by STOP', lp.paused_by_stop], ['errors', (lp.errors || []).length]].forEach(([k, v]) => { const d = el('div'); d.append(el('span', null, k), el('span', null, String(v ?? '-'))); P.append(d); });
+    } catch (e) { offline(e); }
   }
-  renderLinks(); setInterval(renderLinks, 30000);
-
-  // ---------- render ----------
-  function render(s) {
-    state = s;
-    const money = s.money || {}, lanes = money.lanes || [];
-    const rev = money.revenue_verified_usd;
-    $('#k-rev').textContent = rev == null ? '$?' : '$' + Number(rev).toLocaleString();
-    $('#k-rev-s').textContent = rev ? 'verified' : 'verified, no sale yet';
-    $('#hero-sub').textContent = (rev ? `$${rev} verified.` : '$0 verified, no sale yet.') + ' Every number here is real or marked.';
-    $('#updated').textContent = s.generated_at ? 'Updated ' + new Date(s.generated_at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '';
-    const tested = lanes.filter(l => /tested|verified|running|paid/i.test(l.status || '')).length;
-    $('#k-lanes').textContent = tested + '/' + lanes.length; $('#k-lanes-s').textContent = 'money lanes';
-    const posts = s.posts || {};
-    $('#k-posts').textContent = posts.ready ?? '—'; $('#k-posts-s').textContent = posts.scheduled ? posts.scheduled + ' scheduled' : 'none scheduled yet';
-    $('#k-appr').textContent = (s.approvals || []).length;
-
-    const L = $('#lanes'); L.replaceChildren();
-    if (!lanes.length) L.append(el('p', 'empty', 'No money lanes loaded.'));
-    lanes.forEach(l => {
-      const row = el('div', 'lane'); row.append(el('div', 'n', String(l.rank ?? '•')));
-      const body = el('div'); const t = el('div', 't', `${l.emoji || ''} ${l.name || ''}`); t.append(badge(l.status)); body.append(t);
-      if (l.next) body.append(el('div', 'meta', '→ ' + l.next));
-      if (l.gate) body.append(el('div', 'gate', 'Gate: ' + l.gate));
-      row.append(body); L.append(row);
-    });
-    $('#lanes-src').textContent = money.updated ? 'as of ' + money.updated.slice(0, 10) : '';
-
-    const N = $('#needs'); N.replaceChildren();
-    const t = s.tonight || {}, ol = el('ol');
-    (t.logins_before_sleep || []).forEach(x => { const li = el('li'); const w = el('div', 'w');
-      if (/^https?:\/\//.test(x.where || '')) { const a = el('a', null, x.what || ''); a.href = x.where; a.target = '_blank'; a.rel = 'noopener'; w.append(a); } else { w.textContent = x.what || ''; }
-      li.append(w); li.append(el('div', 'u', (x.unlocks ? 'Unlocks: ' + x.unlocks : '') + (x.minutes ? ` · ~${x.minutes} min` : ''))); ol.append(li); });
-    if (ol.children.length) N.append(ol);
-    const bl = el('ul'); (t.blockers || []).slice(0, 6).forEach(b => { const li = el('li'); li.append(el('div', 'w', b.title || '')); if (b.owner_action) li.append(el('div', 'u', b.owner_action)); bl.append(li); });
-    if (bl.children.length) { N.append(el('div', 'u', 'Blockers')); N.append(bl); }
-    if (!N.children.length) N.append(el('p', 'empty', 'Nothing blocked. Go get it.'));
-
-    const P = $('#pipe'); P.replaceChildren();
-    const count = re => lanes.filter(l => re.test(l.status || '')).length;
-    [['Outreach', count(/prepared|queued/i)], ['Negotiation', count(/tested/i)], ['Closing', count(/running|connected/i)], ['Fulfillment', count(/paid|published|verified/i)]]
-      .forEach(([name, n], i) => { if (i) P.append(el('span', 'ar', '→')); const st = el('div', 'st'); st.append(el('b', null, String(n))); st.append(document.createTextNode(name)); P.append(st); });
-
-    const T = $('#trace'); T.replaceChildren();
-    (s.log || []).slice(0, 12).forEach(x => { const d = el('div'); d.append(el('div', 'when', `${x.when || ''} · ${x.agent || ''}`)); d.append(el('div', null, x.did || x.title || '')); T.append(d); });
-    if (!T.children.length) T.append(el('p', 'empty', 'No session log entries yet.'));
-
-    const S = $('#sugg'); S.replaceChildren(); const ul = el('ul'); (s.suggestions || []).slice(0, 6).forEach(x => ul.append(el('li', null, String(x))));
-    S.append(ul.children.length ? ul : el('p', 'empty', 'No suggestions right now.'));
-
-    const pc1 = s.pc1 || {};
-    const cpu = pc1.cpu_pct, ram = pc1.ram_used_gb, ramT = pc1.ram_total_gb;
-    $('#cpu').textContent = cpu == null ? '—' : Math.round(cpu) + '%'; $('#cpu-bar').style.width = (cpu || 0) + '%';
-    $('#ram').textContent = ram == null ? '—' : `${ram} / ${ramT} GB`; $('#ram-bar').style.width = ramT ? (100 * ram / ramT) + '%' : '0';
-    const D = $('#disks'); D.replaceChildren();
-    (pc1.disks || []).forEach(d => { const row = el('div', d.warning ? 'warn' : null); row.append(el('span', null, d.drive + (d.warning ? ' ⚠ ' + d.warning : ''))); row.append(el('span', null, `${d.free_gb} GB free`)); D.append(row); });
-    const Y = $('#systems'); Y.replaceChildren(); let allUp = true;
-    Object.entries(s.systems || {}).forEach(([k, v]) => { const up = !!(v && v.up); allUp = allUp && (up || k === 'n8n_clean'); const c = el('span', 'chip'); const dot = el('span', 'dot ' + (up ? 'ok' : 'bad')); c.append(dot, document.createTextNode(k.replace('_', ' '))); c.title = (v && v.note) || ''; Y.append(c); });
-    $('#live-dot').className = 'dot ' + (allUp ? 'ok' : 'bad');
-    const pc2 = s.pc2 || {}; $('#pc2').textContent = 'PC2: ' + (pc2.state || 'unknown') + (pc2.note ? ' · ' + pc2.note : '');
-
-    const a = s.arsenal || {};
-    $('#a-repos').textContent = a.repos ?? '—'; $('#a-skills').textContent = a.skills_installed ?? '—'; $('#a-cards').textContent = a.cards ?? '—';
-    drawGraph(s.graph || {});
+  async function approvals() {
+    try {
+      const a = await api('/api/approvals'); const list = Array.isArray(a) ? a : (a.pending || []); const A = $('#appr'); A.replaceChildren();
+      $('#appr-n').textContent = list.length + ' pending';
+      list.forEach(x => { const d = el('div', 'appr'); d.append(el('div', null, (x.kind || '') + ': ' + (x.title || x.id)));
+        [['Approve', 'approve'], ['Deny', 'deny']].forEach(([label, verb]) => { const b = el('button', null, label); b.style.marginRight = '6px';
+          b.addEventListener('click', async () => { try { await api('/api/approvals/' + x.id + '/' + verb, {}); } catch (e) { $('#err').textContent = e.message; } approvals(); status(); }); d.append(b); });
+        A.append(d); });
+      if (!list.length) A.append(el('p', 'empty', 'Nothing waiting on you.'));
+    } catch (e) { $('#appr').textContent = 'Approvals unavailable.'; }
   }
-
-  function drawGraph(g) {
-    const svg = $('#graph'), W = svg.clientWidth || 320, H = svg.clientHeight || 220, NS = 'http://www.w3.org/2000/svg';
-    svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.replaceChildren();
-    const nodes = (g.nodes || []).slice(0, 28); if (!nodes.length) return;
-    const groups = [...new Set(nodes.map(n => n.group))], pos = {};
-    nodes.forEach((n, i) => { const gi = groups.indexOf(n.group), ring = 30 + gi * 30, per = nodes.filter(m => m.group === n.group), k = per.indexOf(n);
-      const ang = (k / per.length) * Math.PI * 2 + gi; pos[n.id] = [W / 2 + Math.cos(ang) * Math.min(ring, W / 2 - 20), H / 2 + Math.sin(ang) * Math.min(ring * .8, H / 2 - 14)]; });
-    (g.edges || []).forEach(e => { if (!pos[e.from] || !pos[e.to]) return; const l = document.createElementNS(NS, 'line');
-      l.setAttribute('x1', pos[e.from][0]); l.setAttribute('y1', pos[e.from][1]); l.setAttribute('x2', pos[e.to][0]); l.setAttribute('y2', pos[e.to][1]);
-      l.setAttribute('stroke', 'rgba(255,70,80,.35)'); svg.append(l); });
-    nodes.forEach(n => { const [x, y] = pos[n.id]; const c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 4.5);
-      c.setAttribute('fill', ['#ff3b43', '#19c6c0', '#9b5cff', '#ffb13b', '#3b8bff'][groups.indexOf(n.group) % 5]); const t = document.createElementNS(NS, 'title'); t.textContent = n.label; c.append(t); svg.append(c); });
+  async function modules() {
+    try {
+      const m = await api('/api/bridge/modules'); const M = $('#mods'); M.replaceChildren(); $('#mod-n').textContent = m.length + ' modules';
+      m.forEach(x => { const row = el('div'); const top = el('div', 'mod'); top.append(el('span', null, x.name + (x.outbound ? '  (needs approval)' : '')));
+        const out = el('pre'); out.hidden = true; const b = el('button', null, x.outbound ? 'Request' : 'Run');
+        b.addEventListener('click', async () => { b.disabled = true; try { const r = await api('/api/bridge/run', {name: x.name}); out.hidden = false;
+            out.textContent = r.ran ? ('exit ' + r.code + '\n' + (r.stdout || r.stderr || '').trim()) : (r.reason || 'not run'); } catch (e) { out.hidden = false; out.textContent = e.message; } b.disabled = false; approvals(); });
+        top.append(b); row.append(top, out); M.append(row); });
+    } catch (e) { $('#mods').textContent = 'Modules unavailable.'; }
   }
+  status(); approvals(); modules(); setInterval(status, 15000); setInterval(approvals, 15000);
 
-  // report: every value goes in through textContent (no HTML injection); links must be http(s).
-  function renderV3(v) {
-    const B = $('#v3-body'); B.replaceChildren();
-    if (!v || !v.loop) { B.append(el('p', 'empty', (v && v.note) || 'report not available yet.')); return; }
-    $('#v3-upd').textContent = v.updated ? 'as of ' + v.updated.slice(11, 16) : '';
-    if (v.next_action) {
-      const n = el('div', 'next'); n.append(el('div', 'k', 'Next action · ' + (v.next_action.id || '')));
-      if (/^https?:\/\//.test(v.next_action.link || '')) { const a = el('a', null, v.next_action.title); a.href = v.next_action.link; a.target = '_blank'; a.rel = 'noopener'; n.append(a); }
-      else n.append(el('b', null, v.next_action.title));
-      n.append(el('div', 'u', v.next_action.step || '')); if (v.next_action.value) n.append(el('div', 'u', v.next_action.value)); B.append(n);
-    }
-    (v.alerts || []).forEach(a => { const d = el('div', 'alert ' + a.level); d.append(el('div', null, a.title + (a.ticket ? ' (' + a.ticket + ')' : ''))); if (a.fix) d.append(el('div', 'f', a.fix)); B.append(d); });
-    const L = v.loop, t = L.tickets || {}, r = el('div', 'row');
-    [['Loop', L.mode], ['Memory', (L.commit_pct ?? '—') + '% committed'], ['RAM free', (L.ram_free_gb ?? '—') + ' GB'],
-     ['Tickets', Object.entries(t).map(([k, n]) => n + ' ' + k).join(' · ')], ['Done this week', L.done_this_week ?? 0], ['PC2', L.pc2 || '—'],
-     ['Revenue', '$' + (v.revenue_verified_usd ?? 0) + ' verified']].forEach(([k, val]) => r.append(el('span', null, k + ': ' + val)));
-    B.append(r);
-    if ((v.goals || []).length) { const tb = el('table'); v.goals.forEach(g => { const tr = el('tr'); [g.n + '. ' + g.goal, g.by, g.now].forEach(x => tr.append(el('td', null, String(x ?? '')))); tb.append(tr); }); B.append(tb); }
-  }
-
-  // Owner progress is executor-reported; completion is receipt-backed.
-  let lastSwarmStamp = '';
-  function renderSwarm(value) {
-    const target = $('#swarm-body');
-    if (!target) return;
-    const stamp = typeof value?.updated_at === 'string' ? value.updated_at : '';
-    if (stamp && lastSwarmStamp && stamp < lastSwarmStamp) return;
-    if (stamp) lastSwarmStamp = stamp;
-    target.replaceChildren();
-    const roles = Array.isArray(value?.roles) ? value.roles.slice(0, 12) : [];
-    $('#swarm-count').textContent = roles.length + ' defined roles';
-    const validDate = text => {
-      const date = new Date(text);
-      return text && Number.isFinite(date.getTime()) ? date.toLocaleTimeString() : 'No reported timestamp';
-    };
-    const priority = {running: 0, failed: 1, held: 2, queued: 3, prepared: 4, completed: 5};
-    roles.sort((a, b) => (priority[a.state] ?? 9) - (priority[b.state] ?? 9));
-    for (const role of roles) {
-      const card = el('article', 'swarm-role');
-      const heading = el('div', 'swarm-heading', String(role.name || role.id || 'Declared role'));
-      heading.append(badge(role.state || 'held')); card.append(heading);
-      const task = Number.isInteger(role.task_id) ? 'Task #' + role.task_id : 'No current task reported';
-      card.append(el('div', 'swarm-meta', task + ' · ' + validDate(role.reported_at)));
-      card.append(el('div', 'swarm-summary', String(role.summary || 'Defined; no current executor report.')));
-      if (typeof role.progress === 'number' && Number.isFinite(role.progress) && role.progress >= 0 && role.progress <= 100) {
-        const progress = el('progress'); progress.max = 100; progress.value = role.progress;
-        progress.setAttribute('aria-label', task + ' reported progress');
-        card.append(progress, el('span', 'swarm-progress-text', role.progress.toFixed(1) + '% reported'));
-      } else card.append(el('div', 'empty', 'Progress unreported'));
-      if (Array.isArray(role.warnings) && role.warnings.length) card.append(el('div', 'empty', role.warnings.join(' · ')));
-      const screenshot = role.screenshot;
-      if (screenshot && typeof screenshot.url === 'string' && /^\/api\/marvin\/swarm\/image\/[a-f0-9]{64}$/.test(screenshot.url) && screenshot.url.endsWith(screenshot.sha256)) {
-        const link = el('a', 'swarm-screenshot'); link.href = screenshot.url; link.target = '_blank'; link.rel = 'noopener noreferrer';
-        const image = el('img'); image.src = screenshot.url; image.alt = task + ' screenshot evidence'; image.loading = 'lazy';
-        image.addEventListener('error', () => { image.hidden = true; link.textContent = 'Screenshot changed or unavailable; refresh evidence.'; }, {once: true});
-        link.append(image, el('span', 'empty', 'Open verified task screenshot · SHA ' + screenshot.sha256.slice(0, 12)));
-        card.append(link);
-      }
-      if (Array.isArray(role.evidence) && role.evidence.length) {
-        const details = el('details'); details.append(el('summary', null, role.evidence.length + ' verified evidence file(s)'));
-        for (const evidence of role.evidence.slice(0, 8)) details.append(el('div', 'empty', String(evidence.path || '') + ' · SHA ' + String(evidence.sha256 || '').slice(0, 12)));
-        card.append(details);
-      }
-      target.append(card);
-    }
-    if (!roles.length) target.append(el('p', 'empty', 'The current swarm feed is unavailable.'));
-    $('#swarm-note').textContent = String(value?.note || 'Declared roles are not proof of running model workers.') + (stamp ? ' Updated ' + validDate(stamp) + '.' : '');
-  }
-
-  async function refreshSwarm() {
-    try { renderSwarm(await api('/api/marvin/swarm')); }
-    catch (error) { $('#swarm-note').textContent = 'Swarm updates unavailable: ' + error.message; }
-  }
-  refreshSwarm(); setInterval(refreshSwarm, 5000);
-
-  async function refresh() {
-    try { const s = await api('/api/marvin/state'); render(s); try { renderV3(s.v3); renderSwarm(s.swarm); } catch (e) { console.warn('report panel:', e); } $('#err').textContent = ''; }
-    catch (e) { $('#err').textContent = 'Live status unavailable: ' + e.message; }
-  }
-  refresh(); setInterval(refresh, 15000);
-
-  // ---------- Arsenal search ----------
-  $('#ars-form').addEventListener('submit', async e => {
-    e.preventDefault(); const q = $('#ars-q').value.trim(); const R = $('#ars-results'); if (!q) return;
-    R.replaceChildren(el('p', 'empty', 'Searching…'));
-    try { const rows = await api('/api/arsenal/search?k=8&q=' + encodeURIComponent(q)); R.replaceChildren();
-      (rows || []).forEach(r => { const d = el('div'); d.append(el('div', 'k', r.kind + (r.money_lane ? ' · ' + r.money_lane : ''))); d.append(el('div', null, r.name)); if (r.description) d.append(el('div', 'empty', String(r.description).slice(0, 140))); R.append(d); });
-      if (!R.children.length) R.append(el('p', 'empty', 'No matches.'));
-    } catch (err) { R.replaceChildren(el('p', 'empty', err.message)); }
-  });
-
-  // ---------- chat (owner's model box) ----------
-  const prompt = $('#prompt'), messages = $('#messages'), sendBtn = $('#sendBtn'), history = [];
-  const grow = () => { prompt.style.height = 'auto'; prompt.style.height = Math.min(prompt.scrollHeight, 154) + 'px'; };
-  const add = (text, cls, who, tooltip) => { const m = el('div', 'msg ' + cls); if (who) m.append(el('span', 'who', who)); m.append(document.createTextNode(text)); if (tooltip) m.title = tooltip; messages.append(m); messages.classList.add('has'); messages.scrollTop = messages.scrollHeight; };
-  const provenance = r => { const u = r.used || {}, m = u.memory || {}; const rows = [`Model: ${r.model || 'unknown'}`, `Tools: ${(u.tools || []).join(', ') || 'none reported'}`, `Knowledge: ${(u.sources || []).join('; ') || 'none reported'}`, `Memory: ${m.pool || 'not retrieved'} · ${m.citation_count || 0} citations · ${m.data_sufficiency || 'unknown'}`, `Memory sources: ${(m.citations || []).map(x => `${x.kind}:${x.source_id}`).join(', ') || 'none'}`, `Memory warnings: ${(m.warnings || []).join('; ') || 'none'}`, `Retrieved skills: ${(u.skills || []).join(', ') || 'none'}`, `Retrieved repos: ${(u.repos || []).join(', ') || 'none'}`, `Input: ${u.modality || 'text only; no image/video payload received'}`, `Independent review: ${u.independent_review || 'not connected'}`, `Policy: ${(u.policies || []).join(', ') || 'none reported'}`]; return rows.join('\n').slice(0, 1800); };
+  // chat: the model box sends through the MARVIN connector
+  const prompt = $('#prompt'), messages = $('#messages'), sendBtn = $('#sendBtn');
+  const add = (text, cls, who) => { const m = el('div', 'msg ' + cls); if (who) m.append(el('span', 'who', who)); m.append(document.createTextNode(text)); messages.append(m); messages.classList.add('has'); messages.scrollTop = messages.scrollHeight; };
   async function send(text) {
-    text = (text || '').trim(); if (!text || thinking) return;
-    add(text, 'user', 'YOU'); prompt.value = ''; grow(); thinking = true; sendBtn.disabled = true; $('#core-state').textContent = 'THINKING…';
-    try { const r = await api('/api/marvin/chat', {method: 'POST', body: JSON.stringify({message: text, history: history.slice(-10)})});
-      const trace = provenance(r);
-      add(r.reply || '(no reply)', r.fallback ? 'note' : 'assistant', 'MARVIN', trace);
-      history.push({role: 'user', content: text}, {role: 'assistant', content: r.reply || ''});
-      const used = [...(r.used?.repos || []), ...(r.used?.skills || [])];
-      $('#model-used').textContent = (r.model || 'model').toUpperCase() + (used.length ? ' · USED ' + used.slice(0, 3).join(', ') : '');
-      $('#model-used').title = trace;
-    } catch (e) { add('MARVIN could not answer: ' + e.message, 'note'); }
+    text = (text || '').trim(); if (!text || thinking) return; add(text, 'user', 'YOU'); prompt.value = ''; thinking = true; sendBtn.disabled = true; $('#core-state').textContent = 'THINKING...';
+    try { const r = await api('/api/connector/marvin/send', {prompt: text}); add(String(r.reply || r.text || r.output || r.error || JSON.stringify(r)).slice(0, 4000), r.ok === false ? 'note' : 'assistant', 'MARVIN'); }
+    catch (e) { add('MARVIN could not answer: ' + e.message, 'note'); }
     finally { thinking = false; sendBtn.disabled = false; $('#core-state').textContent = 'IDLE'; prompt.focus(); }
   }
   $('#composer').addEventListener('submit', e => { e.preventDefault(); send(prompt.value); });
   prompt.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(prompt.value); } });
-  prompt.addEventListener('input', grow);
   document.querySelectorAll('.quick button').forEach(b => b.addEventListener('click', () => send(b.dataset.q)));
-  $('#attachBtn').addEventListener('click', () => add('Attachments: drop files in H:\\NEXEN\\intake for now. Direct upload is coming.', 'note'));
-  $('#micBtn').addEventListener('click', () => add('Voice: talk to MARVIN with TALK-TO-MARVIN.cmd (Gemini voice). In-page mic is coming.', 'note'));
 
-  // ---------- 3D core ----------
+  // 3D core: three.js is embedded in this file (MIT license), no network needed
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  (() => { const blob = x => URL.createObjectURL(new Blob([x], {type: 'text/javascript'})); const cu = blob(document.getElementById('t-core').textContent); const mt = document.getElementById('t-mod').textContent.split("'./three.core.js'").join(JSON.stringify(cu)).split('"./three.core.js"').join(JSON.stringify(cu)); return import(blob(mt)); })().then(THREE => {
+  const blob = t => URL.createObjectURL(new Blob([t], {type: 'text/javascript'}));
+  const coreUrl = blob($('#t-core').textContent);
+  const modText = $('#t-mod').textContent.split("'./three.core.js'").join(JSON.stringify(coreUrl)).split('"./three.core.js"').join(JSON.stringify(coreUrl));
+  import(blob(modText)).then(THREE => {
     const canvas = $('#core'); const renderer = new THREE.WebGLRenderer({canvas, antialias: true, alpha: true});
     const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(45, 1, .1, 100); camera.position.z = 6.2;
-    const red = new THREE.Color('#ff3b43');
-    const core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.25, 1), new THREE.MeshBasicMaterial({color: red, wireframe: true, transparent: true, opacity: .85}));
+    const core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.25, 1), new THREE.MeshBasicMaterial({color: '#ff3b43', wireframe: true, transparent: true, opacity: .85}));
     const inner = new THREE.Mesh(new THREE.IcosahedronGeometry(.8, 3), new THREE.MeshBasicMaterial({color: '#8e0f16', transparent: true, opacity: .55}));
     const ring1 = new THREE.Mesh(new THREE.TorusGeometry(2.0, .012, 8, 160), new THREE.MeshBasicMaterial({color: '#ff6b71', transparent: true, opacity: .7}));
-    const ring2 = ring1.clone(); ring2.scale.setScalar(1.18); ring2.rotation.x = Math.PI / 2.6;
-    ring1.rotation.x = Math.PI / 2.2;
+    const ring2 = ring1.clone(); ring2.scale.setScalar(1.18); ring2.rotation.x = Math.PI / 2.6; ring1.rotation.x = Math.PI / 2.2;
     const pts = new THREE.BufferGeometry(), N = 900, arr = new Float32Array(N * 3);
     for (let i = 0; i < N; i++) { const r = 2.4 + Math.random() * 2.2, th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
       arr[i * 3] = r * Math.sin(ph) * Math.cos(th); arr[i * 3 + 1] = r * Math.sin(ph) * Math.sin(th); arr[i * 3 + 2] = r * Math.cos(ph); }
     pts.setAttribute('position', new THREE.BufferAttribute(arr, 3));
     const field = new THREE.Points(pts, new THREE.PointsMaterial({color: '#ff4d57', size: .03, transparent: true, opacity: .75, blending: THREE.AdditiveBlending}));
-    const glowTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d'); const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
-      gr.addColorStop(0, 'rgba(255,90,100,.9)'); gr.addColorStop(.35, 'rgba(255,40,50,.35)'); gr.addColorStop(1, 'rgba(255,40,50,0)'); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); })();
-    const glow = new THREE.Sprite(new THREE.SpriteMaterial({map: glowTex, blending: THREE.AdditiveBlending, transparent: true})); glow.scale.set(5.5, 5.5, 1);
-    scene.add(glow, inner, core, ring1, ring2, field);
-    const size = () => { const w = canvas.clientWidth, h = canvas.clientHeight; renderer.setSize(w, h, false); renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); camera.aspect = w / h; camera.updateProjectionMatrix(); };
-    size(); addEventListener('resize', size);
-    let t0 = performance.now();
-    const loop = now => { const dt = (now - t0) / 1000; t0 = now; const speed = thinking ? 3.2 : 1;
-      core.rotation.y += .35 * dt * speed; core.rotation.x += .12 * dt * speed; inner.rotation.y -= .2 * dt * speed;
-      ring1.rotation.z += .25 * dt * speed; ring2.rotation.z -= .18 * dt * speed; field.rotation.y += .03 * dt * speed;
-      const p = 1 + Math.sin(now / (thinking ? 160 : 700)) * (thinking ? .06 : .03); core.scale.setScalar(p); glow.material.opacity = .7 + (p - 1) * 4;
-      renderer.render(scene, camera); if (!reduce) requestAnimationFrame(loop); };
+    scene.add(inner, core, ring1, ring2, field);
+    const size = () => { const w = canvas.clientWidth, h = canvas.clientHeight; renderer.setSize(w, h, false); renderer.setPixelRatio(1); camera.aspect = w / h; camera.updateProjectionMatrix(); };
+    size(); let t0 = performance.now();
+    const loop = now => { const dt = (now - t0) / 1000; t0 = now; const sp = thinking ? 3.2 : 1;
+      core.rotation.y += .35 * dt * sp; core.rotation.x += .12 * dt * sp; inner.rotation.y -= .2 * dt * sp; ring1.rotation.z += .25 * dt * sp; ring2.rotation.z -= .18 * dt * sp; field.rotation.y += .03 * dt * sp;
+      core.scale.setScalar(1 + Math.sin(now / (thinking ? 160 : 700)) * (thinking ? .06 : .03)); renderer.render(scene, camera); if (!reduce) requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
   }).catch(() => { $('#core').hidden = true; $('#core-fallback').hidden = false; });
 })();
